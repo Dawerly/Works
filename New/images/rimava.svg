@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b026ff"/><stop offset="1" stop-color="#5b21b6"/></linearGradient></defs>
+<rect width="600" height="800" fill="#11101a"/><ellipse cx="300" cy="650" rx="145" ry="35" fill="#000" opacity=".4"/>
+<rect x="205" y="240" width="190" height="360" rx="42" fill="url(#g)"/><rect x="250" y="155" width="100" height="105" rx="18" fill="#30303b"/>
+<rect x="225" y="360" width="150" height="145" rx="14" fill="#fff" opacity=".92"/>
+<text x="300" y="425" fill="#11101a" font-size="25" text-anchor="middle" font-family="Arial, sans-serif">Rimava</text>
+<text x="300" y="465" fill="#11101a" font-size="16" text-anchor="middle" font-family="Arial, sans-serif">DYMOK</text></svg>
