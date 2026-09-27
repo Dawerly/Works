@@ -167,13 +167,256 @@ footer{border-top:1px solid var(--line);padding:32px 0 40px;color:var(--muted);f
 @media (max-width:760px){.nav-links{display:none;} .toolbar{top:calc(env(safe-area-inset-top,0px) + 58px);} .cats4{grid-template-columns:1fr;} .why-grid{grid-template-columns:1fr;}}
 a.btn:focus-visible,.nav-links a:focus-visible,.chip:focus-visible,.cat-tile:focus-visible{outline:2px solid var(--accent2);outline-offset:3px;}
 @media (prefers-reduced-motion: reduce){*{transition:none !important;}}
-</style>
+
+/* ===== DYMOK CYBERPUNK REDESIGN ===== */
+:root{
+  --pink:#ff18e8;
+  --violet:#8b2cff;
+  --cyan:#19e7ff;
+  --panel:rgba(16,10,25,.78);
+  --panel2:rgba(25,13,38,.88);
+}
+body{
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(255,24,232,.13), transparent 26%),
+    radial-gradient(circle at 88% 14%, rgba(25,231,255,.09), transparent 24%),
+    radial-gradient(circle at 50% 75%, rgba(139,44,255,.08), transparent 34%),
+    linear-gradient(180deg,#050507 0%,#09070d 45%,#050508 100%);
+}
+body::after{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.34;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.18) 0 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(255,24,232,.14) 0 1px, transparent 1.5px);
+  background-size:120px 120px,190px 190px;
+  background-position:15px 30px,70px 90px;
+  mask-image:linear-gradient(to bottom,black,transparent 90%);
+}
+.cyber-noise{
+  position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.15;
+  background:repeating-linear-gradient(0deg,transparent 0 4px,rgba(255,255,255,.035) 5px);
+}
+.drop{
+  position:absolute;width:7px;height:7px;border-radius:50%;
+  background:rgba(255,255,255,.12);
+  box-shadow:0 0 10px rgba(25,231,255,.25);
+  animation:floatDrop 7s ease-in-out infinite;
+}
+.drop:nth-child(2){width:4px;height:4px;animation-delay:-2s}
+.drop:nth-child(3){width:10px;height:10px;animation-delay:-4s}
+.drop:nth-child(4){width:5px;height:5px;animation-delay:-5s}
+@keyframes floatDrop{0%,100%{transform:translateY(0) translateX(0);opacity:.2}50%{transform:translateY(28px) translateX(12px);opacity:.7}}
+@keyframes neonPulse{0%,100%{filter:drop-shadow(0 0 5px rgba(255,24,232,.25))}50%{filter:drop-shadow(0 0 18px rgba(255,24,232,.55))}}
+header{
+  background:rgba(5,5,8,.78);
+  border-bottom:1px solid rgba(255,24,232,.22);
+  box-shadow:0 1px 0 rgba(255,24,232,.16),0 10px 40px rgba(0,0,0,.28);
+}
+.nav{max-width:1240px;margin:auto}
+.logo{letter-spacing:.02em}
+.logo-mark{
+  width:38px;height:38px;border-radius:50%;object-fit:cover;
+  border:1px solid rgba(255,24,232,.65);
+  box-shadow:0 0 16px rgba(255,24,232,.4);
+  animation:neonPulse 3s ease-in-out infinite;
+}
+.logo-text{display:flex;flex-direction:column;line-height:1}
+.logo-text small{font-family:Inter,sans-serif;color:#8f829d;font-size:.52rem;letter-spacing:.2em;margin-top:4px}
+.hero{
+  min-height:680px;padding:92px 0 58px;
+  display:flex;align-items:center;
+}
+.hero::before{
+  content:"";position:absolute;width:520px;height:520px;border-radius:50%;
+  right:-160px;top:60px;
+  background:radial-gradient(circle,rgba(255,24,232,.18),rgba(139,44,255,.08) 35%,transparent 68%);
+  filter:blur(10px);
+}
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0 49.5%,rgba(255,24,232,.035) 50%,transparent 50.5%),
+             linear-gradient(0deg,transparent 0 49.5%,rgba(25,231,255,.025) 50%,transparent 50.5%);
+  background-size:90px 90px;mask-image:linear-gradient(to bottom,black,transparent 75%);
+  pointer-events:none;
+}
+.hero .wrap{width:100%}
+.hero-copy{max-width:700px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 12px;border:1px solid rgba(255,24,232,.3);border-radius:999px;
+  background:rgba(255,24,232,.06);color:#ff55ed;
+  box-shadow:inset 0 0 20px rgba(255,24,232,.04);
+}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:#ff18e8;box-shadow:0 0 12px #ff18e8}
+.hero h1{
+  font-size:clamp(2.45rem,6vw,5.3rem);max-width:11ch;letter-spacing:-.055em;
+  margin-top:18px;text-wrap:balance;
+  text-shadow:0 0 24px rgba(255,24,232,.24),3px 0 rgba(25,231,255,.18),-3px 0 rgba(255,24,232,.2);
+}
+.hero h1 .neon{color:#ff18e8}
+.hero p{font-size:1.08rem;color:#b9adbf;max-width:60ch}
+.hero-visual{
+  position:absolute;right:6%;top:50%;transform:translateY(-50%);
+  width:min(390px,34vw);aspect-ratio:1;z-index:1;
+}
+.hero-orb{
+  position:absolute;inset:12%;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#ff6af2 0,#ff18e8 10%,#7119b4 34%,#100717 65%,transparent 66%);
+  box-shadow:0 0 60px rgba(255,24,232,.35),0 0 130px rgba(139,44,255,.18);
+  opacity:.88;
+}
+.hero-orb::before,.hero-orb::after{
+  content:"";position:absolute;border:1px solid rgba(255,24,232,.5);border-radius:50%;
+}
+.hero-orb::before{inset:-12%;transform:rotate(28deg) scaleY(.42)}
+.hero-orb::after{inset:-22%;transform:rotate(-25deg) scaleY(.25);border-color:rgba(25,231,255,.28)}
+.hero-device{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(7deg);
+  width:105px;height:230px;border-radius:28px;
+  background:linear-gradient(135deg,#18121f,#050507);
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 0 30px rgba(255,24,232,.4),inset 0 0 25px rgba(255,24,232,.08);
+}
+.hero-device::before{
+  content:"DYMOK";position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);
+  font:700 10px Unbounded,sans-serif;color:#ff18e8;letter-spacing:.08em;
+  text-shadow:0 0 10px #ff18e8;
+}
+.hero-device::after{
+  content:"";position:absolute;left:16px;right:16px;bottom:18px;height:4px;border-radius:4px;
+  background:linear-gradient(90deg,#ff18e8,#8b2cff,#19e7ff);box-shadow:0 0 12px #ff18e8;
+}
+.stats{
+  gap:0;display:grid;grid-template-columns:repeat(4,1fr);
+  border:1px solid rgba(255,24,232,.16);border-radius:18px;overflow:hidden;
+  background:rgba(10,8,14,.62);backdrop-filter:blur(12px);max-width:780px;
+}
+.stat{padding:17px 20px;border-right:1px solid rgba(255,24,232,.12)}
+.stat:last-child{border-right:0}
+.stat b{font-size:1.05rem;color:#fff}
+.stat span{font-size:.72rem}
+section{position:relative;z-index:3}
+.section-head h2{letter-spacing:-.025em}
+.section-head h2::after{
+  content:"";display:block;width:48px;height:2px;margin-top:12px;
+  background:linear-gradient(90deg,#ff18e8,#19e7ff);box-shadow:0 0 10px rgba(255,24,232,.7);
+}
+.card,.cat-tile,.why-card,.cab-card,.badge,.cta{
+  background:linear-gradient(145deg,rgba(19,12,27,.88),rgba(10,8,14,.82));
+  border-color:rgba(255,24,232,.15);
+  box-shadow:inset 0 1px rgba(255,255,255,.035),0 16px 40px rgba(0,0,0,.16);
+}
+.card{border-radius:16px;padding:12px}
+.card:hover{box-shadow:0 0 35px rgba(255,24,232,.14),inset 0 1px rgba(255,255,255,.05)}
+.thumb{
+  height:205px;border-radius:13px;position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 80%,rgba(255,24,232,.2),transparent 38%),
+    linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,24,232,.025));
+  border:1px solid rgba(255,255,255,.045);
+}
+.thumb::before{
+  content:"";position:absolute;inset:12px;
+  border:1px dashed rgba(255,24,232,.12);border-radius:10px;
+}
+.thumb::after{
+  content:"DYMOK // SHOP";position:absolute;right:10px;bottom:8px;
+  font:500 7px Unbounded,sans-serif;letter-spacing:.14em;color:rgba(255,255,255,.28);
+}
+.thumb svg{width:45%;height:82%;filter:drop-shadow(0 0 14px rgba(255,24,232,.35))}
+.tag{background:rgba(255,24,232,.08);border:1px solid rgba(255,24,232,.18);color:#ff63f0}
+.price{color:#fff;text-shadow:0 0 12px rgba(255,24,232,.25)}
+.add{background:linear-gradient(135deg,#ff18e8,#9b32ff);color:#fff;box-shadow:0 0 16px rgba(255,24,232,.22)}
+.btn-primary{background:linear-gradient(135deg,#ff18e8,#8b2cff);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.02)}
+.chip.active{background:linear-gradient(135deg,#ff18e8,#8b2cff);color:#fff}
+.toolbar{background:rgba(5,5,8,.72);backdrop-filter:blur(14px);padding:12px;border:1px solid rgba(255,24,232,.1);border-radius:16px}
+.search,.sortsel{background:rgba(20,12,28,.9)}
+.store{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:stretch;
+}
+.store-card{
+  padding:30px;border:1px solid rgba(255,24,232,.18);border-radius:22px;
+  background:linear-gradient(145deg,rgba(22,10,31,.9),rgba(7,7,10,.88));
+  position:relative;overflow:hidden;
+}
+.store-card::after{
+  content:"";position:absolute;width:260px;height:260px;right:-120px;bottom:-130px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,24,232,.24),transparent 68%);
+}
+.store-address{font:700 clamp(1.25rem,2vw,1.65rem) Unbounded,sans-serif;margin:12px 0}
+.store-meta{color:#a99cab}
+.store-map{
+  min-height:280px;border-radius:22px;border:1px solid rgba(25,231,255,.15);
+  background:
+    linear-gradient(rgba(25,231,255,.07) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,24,232,.07) 1px,transparent 1px),
+    radial-gradient(circle at 50% 50%,rgba(255,24,232,.18),transparent 32%),
+    #09080d;
+  background-size:40px 40px,40px 40px,auto,auto;
+  display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+}
+.store-pin{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:rgba(255,24,232,.1);border:1px solid #ff18e8;box-shadow:0 0 35px rgba(255,24,232,.45);font-size:25px}
+.store-map span{position:absolute;bottom:18px;color:#8d8195;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
+.age-gate{
+  position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;
+  padding:20px;background:rgba(0,0,0,.78);backdrop-filter:blur(16px);
+}
+.age-gate.open{display:flex}
+.age-box{
+  width:min(500px,100%);padding:34px;border-radius:24px;text-align:center;
+  border:1px solid rgba(255,24,232,.28);
+  background:linear-gradient(145deg,#140b1b,#08070b);
+  box-shadow:0 0 70px rgba(255,24,232,.18);
+}
+.age-box .age-logo{width:74px;height:74px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,24,232,.55);box-shadow:0 0 24px rgba(255,24,232,.35);margin-bottom:16px}
+.mobile-nav{
+  display:none;position:fixed;bottom:12px;left:12px;right:12px;z-index:75;
+  padding:8px;border:1px solid rgba(255,24,232,.18);border-radius:18px;
+  background:rgba(9,7,13,.88);backdrop-filter:blur(16px);box-shadow:0 12px 40px rgba(0,0,0,.4);
+}
+.mobile-nav a{flex:1;text-align:center;text-decoration:none;color:#9b8da4;font-size:.66rem;padding:8px 3px;border-radius:12px}
+.mobile-nav a.active{color:#fff;background:rgba(255,24,232,.12)}
+@media (max-width:980px){
+  .hero-visual{right:-70px;opacity:.45;width:390px}
+  .hero-copy{position:relative;z-index:3}
+}
+@media (max-width:760px){
+  .wrap{padding:0 16px}
+  .nav{padding:10px 14px}
+  .logo-mark{width:34px;height:34px}
+  .nav .btn-primary{display:none}
+  .hero{min-height:auto;padding:70px 0 32px}
+  .hero-visual{display:none}
+  .hero h1{font-size:clamp(2.3rem,12vw,3.8rem)}
+  .stats{grid-template-columns:1fr 1fr;margin-top:26px}
+  .stat{padding:14px;border-bottom:1px solid rgba(255,24,232,.12)}
+  .stat:nth-child(2){border-right:0}
+  .stat:nth-child(3),.stat:nth-child(4){border-bottom:0}
+  .store{grid-template-columns:1fr}
+  .mobile-nav{display:flex}
+  footer{padding-bottom:105px}
+  .drawer{width:min(430px,96vw)}
+}
+@media (max-width:480px){
+  .hero-actions .btn{width:100%;justify-content:center}
+  .thumb{height:185px}
+  .card{padding:10px}
+  .toolbar{position:sticky}
+}
+
+.catalog-note{margin:-10px 0 18px;padding:11px 14px;border-left:2px solid var(--pink);background:rgba(255,24,232,.04);color:#9e91a7;font-size:.78rem;border-radius:0 10px 10px 0}\n</style>
 </head>
 <body>
 
 <header>
   <div class="nav">
-    <div class="logo" data-nav="home">Dymok<span>.</span>rv</div>
+    <div class="logo" data-nav="home">
+  <img class="logo-mark" src="logo.png" alt="Dymok">
+  <span class="logo-text">DYMOK<span>.</span>RV<small>NEON VAPE STORE</small></span>
+</div>
     <nav class="nav-links" id="navLinks">
       <a href="#home" data-nav="home">Головна</a>
       <a href="#catalog" data-nav="catalog">Каталог</a>
@@ -197,7 +440,7 @@ a.btn:focus-visible,.nav-links a:focus-visible,.chip:focus-visible,.cat-tile:foc
     <div class="wrap">
       <div class="eyebrow">Вейп-шоп у Рівному</div>
       <h1>Пара, яку хочеться повторити</h1>
-      <p>Dymok.rv — це оригінальні одноразки, под-системи, рідини та комплектуючі з доставкою по всій Україні. Обирайте прямо на сайті, слідкуйте за замовленнями в особистому кабінеті.</p>
+      <p>Dymok — магазин з атмосферою кіберпанку, актуальними товарами та швидким звʼязком у Telegram. Переглядай каталог, дізнавайся про нові надходження та заходь у наш фізичний магазин у Рівному.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#catalog" data-nav="catalog">Перейти в каталог</a>
         <a class="btn btn-ghost" href="https://t.me/+fkB5bffwaFc5NjBi" target="_blank" rel="noopener">Наш Telegram</a>
@@ -332,6 +575,27 @@ a.btn:focus-visible,.nav-links a:focus-visible,.chip:focus-visible,.cat-tile:foc
 
   <section>
     <div class="wrap">
+      <div class="section-head">
+        <h2>Фізичний магазин</h2>
+        <p>Якщо ти в Рівному — можеш завітати до нас особисто.</p>
+      </div>
+      <div class="store">
+        <div class="store-card">
+          <div class="eyebrow">DYMOK // OFFLINE</div>
+          <div class="store-address">м. Рівне<br>вул. Романа Шухевича, 2</div>
+          <p class="store-meta">Заходь у фізичний магазин, щоб подивитися асортимент наживо та отримати консультацію.</p>
+          <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&query=Рівне%20вулиця%20Романа%20Шухевича%202" target="_blank" rel="noopener" style="margin-top:12px;">Відкрити на карті</a>
+        </div>
+        <div class="store-map">
+          <div class="store-pin">⌖</div>
+          <span>RIVNE // SHUKHEVYCHA 2</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
       <div class="cta">
         <h2>Готові обрати свою пару?</h2>
         <p>Весь каталог доступний прямо тут — оформлення займає хвилину.</p>
@@ -347,7 +611,7 @@ a.btn:focus-visible,.nav-links a:focus-visible,.chip:focus-visible,.cat-tile:foc
     <div class="wrap">
       <div class="section-head">
         <h2>Каталог</h2>
-        <p>Приклад асортименту — заміните на актуальні позиції та ціни свого магазину.</p>
+        <p>Каталог оформлений у єдиному стилі Dymok. Актуальну наявність і нові надходження перевіряйте в Telegram.</p>
       </div>
       <div class="toolbar">
         <input class="search" id="search" type="text" placeholder="Пошук за назвою чи брендом...">
@@ -359,7 +623,8 @@ a.btn:focus-visible,.nav-links a:focus-visible,.chip:focus-visible,.cat-tile:foc
           <option value="name">За назвою</option>
         </select>
       </div>
-      <div class="grid" id="grid"></div>
+      <div class="catalog-note">⚡ Актуальна наявність може змінюватися. Перед оформленням перевіряйте товар у Telegram.</div>
+       <div class="grid" id="grid"></div>
     </div>
   </section>
   <section>
@@ -412,10 +677,21 @@ a.btn:focus-visible,.nav-links a:focus-visible,.chip:focus-visible,.cat-tile:foc
   </section>
 </div>
 
+
+<nav class="mobile-nav" aria-label="Мобільна навігація">
+  <a href="#home" data-nav="home">⌂<br>Головна</a>
+  <a href="#catalog" data-nav="catalog">◈<br>Каталог</a>
+  <a href="#cabinet" data-nav="cabinet">◎<br>Кабінет</a>
+  <a href="https://t.me/dymokshop1" target="_blank" rel="noopener">✈<br>Telegram</a>
+</nav>
+
 <footer>
   <div class="wrap">
     <div class="foot-row">
-      <div class="logo" style="font-size:1rem;">Dymok<span>.</span>rv</div>
+      <div class="logo" style="font-size:1rem;">
+  <img class="logo-mark" src="logo.png" alt="Dymok" style="width:30px;height:30px;">
+  <span class="logo-text">DYMOK<span>.</span>RV</span>
+</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <a class="btn btn-ghost" href="https://t.me/+fkB5bffwaFc5NjBi" target="_blank" rel="noopener" style="padding:8px 14px;font-size:.82rem;">Telegram-канал</a>
         <a class="btn btn-ghost" href="https://t.me/DymokManager" target="_blank" rel="noopener" style="padding:8px 14px;font-size:.82rem;">Менеджер</a>
@@ -427,6 +703,20 @@ a.btn:focus-visible,.nav-links a:focus-visible,.chip:focus-visible,.cat-tile:foc
     <div class="age">Товари призначені виключно для осіб віком від 18 років. Оформлюючи замовлення, ви підтверджуєте свій вік.</div>
   </div>
 </footer>
+
+
+<div class="age-gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
+  <div class="age-box">
+    <img class="age-logo" src="logo.png" alt="Dymok">
+    <div class="eyebrow">DYMOK // 18+</div>
+    <h2 id="ageTitle">Підтвердження віку</h2>
+    <p style="color:var(--muted)">Сайт містить інформацію про товари, призначені лише для повнолітніх.</p>
+    <div style="display:flex;gap:10px;margin-top:22px">
+      <button class="btn btn-primary" id="ageYes" style="flex:1;justify-content:center">Мені є 18</button>
+      <button class="btn btn-ghost" id="ageNo" style="flex:1;justify-content:center">Вийти</button>
+    </div>
+  </div>
+</div>
 
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer" aria-label="Кошик">
@@ -440,28 +730,28 @@ a.btn:focus-visible,.nav-links a:focus-visible,.chip:focus-visible,.cat-tile:foc
 
 <script>
 const PRODUCTS = [
-  {id:1,cat:'disposable',brand:'Elf Bar',name:'Elf Bar BC5000',spec:'5000 затяжок · Лід кавун',price:399,color:'#c026d9'},
-  {id:2,cat:'disposable',brand:'Lost Mary',name:'Lost Mary OS4000',spec:'4000 затяжок · Малина лимонад',price:379,color:'#d946ef'},
-  {id:3,cat:'disposable',brand:'VozoL',name:'VozoL Gear 10000',spec:'10000 затяжок · Манго лід',price:549,color:'#a855f7'},
-  {id:4,cat:'disposable',brand:'Hayati',name:'Hayati Pro Ultra 15000',spec:'15000 затяжок · Полуниця ківі',price:699,color:'#c084fc'},
-  {id:5,cat:'disposable',brand:'OXBAR',name:'OXBAR MagicMax 30000',spec:'30000 затяжок · Арбуз лід',price:899,color:'#9d4edd'},
-  {id:6,cat:'disposable',brand:'IVG',name:'IVG Bar Plus',spec:'2400 затяжок · Персик манго',price:329,color:'#e0aaff'},
-  {id:7,cat:'pod',brand:'Oxva',name:'Oxva Xlim SE',spec:'Под-система · 900 mAh',price:749,color:'#7c3aed'},
-  {id:8,cat:'pod',brand:'Uwell',name:'Uwell Caliburn G3',spec:'Под-система · 750 mAh',price:699,color:'#b967ff'},
-  {id:9,cat:'pod',brand:'Voopoo',name:'Voopoo Drag Nano 2',spec:'Под-система · 750 mAh',price:679,color:'#8b5cf6'},
-  {id:10,cat:'pod',brand:'Smok',name:'Smok Novo 5',spec:'Под-система · 800 mAh',price:719,color:'#9d4edd'},
-  {id:11,cat:'liquid',brand:'Rimava',name:'Rimava Salt 30ml',spec:'Соляна · 20 мг · Лісові ягоди',price:249,color:'#c084fc'},
-  {id:12,cat:'liquid',brand:'Fog House',name:'Fog House Salt 30ml',spec:'Соляна · 35 мг · Ожина лід',price:259,color:'#9d4edd'},
-  {id:13,cat:'liquid',brand:'Chaser',name:'Chaser Black 30ml',spec:'Соляна · 50 мг · Дюшес',price:229,color:'#a855f7'},
-  {id:14,cat:'liquid',brand:'Nasty',name:'Nasty Juice 60ml',spec:'Класична · 3 мг · Манго',price:349,color:'#e0aaff'},
-  {id:15,cat:'liquid',brand:'Le Coq',name:'Le Coq Salt 30ml',spec:'Соляна · 20 мг · Полуниця м\u2019ята',price:259,color:'#c026d9'},
-  {id:16,cat:'liquid',brand:'Vint',name:'Vint Salt 30ml',spec:'Соляна · 35 мг · Дюшес',price:269,color:'#d946ef'},
-  {id:17,cat:'liquid',brand:'Skwezed',name:'Skwezed Salt 30ml',spec:'Соляна · 25 мг · Ківі полуниця',price:279,color:'#7c3aed'},
-  {id:18,cat:'liquid',brand:'Frost Line',name:'Frost Line Salt 30ml',spec:'Соляна · 20 мг · М\u2019ята лід',price:239,color:'#b967ff'},
-  {id:19,cat:'liquid',brand:'Just',name:'Just Salt 30ml',spec:'Соляна · 30 мг · Чорна смородина',price:249,color:'#8b5cf6'},
-  {id:20,cat:'liquid',brand:'Kaiya',name:'Kaiya Salt 30ml',spec:'Соляна · 20 мг · Персик груша',price:259,color:'#e879f9'},
-  {id:21,cat:'access',brand:'Dymok.rv',name:'Картридж Xlim Pro (2шт)',spec:'Змінний картридж 0.6 Ом',price:149,color:'#9a7cc9'},
-  {id:22,cat:'access',brand:'Dymok.rv',name:'Зарядка Type-C',spec:'Кабель для под-систем, 1 м',price:89,color:'#9a7cc9'},
+  {id:1,cat:'disposable',brand:'Elf Bar',name:'Elf Bar BC5000',spec:'5000 затяжок · Лід кавун',price:399,color:'#c026d9',image:'https://bsg-i.nbxc.com/product/4e/e8/1a/049f1fbc63200994fb816f0b56.jpg%4095Q.webp'},
+  {id:2,cat:'disposable',brand:'Lost Mary',name:'Lost Mary OS4000',spec:'4000 затяжок · Малина лимонад',price:379,color:'#d946ef',image:'https://www.lostmary.ru/assets/images/products/os4000.png'},
+  {id:3,cat:'disposable',brand:'VozoL',name:'VozoL Gear 10000',spec:'10000 затяжок · Манго лід',price:549,color:'#a855f7',image:'https://ideavape.co.uk/cdn/shop/products/vozol-gear-10000-disposable-vape-kit.jpg'},
+  {id:4,cat:'disposable',brand:'Hayati',name:'Hayati Pro Ultra 15000',spec:'15000 затяжок · Полуниця ківі',price:699,color:'#c084fc',image:'https://cdn.shopify.com/s/files/1/0606/5317/5006/files/Hayati_Pro_Ultra_15k_Puffs_Disposable_ins_3_1024x1024.jpg?v=1734410630'},
+  {id:5,cat:'disposable',brand:'OXBAR',name:'OXBAR MagicMax 30000',spec:'30000 затяжок · Арбуз лід',price:899,color:'#9d4edd',image:'https://cdn11.bigcommerce.com/s-4muzbu4fp9/images/stencil/1920x1920/products/5477/20731/OXBAR_Magic_Maze_2.0_30000_Puff_Disposable_Blue_Razz_Cotton_Clouds__67006.1734130435.jpg?c=1&imbypass=on'},
+  {id:6,cat:'disposable',brand:'IVG',name:'IVG Bar Plus',spec:'2400 затяжок · Персик манго',price:329,color:'#e0aaff',image:'https://ecigarettes-wholesale.uk/image/cache/catalog/IVG/IVG-Bar-Plus-800x800.jpg'},
+  {id:7,cat:'pod',brand:'Oxva',name:'Oxva Xlim SE',spec:'Под-система · 900 mAh',price:749,color:'#7c3aed',image:'https://vape-shop-dubai.com/cdn/shop/products/DarkBlue-02_540x_31fe9658-d75a-45d9-9e10-f2970dad8adb.jpg?v=1653117482'},
+  {id:8,cat:'pod',brand:'Uwell',name:'Uwell Caliburn G3',spec:'Под-система · 750 mAh',price:699,color:'#b967ff',image:'https://image.vapesourcing.uk/images/202309/uwell-caliburn-g3-pod-kit_%287%29.jpg'},
+  {id:9,cat:'pod',brand:'Voopoo',name:'Voopoo Drag Nano 2',spec:'Под-система · 750 mAh',price:679,color:'#8b5cf6',image:'https://www.vapingfast.com/image/cache/catalog/voopoo-drag-nano-2-pod-kit-1-800x800.jpg'},
+  {id:10,cat:'pod',brand:'Smok',name:'Smok Novo 5',spec:'Под-система · 800 mAh',price:719,color:'#9d4edd',image:'https://vaporandco.com/cdn/shop/products/novo5.jpg'},
+  {id:11,cat:'liquid',brand:'Rimava',name:'Rimava Salt 30ml',spec:'Соляна · 20 мг · Лісові ягоди',price:249,color:'#c084fc',image:'images/rimava.svg'},
+  {id:12,cat:'liquid',brand:'Fog House',name:'Fog House Salt 30ml',spec:'Соляна · 35 мг · Ожина лід',price:259,color:'#9d4edd',image:'images/fog-house.svg'},
+  {id:13,cat:'liquid',brand:'Chaser',name:'Chaser Black 30ml',spec:'Соляна · 50 мг · Дюшес',price:229,color:'#a855f7',image:'https://terra-vape.com.ua/image/cache/catalog/Chaser/Chaser-Black-Salt-30ml-800x800.jpg'},
+  {id:14,cat:'liquid',brand:'Nasty',name:'Nasty Juice 60ml',spec:'Класична · 3 мг · Манго',price:349,color:'#e0aaff',image:'https://liquidin.pe/cdn/shop/files/NASTY01.png?v=1745545857&width=533'},
+  {id:15,cat:'liquid',brand:'Le Coq',name:'Le Coq Salt 30ml',spec:'Соляна · 20 мг · Полуниця м’ята',price:259,color:'#c026d9',image:'images/le-coq.svg'},
+  {id:16,cat:'liquid',brand:'Vint',name:'Vint Salt 30ml',spec:'Соляна · 35 мг · Дюшес',price:269,color:'#d946ef',image:'images/vint.svg'},
+  {id:17,cat:'liquid',brand:'Skwezed',name:'Skwezed Salt 30ml',spec:'Соляна · 25 мг · Ківі полуниця',price:279,color:'#7c3aed',image:'https://giantvapes.com/cdn/shop/files/Skwezed-Kiwi-Strawberry-SALT-30mL.jpg'},
+  {id:18,cat:'liquid',brand:'Frost Line',name:'Frost Line Salt 30ml',spec:'Соляна · 20 мг · М’ята лід',price:239,color:'#b967ff',image:'images/frost-line.svg'},
+  {id:19,cat:'liquid',brand:'Just',name:'Just Salt 30ml',spec:'Соляна · 30 мг · Чорна смородина',price:249,color:'#8b5cf6',image:'https://www.vaporshopdirect.com/cdn/shop/products/blacklimenic.png?v=1659432777&width=533'},
+  {id:20,cat:'liquid',brand:'Kaiya',name:'Kaiya Salt 30ml',spec:'Соляна · 20 мг · Персик груша',price:259,color:'#e879f9',image:'images/kaiya.svg'},
+  {id:21,cat:'access',brand:'Dymok.rv',name:'Картридж Xlim Pro (2шт)',spec:'Змінний картридж 0.6 Ом',price:149,color:'#9a7cc9',image:'images/xlim-pro-pods.svg'},
+  {id:22,cat:'access',brand:'Dymok.rv',name:'Зарядка Type-C',spec:'Кабель для под-систем, 1 м',price:89,color:'#9a7cc9',image:'images/usb-c-cable.svg'},
 ];
 const CATS = [{id:'all',name:'Усі'},{id:'disposable',name:'Одноразки'},{id:'pod',name:'Под-системи'},{id:'liquid',name:'Рідини'},{id:'access',name:'Аксесуари'}];
 const CATLABEL = {disposable:'Одноразка',pod:'Под-система',liquid:'Рідина',access:'Аксесуар'};
@@ -489,7 +779,10 @@ function svgIcon(p){
   return `<svg viewBox="0 0 60 100">${grad}<ellipse cx="30" cy="92" rx="17" ry="4" fill="#000" opacity=".35"/><rect x="13" y="8" width="34" height="84" rx="16" fill="${c}" opacity=".14"/><rect x="19" y="16" width="22" height="68" rx="11" fill="url(#${id})" stroke="${c}" stroke-width="1"/><rect x="23" y="4" width="14" height="16" rx="4" fill="${c}" opacity=".7"/><rect x="24" y="30" width="4" height="30" rx="2" fill="#fff" opacity=".18"/></svg>`;
 }
 function thumbHTML(p){
-  return `<div class="thumb" style="background:radial-gradient(ellipse at 30% 20%, ${p.color}30, var(--bg-soft2) 70%)">${svgIcon(p)}</div>`;
+  const visual = p.image
+    ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" style="max-width:78%;max-height:86%;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 0 16px ${p.color}66)"><span style="display:none;position:relative;z-index:2;color:var(--muted);font-size:12px;text-align:center;padding:18px">Фото товару недоступне</span>`
+    : svgIcon(p);
+  return `<div class="thumb" style="background:radial-gradient(ellipse at 50% 72%, ${p.color}28, transparent 48%), linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,24,232,.025))">${visual}</div>`;
 }
 
 /* ---------- routing ---------- */
@@ -655,6 +948,18 @@ document.getElementById('editProfile').onclick = ()=>{
   profile = null; saveProfile(); renderCabinet();
 };
 document.getElementById('logoutProfile').onclick = ()=>{ profile = null; saveProfile(); renderCabinet(); };
+
+
+/* ---------- age gate ---------- */
+const ageGate = document.getElementById('ageGate');
+if(localStorage.getItem('dymok_age_ok') !== '1') ageGate.classList.add('open');
+document.getElementById('ageYes').onclick = ()=>{
+  localStorage.setItem('dymok_age_ok','1');
+  ageGate.classList.remove('open');
+};
+document.getElementById('ageNo').onclick = ()=>{
+  window.location.href='https://www.google.com/';
+};
 
 renderChips(); renderGrid(); renderCart(); routeFromHash();
 </script>
