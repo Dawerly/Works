@@ -730,28 +730,209 @@ section{position:relative;z-index:3}
 
 <script>
 const PRODUCTS = [
-  {id:1,cat:'disposable',brand:'Elf Bar',name:'Elf Bar BC5000',spec:'5000 затяжок · Лід кавун',price:399,color:'#c026d9',image:'https://bsg-i.nbxc.com/product/4e/e8/1a/049f1fbc63200994fb816f0b56.jpg%4095Q.webp'},
-  {id:2,cat:'disposable',brand:'Lost Mary',name:'Lost Mary OS4000',spec:'4000 затяжок · Малина лимонад',price:379,color:'#d946ef',image:'https://www.lostmary.ru/assets/images/products/os4000.png'},
-  {id:3,cat:'disposable',brand:'VozoL',name:'VozoL Gear 10000',spec:'10000 затяжок · Манго лід',price:549,color:'#a855f7',image:'https://ideavape.co.uk/cdn/shop/products/vozol-gear-10000-disposable-vape-kit.jpg'},
-  {id:4,cat:'disposable',brand:'Hayati',name:'Hayati Pro Ultra 15000',spec:'15000 затяжок · Полуниця ківі',price:699,color:'#c084fc',image:'https://cdn.shopify.com/s/files/1/0606/5317/5006/files/Hayati_Pro_Ultra_15k_Puffs_Disposable_ins_3_1024x1024.jpg?v=1734410630'},
-  {id:5,cat:'disposable',brand:'OXBAR',name:'OXBAR MagicMax 30000',spec:'30000 затяжок · Арбуз лід',price:899,color:'#9d4edd',image:'https://cdn11.bigcommerce.com/s-4muzbu4fp9/images/stencil/1920x1920/products/5477/20731/OXBAR_Magic_Maze_2.0_30000_Puff_Disposable_Blue_Razz_Cotton_Clouds__67006.1734130435.jpg?c=1&imbypass=on'},
-  {id:6,cat:'disposable',brand:'IVG',name:'IVG Bar Plus',spec:'2400 затяжок · Персик манго',price:329,color:'#e0aaff',image:'https://ecigarettes-wholesale.uk/image/cache/catalog/IVG/IVG-Bar-Plus-800x800.jpg'},
-  {id:7,cat:'pod',brand:'Oxva',name:'Oxva Xlim SE',spec:'Под-система · 900 mAh',price:749,color:'#7c3aed',image:'https://vape-shop-dubai.com/cdn/shop/products/DarkBlue-02_540x_31fe9658-d75a-45d9-9e10-f2970dad8adb.jpg?v=1653117482'},
-  {id:8,cat:'pod',brand:'Uwell',name:'Uwell Caliburn G3',spec:'Под-система · 750 mAh',price:699,color:'#b967ff',image:'https://image.vapesourcing.uk/images/202309/uwell-caliburn-g3-pod-kit_%287%29.jpg'},
-  {id:9,cat:'pod',brand:'Voopoo',name:'Voopoo Drag Nano 2',spec:'Под-система · 750 mAh',price:679,color:'#8b5cf6',image:'https://www.vapingfast.com/image/cache/catalog/voopoo-drag-nano-2-pod-kit-1-800x800.jpg'},
-  {id:10,cat:'pod',brand:'Smok',name:'Smok Novo 5',spec:'Под-система · 800 mAh',price:719,color:'#9d4edd',image:'https://vaporandco.com/cdn/shop/products/novo5.jpg'},
-  {id:11,cat:'liquid',brand:'Rimava',name:'Rimava Salt 30ml',spec:'Соляна · 20 мг · Лісові ягоди',price:249,color:'#c084fc',image:'images/rimava.svg'},
-  {id:12,cat:'liquid',brand:'Fog House',name:'Fog House Salt 30ml',spec:'Соляна · 35 мг · Ожина лід',price:259,color:'#9d4edd',image:'images/fog-house.svg'},
-  {id:13,cat:'liquid',brand:'Chaser',name:'Chaser Black 30ml',spec:'Соляна · 50 мг · Дюшес',price:229,color:'#a855f7',image:'https://terra-vape.com.ua/image/cache/catalog/Chaser/Chaser-Black-Salt-30ml-800x800.jpg'},
-  {id:14,cat:'liquid',brand:'Nasty',name:'Nasty Juice 60ml',spec:'Класична · 3 мг · Манго',price:349,color:'#e0aaff',image:'https://liquidin.pe/cdn/shop/files/NASTY01.png?v=1745545857&width=533'},
-  {id:15,cat:'liquid',brand:'Le Coq',name:'Le Coq Salt 30ml',spec:'Соляна · 20 мг · Полуниця м’ята',price:259,color:'#c026d9',image:'images/le-coq.svg'},
-  {id:16,cat:'liquid',brand:'Vint',name:'Vint Salt 30ml',spec:'Соляна · 35 мг · Дюшес',price:269,color:'#d946ef',image:'images/vint.svg'},
-  {id:17,cat:'liquid',brand:'Skwezed',name:'Skwezed Salt 30ml',spec:'Соляна · 25 мг · Ківі полуниця',price:279,color:'#7c3aed',image:'https://giantvapes.com/cdn/shop/files/Skwezed-Kiwi-Strawberry-SALT-30mL.jpg'},
-  {id:18,cat:'liquid',brand:'Frost Line',name:'Frost Line Salt 30ml',spec:'Соляна · 20 мг · М’ята лід',price:239,color:'#b967ff',image:'images/frost-line.svg'},
-  {id:19,cat:'liquid',brand:'Just',name:'Just Salt 30ml',spec:'Соляна · 30 мг · Чорна смородина',price:249,color:'#8b5cf6',image:'https://www.vaporshopdirect.com/cdn/shop/products/blacklimenic.png?v=1659432777&width=533'},
-  {id:20,cat:'liquid',brand:'Kaiya',name:'Kaiya Salt 30ml',spec:'Соляна · 20 мг · Персик груша',price:259,color:'#e879f9',image:'images/kaiya.svg'},
-  {id:21,cat:'access',brand:'Dymok.rv',name:'Картридж Xlim Pro (2шт)',spec:'Змінний картридж 0.6 Ом',price:149,color:'#9a7cc9',image:'images/xlim-pro-pods.svg'},
-  {id:22,cat:'access',brand:'Dymok.rv',name:'Зарядка Type-C',spec:'Кабель для под-систем, 1 м',price:89,color:'#9a7cc9',image:'images/usb-c-cable.svg'},
+  // === OCTOBAR ===
+  { id: 1, cat: 'liquid', brand: 'Octobar', name: 'Octobar Ice Ice Baby', spec: "М'ята Кактус", price: 204, image: 'https://placehold.co/400x400/c026d9/fff?text=Ice+Ice+Baby:+Cactus' },
+  { id: 2, cat: 'liquid', brand: 'Octobar', name: 'Octobar Ice Ice Baby', spec: "М'ята Кавун", price: 204, image: 'https://placehold.co/400x400/c026d9/fff?text=Ice+Ice+Baby:+Watermelon' },
+
+  { id: 3, cat: 'liquid', brand: 'Octobar', name: 'Octobar Go', spec: 'Зелене Яблуко', price: 184, image: 'https://placehold.co/400x400/d946ef/fff?text=Octobar+Go:+Apple' },
+  { id: 4, cat: 'liquid', brand: 'Octobar', name: 'Octobar Go', spec: 'Кисла Вишня', price: 184, image: 'https://placehold.co/400x400/d946ef/fff?text=Octobar+Go:+Cherry' },
+  { id: 5, cat: 'liquid', brand: 'Octobar', name: 'Octobar Go', spec: 'Кисла Слива', price: 184, image: 'https://placehold.co/400x400/d946ef/fff?text=Octobar+Go:+Plum' },
+  { id: 6, cat: 'liquid', brand: 'Octobar', name: 'Octobar Go', spec: 'Персик Ананас', price: 184, image: 'https://placehold.co/400x400/d946ef/fff?text=Octobar+Go:+Peach' },
+
+  { id: 7, cat: 'liquid', brand: 'Octobar', name: 'Octobar Fresh & Sour', spec: 'Зелене Яблуко', price: 204, image: 'https://placehold.co/400x400/b026ff/fff?text=Fresh+Sour:+Apple' },
+  { id: 8, cat: 'liquid', brand: 'Octobar', name: 'Octobar Fresh & Sour', spec: "М'ята Базилік", price: 204, image: 'https://placehold.co/400x400/b026ff/fff?text=Fresh+Sour:+Mint' },
+  { id: 9, cat: 'liquid', brand: 'Octobar', name: 'Octobar Fresh & Sour', spec: 'Орбіт', price: 204, image: 'https://placehold.co/400x400/b026ff/fff?text=Fresh+Sour:+Orbit' },
+
+  { id: 10, cat: 'liquid', brand: 'Octobar', name: 'Octobar X', spec: 'Ягідний Мікс', price: 204, image: 'https://placehold.co/400x400/a855f7/fff?text=Octobar+X:+Berry' },
+  { id: 11, cat: 'liquid', brand: 'Octobar', name: 'Octobar X', spec: 'Чорниця Ментол', price: 204, image: 'https://placehold.co/400x400/a855f7/fff?text=Octobar+X:+Blueberry' },
+  { id: 12, cat: 'liquid', brand: 'Octobar', name: 'Octobar X', spec: 'Вишневий Сік', price: 204, image: 'https://placehold.co/400x400/a855f7/fff?text=Octobar+X:+Cherry' },
+  { id: 13, cat: 'liquid', brand: 'Octobar', name: 'Octobar X', spec: "Лимон М'ята", price: 204, image: 'https://placehold.co/400x400/a855f7/fff?text=Octobar+X:+Lemon' },
+
+  { id: 14, cat: 'liquid', brand: 'Octobar', name: 'Octobar Prime', spec: "Яблучно-М'ятна Цукерка", price: 234, image: 'https://placehold.co/400x400/7c3aed/fff?text=Prime:+Apple+Candy' },
+  { id: 15, cat: 'liquid', brand: 'Octobar', name: 'Octobar Prime', spec: 'Абрикос Лайм', price: 234, image: 'https://placehold.co/400x400/7c3aed/fff?text=Prime:+Apricot' },
+  { id: 16, cat: 'liquid', brand: 'Octobar', name: 'Octobar Prime', spec: 'Виноград Лід', price: 234, image: 'https://placehold.co/400x400/7c3aed/fff?text=Prime:+Grape' },
+
+  { id: 17, cat: 'liquid', brand: 'Octobar', name: 'Octobar NFT', spec: 'Ягідний Чай', price: 204, image: 'https://placehold.co/400x400/c084fc/fff?text=NFT:+Tea' },
+  { id: 18, cat: 'liquid', brand: 'Octobar', name: 'Octobar NFT', spec: 'Енергетик', price: 204, image: 'https://placehold.co/400x400/c084fc/fff?text=NFT:+Energy' },
+  { id: 19, cat: 'liquid', brand: 'Octobar', name: 'Octobar NFT', spec: 'Виноград Чорниця Лід', price: 204, image: 'https://placehold.co/400x400/c084fc/fff?text=NFT:+Grape' },
+  { id: 20, cat: 'liquid', brand: 'Octobar', name: 'Octobar NFT', spec: 'Кисле Яблуко', price: 204, image: 'https://placehold.co/400x400/c084fc/fff?text=NFT:+Apple' },
+
+  { id: 21, cat: 'liquid', brand: 'Octobar', name: 'Octobar Strong', spec: 'Ожиновий Крамбл', price: 204, image: 'https://placehold.co/400x400/8b5cf6/fff?text=Strong:+Blackberry' },
+  { id: 22, cat: 'liquid', brand: 'Octobar', name: 'Octobar Strong', spec: 'Кавун', price: 204, image: 'https://placehold.co/400x400/8b5cf6/fff?text=Strong:+Watermelon' },
+
+  // === BLACK LIMIT & TWINS ===
+  { id: 23, cat: 'liquid', brand: 'Black Limit', name: 'Black Limit', spec: 'Вишня Лід', price: 174, image: 'https://placehold.co/400x400/111827/fff?text=Black+Limit:+Cherry' },
+  { id: 24, cat: 'liquid', brand: 'Black Limit', name: 'Black Limit', spec: "Кучерява М'ята", price: 174, image: 'https://placehold.co/400x400/111827/fff?text=Black+Limit:+Mint' },
+  { id: 25, cat: 'liquid', brand: 'Black Limit', name: 'Black Limit', spec: 'Полуниця Лід', price: 174, image: 'https://placehold.co/400x400/111827/fff?text=Black+Limit:+Strawberry' },
+
+  { id: 26, cat: 'liquid', brand: 'Twins', name: 'Twins', spec: 'Жувальна Гумка', price: 174, image: 'https://placehold.co/400x400/f472b6/fff?text=Twins:+Bubble+Gum' },
+  { id: 27, cat: 'liquid', brand: 'Twins', name: 'Twins', spec: 'Ментол', price: 174, image: 'https://placehold.co/400x400/f472b6/fff?text=Twins:+Menthol' },
+  { id: 28, cat: 'liquid', brand: 'Twins', name: 'Twins', spec: 'Лісові Ягоди', price: 174, image: 'https://placehold.co/400x400/f472b6/fff?text=Twins:+Berries' },
+
+  // === CHASER ===
+  { id: 29, cat: 'liquid', brand: 'Chaser', name: 'Chaser Beat', spec: "Прохолодна м'ята", price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=Beat:+Mint' },
+  { id: 30, cat: 'liquid', brand: 'Chaser', name: 'Chaser Beat', spec: 'Смородина Малина', price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=Beat:+Bass+Berry' },
+  { id: 31, cat: 'liquid', brand: 'Chaser', name: 'Chaser Beat', spec: 'Чорничне Морозиво', price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=Beat:+Blue+Ice' },
+  { id: 32, cat: 'liquid', brand: 'Chaser', name: 'Chaser Beat', spec: 'Чорнична Жуйка', price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=Beat:+Bubble+Berry' },
+  { id: 33, cat: 'liquid', brand: 'Chaser', name: 'Chaser Beat', spec: 'Вишнева Кола', price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=Beat:+Cherry+Pulse' },
+  { id: 34, cat: 'liquid', brand: 'Chaser', name: 'Chaser Beat', spec: 'Виноград Вишня', price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=Beat:+Grape+Cherry' },
+  { id: 35, cat: 'liquid', brand: 'Chaser', name: 'Chaser Beat', spec: 'Виноград Енергетик', price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=Beat:+Grape+Techno' },
+  { id: 36, cat: 'liquid', brand: 'Chaser', name: 'Chaser Beat', spec: 'Ківі Маракуя Гуава', price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=Beat:+Hawaii' },
+  { id: 37, cat: 'liquid', brand: 'Chaser', name: 'Chaser Beat', spec: 'Персик Лід', price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=Beat:+Peach' },
+  { id: 38, cat: 'liquid', brand: 'Chaser', name: 'Chaser Beat', spec: 'Соковитий Ананас', price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=Beat:+Pineapple' },
+  { id: 39, cat: 'liquid', brand: 'Chaser', name: 'Chaser Beat', spec: 'Кавун', price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=Beat:+Watermelon' },
+
+  { id: 40, cat: 'liquid', brand: 'Chaser', name: 'Chaser Black', spec: 'Рожевий Лимонад', price: 214, image: 'https://placehold.co/400x400/1e293b/fff?text=Black:+Pink+Lemonade' },
+  { id: 41, cat: 'liquid', brand: 'Chaser', name: 'Chaser Black', spec: 'Балі', price: 214, image: 'https://placehold.co/400x400/1e293b/fff?text=Black:+Bali' },
+  { id: 42, cat: 'liquid', brand: 'Chaser', name: 'Chaser Black', spec: 'Ожина Кисла Малина', price: 214, image: 'https://placehold.co/400x400/1e293b/fff?text=Black:+Blackberry' },
+  { id: 43, cat: 'liquid', brand: 'Chaser', name: 'Chaser Black', spec: 'Енергетик Виноград', price: 214, image: 'https://placehold.co/400x400/1e293b/fff?text=Black:+Energy' },
+  { id: 44, cat: 'liquid', brand: 'Chaser', name: 'Chaser Black', spec: 'Ківі Суниця', price: 214, image: 'https://placehold.co/400x400/1e293b/fff?text=Black:+Kiwi' },
+  { id: 45, cat: 'liquid', brand: 'Chaser', name: 'Chaser Black', spec: "Лимон М'ята", price: 214, image: 'https://placehold.co/400x400/1e293b/fff?text=Black:+Lemon' },
+  { id: 46, cat: 'liquid', brand: 'Chaser', name: 'Chaser Black', spec: 'Потрійне Кисле Яблуко', price: 214, image: 'https://placehold.co/400x400/1e293b/fff?text=Black:+Apple' },
+  { id: 47, cat: 'liquid', brand: 'Chaser', name: 'Chaser Black', spec: 'Жуйка', price: 214, image: 'https://placehold.co/400x400/1e293b/fff?text=Black:+Bubblegum' },
+
+  { id: 48, cat: 'liquid', brand: 'Chaser', name: 'Chaser Lux', spec: 'Ягідний лимонад', price: 264, image: 'https://placehold.co/400x400/fbbf24/000?text=Lux:+Berry' },
+  { id: 49, cat: 'liquid', brand: 'Chaser', name: 'Chaser Lux', spec: 'Смородина персик лимон', price: 264, image: 'https://placehold.co/400x400/fbbf24/000?text=Lux:+Blackcurrant' },
+  { id: 50, cat: 'liquid', brand: 'Chaser', name: 'Chaser Lux', spec: "Чорниця м'ята", price: 264, image: 'https://placehold.co/400x400/fbbf24/000?text=Lux:+Blueberry' },
+  { id: 51, cat: 'liquid', brand: 'Chaser', name: 'Chaser Lux', spec: 'Кокос диня', price: 264, image: 'https://placehold.co/400x400/fbbf24/000?text=Lux:+Coconut' },
+  { id: 52, cat: 'liquid', brand: 'Chaser', name: 'Chaser Lux', spec: 'Кисле яблуко', price: 264, image: 'https://placehold.co/400x400/fbbf24/000?text=Lux:+Apple' },
+  { id: 53, cat: 'liquid', brand: 'Chaser', name: 'Chaser Lux', spec: 'Енергетик', price: 264, image: 'https://placehold.co/400x400/fbbf24/000?text=Lux:+Energetic' },
+  { id: 54, cat: 'liquid', brand: 'Chaser', name: 'Chaser Lux', spec: "Виноград М'ята", price: 264, image: 'https://placehold.co/400x400/fbbf24/000?text=Lux:+Grape' },
+  { id: 55, cat: 'liquid', brand: 'Chaser', name: 'Chaser Lux', spec: 'Персиковий Чай', price: 264, image: 'https://placehold.co/400x400/fbbf24/000?text=Lux:+Tea+Peach' },
+  { id: 56, cat: 'liquid', brand: 'Chaser', name: 'Chaser Lux', spec: "Турбо М'ята", price: 264, image: 'https://placehold.co/400x400/fbbf24/000?text=Lux:+Turbo+Mint' },
+  { id: 57, cat: 'liquid', brand: 'Chaser', name: 'Chaser Lux', spec: 'Вітамін', price: 264, image: 'https://placehold.co/400x400/fbbf24/000?text=Lux:+Vitamin' },
+
+  { id: 58, cat: 'liquid', brand: 'Chaser', name: 'Chaser Mix Ultra', spec: "Базилик М'ята", price: 214, image: 'https://placehold.co/400x400/3b82f6/fff?text=Mix+Ultra:+Basil' },
+  { id: 59, cat: 'liquid', brand: 'Chaser', name: 'Chaser Mix Ultra', spec: 'Енергетик Вишня', price: 214, image: 'https://placehold.co/400x400/3b82f6/fff?text=Mix+Ultra:+Energy' },
+  { id: 60, cat: 'liquid', brand: 'Chaser', name: 'Chaser Mix Ultra', spec: 'Блакитна Малина Лимонад', price: 214, image: 'https://placehold.co/400x400/3b82f6/fff?text=Mix+Ultra:+Blue+Razz' },
+  { id: 61, cat: 'liquid', brand: 'Chaser', name: 'Chaser Mix Ultra', spec: 'Гуава Персик', price: 214, image: 'https://placehold.co/400x400/3b82f6/fff?text=Mix+Ultra:+Guava' },
+  { id: 62, cat: 'liquid', brand: 'Chaser', name: 'Chaser Mix Ultra', spec: 'Хорбіт', price: 214, image: 'https://placehold.co/400x400/3b82f6/fff?text=Mix+Ultra:+Horbit' },
+  { id: 63, cat: 'liquid', brand: 'Chaser', name: 'Chaser Mix Ultra', spec: 'Полуниця Банан', price: 214, image: 'https://placehold.co/400x400/3b82f6/fff?text=Mix+Ultra:+Strawberry' },
+
+  { id: 64, cat: 'liquid', brand: 'Chaser', name: 'Chaser My Mint', spec: "Журавлина м'ята", price: 214, image: 'https://placehold.co/400x400/10b981/fff?text=My+Mint:+Cranberry' },
+  { id: 65, cat: 'liquid', brand: 'Chaser', name: 'Chaser My Mint', spec: 'Мятний льодяник', price: 214, image: 'https://placehold.co/400x400/10b981/fff?text=My+Mint:+Peppermint' },
+  { id: 66, cat: 'liquid', brand: 'Chaser', name: 'Chaser My Mint', spec: 'Мятна жуйка', price: 214, image: 'https://placehold.co/400x400/10b981/fff?text=My+Mint:+Bubble' },
+
+  { id: 67, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: 'Апельсин', price: 214, image: 'https://placehold.co/400x400/f97316/fff?text=Pods:+Orange' },
+  { id: 68, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: 'Блакитна Малина', price: 214, image: 'https://placehold.co/400x400/06b6d4/fff?text=Pods:+Blue+Razz' },
+  { id: 69, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: 'Виноград', price: 214, image: 'https://placehold.co/400x400/8b5cf6/fff?text=Pods:+Grape' },
+  { id: 70, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: 'Вишня Ментол', price: 214, image: 'https://placehold.co/400x400/e11d48/fff?text=Pods:+Cherry+Menthol' },
+  { id: 71, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: "М'ята", price: 214, image: 'https://placehold.co/400x400/10b981/fff?text=Pods:+Mint' },
+  { id: 72, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: 'Смородина Ментол', price: 214, image: 'https://placehold.co/400x400/4c1d95/fff?text=Pods:+Blackcurrant' },
+  { id: 73, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: 'Чорниця Ментол', price: 214, image: 'https://placehold.co/400x400/1d4ed8/fff?text=Pods:+Blueberry' },
+  { id: 74, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: 'Вишня', price: 214, image: 'https://placehold.co/400x400/be123c/fff?text=Pods:+Cherry' },
+  { id: 75, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: 'Кавун', price: 214, image: 'https://placehold.co/400x400/ef4444/fff?text=Pods:+Watermelon' },
+  { id: 76, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: 'Кавун ментол', price: 214, image: 'https://placehold.co/400x400/ef4444/fff?text=Pods:+Watermelon+Menthol' },
+  { id: 77, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: 'Абрикос', price: 214, image: 'https://placehold.co/400x400/f59e0b/fff?text=Pods:+Apricot' },
+  { id: 78, cat: 'liquid', brand: 'Chaser', name: 'Chaser Pods 30ml', spec: 'Драгонфрут', price: 214, image: 'https://placehold.co/400x400/db2777/fff?text=Pods:+Dragonfruit' },
+
+  // === NOVA & FLIP & ELFIQ & LUCKY ===
+  { id: 79, cat: 'liquid', brand: 'NOVA', name: 'NOVA', spec: 'Блакитна Малина Енергетик', price: 214, image: 'https://placehold.co/400x400/0ea5e9/fff?text=NOVA:+Blue+Razz' },
+  { id: 80, cat: 'liquid', brand: 'NOVA', name: 'NOVA', spec: 'Подвійний Виноград', price: 214, image: 'https://placehold.co/400x400/8b5cf6/fff?text=NOVA:+Grape' },
+  { id: 81, cat: 'liquid', brand: 'NOVA', name: 'NOVA', spec: 'Кавун Диня', price: 214, image: 'https://placehold.co/400x400/10b981/fff?text=NOVA:+Watermelon' },
+
+  { id: 82, cat: 'liquid', brand: 'Flip', name: 'Набор Flip 30ml 50mg', spec: 'Кола', price: 170, image: 'https://placehold.co/400x400/713f12/fff?text=Flip:+Cola' },
+  { id: 83, cat: 'liquid', brand: 'Flip', name: 'Набор Flip 30ml 50mg', spec: 'Ківі холодок', price: 170, image: 'https://placehold.co/400x400/84cc16/fff?text=Flip:+Cold+Kiwi' },
+  { id: 84, cat: 'liquid', brand: 'Flip', name: 'Набор Flip 30ml 50mg', spec: "Подвійна м'ята", price: 170, image: 'https://placehold.co/400x400/10b981/fff?text=Flip:+Doublemint' },
+  { id: 85, cat: 'liquid', brand: 'Flip', name: 'Набор Flip 30ml 50mg', spec: 'Червоний виноград', price: 170, image: 'https://placehold.co/400x400/9333ea/fff?text=Flip:+Red+Grape' },
+  { id: 86, cat: 'liquid', brand: 'Flip', name: 'Набор Flip 30ml 50mg', spec: 'Диня', price: 170, image: 'https://placehold.co/400x400/fcd34d/000?text=Flip:+Melon' },
+  { id: 87, cat: 'liquid', brand: 'Flip', name: 'Набор Flip 30ml 50mg', spec: "М'ята", price: 170, image: 'https://placehold.co/400x400/34d399/fff?text=Flip:+Mint' },
+
+  { id: 88, cat: 'liquid', brand: 'ELFIQ', name: 'ELFIQ 12ml', spec: 'Льодяник', price: 255, image: 'https://placehold.co/400x400/ec4899/fff?text=ELFIQ:+Elf+Jack' },
+  { id: 89, cat: 'liquid', brand: 'ELFIQ', name: 'ELFIQ 12ml', spec: "М'ята", price: 255, image: 'https://placehold.co/400x400/ec4899/fff?text=ELFIQ:+Spearmint' },
+  { id: 90, cat: 'liquid', brand: 'ELFIQ', name: 'ELFIQ 12ml', spec: 'Груша Смородина Лимон', price: 255, image: 'https://placehold.co/400x400/ec4899/fff?text=ELFIQ:+Pear+Lemon' },
+  { id: 91, cat: 'liquid', brand: 'ELFIQ', name: 'ELFIQ 12ml', spec: 'Вишня Лимон Персик', price: 255, image: 'https://placehold.co/400x400/ec4899/fff?text=ELFIQ:+Cherry+Peach' },
+  { id: 92, cat: 'liquid', brand: 'ELFIQ', name: 'ELFIQ 12ml', spec: 'Вишня', price: 255, image: 'https://placehold.co/400x400/ec4899/fff?text=ELFIQ:+Cherry' },
+  { id: 93, cat: 'liquid', brand: 'ELFIQ', name: 'ELFIQ 12ml', spec: 'Чорниця Лимон', price: 255, image: 'https://placehold.co/400x400/ec4899/fff?text=ELFIQ:+Blackberry' },
+
+  { id: 94, cat: 'liquid', brand: 'LUCKY', name: 'LUCKY Chrome 15ml', spec: "Лісові ягоди, м'ята", price: 225, image: 'https://placehold.co/400x400/6366f1/fff?text=LUCKY:+Forest+Berry' },
+  { id: 95, cat: 'liquid', brand: 'LUCKY', name: 'LUCKY Chrome 15ml', spec: 'Зелене яблуко, лічі', price: 225, image: 'https://placehold.co/400x400/6366f1/fff?text=LUCKY:+Apple+Lychee' },
+  { id: 96, cat: 'liquid', brand: 'LUCKY', name: 'LUCKY Chrome 15ml', spec: 'Зелений чай', price: 225, image: 'https://placehold.co/400x400/6366f1/fff?text=LUCKY:+Green+Tea' },
+  { id: 97, cat: 'liquid', brand: 'LUCKY', name: 'LUCKY Chrome 15ml', spec: 'Желейні ведмедики', price: 225, image: 'https://placehold.co/400x400/6366f1/fff?text=LUCKY:+Gummy+Bears' },
+  { id: 98, cat: 'liquid', brand: 'LUCKY', name: 'LUCKY Chrome 15ml', spec: 'Гранат, вишня', price: 225, image: 'https://placehold.co/400x400/6366f1/fff?text=LUCKY:+Pomegranate' },
+  { id: 99, cat: 'liquid', brand: 'LUCKY', name: 'LUCKY Chrome 15ml', spec: 'Малина', price: 225, image: 'https://placehold.co/400x400/6366f1/fff?text=LUCKY:+Raspberry' },
+  { id: 100, cat: 'liquid', brand: 'LUCKY', name: 'LUCKY Chrome 15ml', spec: 'Літній чай', price: 225, image: 'https://placehold.co/400x400/6366f1/fff?text=LUCKY:+Summer+Tea' },
+  { id: 101, cat: 'liquid', brand: 'LUCKY', name: 'LUCKY Chrome 15ml', spec: 'Тропік', price: 225, image: 'https://placehold.co/400x400/6366f1/fff?text=LUCKY:+Tropical' },
+
+  // === HOOKAH ===
+  { id: 102, cat: 'liquid', brand: 'PIXTEA', name: 'Заправка до кальяну PIXTEA', spec: 'ALIENS CANDY', price: 120, image: 'https://placehold.co/400x400/1f2937/fff?text=PIXTEA:+Candy' },
+  { id: 103, cat: 'liquid', brand: 'PIXTEA', name: 'Заправка до кальяну PIXTEA', spec: 'GRAPE VS MELON', price: 120, image: 'https://placehold.co/400x400/1f2937/fff?text=PIXTEA:+Grape+Melon' },
+  { id: 104, cat: 'liquid', brand: 'PIXTEA', name: 'Заправка до кальяну PIXTEA', spec: 'VIVID FUSION', price: 120, image: 'https://placehold.co/400x400/1f2937/fff?text=PIXTEA:+Fusion' },
+  
+  // === DEVICES (ПОД-СИСТЕМИ) ===
+  { id: 105, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6 Mini', spec: 'Brown', price: 900, image: 'https://placehold.co/400x400/334155/fff?text=XROS+6+Mini:+Brown' },
+  { id: 106, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6 Mini', spec: 'Jelly Blue', price: 900, image: 'https://placehold.co/400x400/334155/fff?text=XROS+6+Mini:+Blue' },
+  { id: 107, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6 Mini', spec: 'Jelly Green', price: 900, image: 'https://placehold.co/400x400/334155/fff?text=XROS+6+Mini:+Green' },
+  { id: 108, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6 Mini', spec: 'Jelly Orange', price: 900, image: 'https://placehold.co/400x400/334155/fff?text=XROS+6+Mini:+Orange' },
+  { id: 109, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6 Mini', spec: 'Jelly Pink', price: 900, image: 'https://placehold.co/400x400/334155/fff?text=XROS+6+Mini:+Pink' },
+  { id: 110, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6 Mini', spec: 'Plume Blue', price: 900, image: 'https://placehold.co/400x400/334155/fff?text=XROS+6+Mini:+P.Blue' },
+  { id: 111, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6 Mini', spec: 'Plume White', price: 900, image: 'https://placehold.co/400x400/334155/fff?text=XROS+6+Mini:+White' },
+  { id: 112, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6 Mini', spec: 'Titanium Black', price: 900, image: 'https://placehold.co/400x400/334155/fff?text=XROS+6+Mini:+Black' },
+  { id: 113, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6 Mini', spec: 'Plume Pink', price: 900, image: 'https://placehold.co/400x400/334155/fff?text=XROS+6+Mini:+P.Pink' },
+  { id: 114, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6 Mini', spec: 'Titanium Silver', price: 900, image: 'https://placehold.co/400x400/334155/fff?text=XROS+6+Mini:+Silver' },
+
+  { id: 115, cat: 'pod', brand: 'OXVA', name: 'OXVA XLIM Go Lite', spec: 'Стандарт', price: 450, image: 'https://placehold.co/400x400/334155/fff?text=XLIM+Go+Lite' },
+  
+  { id: 116, cat: 'pod', brand: 'Smok', name: 'Smok novo 6', spec: 'Purple', price: 1200, image: 'https://placehold.co/400x400/334155/fff?text=Smok+Novo+6:+Purple' },
+  { id: 117, cat: 'pod', brand: 'Smok', name: 'Smok novo 6', spec: 'Red', price: 1200, image: 'https://placehold.co/400x400/334155/fff?text=Smok+Novo+6:+Red' },
+
+  { id: 118, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6', spec: 'Pearl White', price: 1250, image: 'https://placehold.co/400x400/1e293b/fff?text=XROS+6:+White' },
+  { id: 119, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6', spec: 'Silk Brown', price: 1250, image: 'https://placehold.co/400x400/1e293b/fff?text=XROS+6:+Brown' },
+  { id: 120, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6', spec: 'Carbon Fiber Gray', price: 1250, image: 'https://placehold.co/400x400/1e293b/fff?text=XROS+6:+Carbon' },
+  { id: 121, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6', spec: 'Silk Green', price: 1250, image: 'https://placehold.co/400x400/1e293b/fff?text=XROS+6:+Green' },
+  { id: 122, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6', spec: 'Silk Gray', price: 1250, image: 'https://placehold.co/400x400/1e293b/fff?text=XROS+6:+Gray' },
+  { id: 123, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6', spec: 'Cosmic Black', price: 1250, image: 'https://placehold.co/400x400/1e293b/fff?text=XROS+6:+Black' },
+  { id: 124, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6', spec: 'Aurora Blue', price: 1250, image: 'https://placehold.co/400x400/1e293b/fff?text=XROS+6:+Blue' },
+  { id: 125, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6', spec: 'Slate Black', price: 1250, image: 'https://placehold.co/400x400/1e293b/fff?text=XROS+6:+Slate' },
+  { id: 126, cat: 'pod', brand: 'Vaporesso', name: 'VAPORESSO XROS 6', spec: 'Dreamy Pink', price: 1250, image: 'https://placehold.co/400x400/1e293b/fff?text=XROS+6:+Pink' },
+
+  { id: 127, cat: 'pod', brand: 'OXVA', name: 'OXVA XLIM GO', spec: 'Кольори в асортименті', price: 650, image: 'https://placehold.co/400x400/0f172a/fff?text=XLIM+GO' },
+  { id: 128, cat: 'pod', brand: 'OXVA', name: 'OXVA XLIM GO 2', spec: 'Green Ripple', price: 650, image: 'https://placehold.co/400x400/0f172a/fff?text=XLIM+GO+2' },
+  { id: 129, cat: 'pod', brand: 'OXVA', name: 'OXVA XLIM PRO 2', spec: 'Кольори в асортименті', price: 1100, image: 'https://placehold.co/400x400/0f172a/fff?text=XLIM+PRO+2' },
+  { id: 130, cat: 'pod', brand: 'Vaporesso', name: 'XROS 5 NANO', spec: 'Кольори в асортименті', price: 1200, image: 'https://placehold.co/400x400/1e293b/fff?text=XROS+5+NANO' },
+
+  // === CARTRIDGES / ПОДИ ===
+  { id: 131, cat: 'access', brand: 'OXVA', name: 'Картридж Oxva top fill 2ml', spec: '0.4 / 0.6 / 0.8 ом', price: 150, image: 'https://placehold.co/400x400/475569/fff?text=Oxva+Cartridge' },
+  { id: 132, cat: 'access', brand: 'Voopoo', name: 'Картридж Voopoo vmate v2', spec: '0.4 / 1.2 ом', price: 140, image: 'https://placehold.co/400x400/475569/fff?text=Voopoo+Cartridge' },
+  { id: 133, cat: 'access', brand: 'Vaporesso', name: 'Картридж Xros 2ml', spec: '0.8 ом', price: 140, image: 'https://placehold.co/400x400/475569/fff?text=XROS+2ml+Cartridge' },
+  { id: 134, cat: 'access', brand: 'Vaporesso', name: 'Картридж Xros 3ml', spec: '0.4 / 0.8 ом', price: 150, image: 'https://placehold.co/400x400/475569/fff?text=XROS+3ml+Cartridge' },
+  { id: 135, cat: 'access', brand: 'Lost Vape', name: 'Картридж Ursa nano', spec: '0.6 / 0.8 ом', price: 140, image: 'https://placehold.co/400x400/475569/fff?text=Ursa+Cartridge' },
+
+  // === АКСЕСУАРИ ТА БУСТЕРИ ===
+  { id: 136, cat: 'access', brand: 'Інше', name: 'Гліцерин', spec: 'Основа (10/30ml)', price: 10, image: 'https://placehold.co/400x400/64748b/fff?text=Glycerin' },
+  { id: 137, cat: 'access', brand: 'Steampuff', name: 'Бустер Steampuff', spec: 'Підсилювач', price: 126, image: 'https://placehold.co/400x400/64748b/fff?text=Steampuff+Booster' },
+  { id: 138, cat: 'access', brand: 'Chaser', name: 'Підсилювач міцності Chaser', spec: 'Бустер', price: 135, image: 'https://placehold.co/400x400/64748b/fff?text=Chaser+Booster' },
+  { id: 139, cat: 'access', brand: 'Octolab', name: 'Брелок-відкривачка Octolab', spec: 'Original', price: 150, image: 'https://placehold.co/400x400/64748b/fff?text=Octolab+Opener' },
+  { id: 140, cat: 'access', brand: 'Інше', name: 'ICE SHOT', spec: 'Холодок', price: 30, image: 'https://placehold.co/400x400/64748b/fff?text=ICE+SHOT' },
+  { id: 141, cat: 'access', brand: 'Інше', name: 'SOUR SHOT', spec: 'Кислинка', price: 30, image: 'https://placehold.co/400x400/64748b/fff?text=SOUR+SHOT' },
+
+  // === 30 ПОПУЛЯРНИХ ПОД-СИСТЕМ (Vandale / Популярні хіти) ===
+
+  // === 20 ПОПУЛЯРНИХ ОДНОРАЗОК (Вандал / Популярні хіти) ===
+  { id: 135, cat: 'disposable', brand: 'Elf Bar', name: 'Elf Bar 1500', spec: 'Blue Razz Lemonade', price: 319, image: 'https://placehold.co/400x400/db2777/fff?text=ElfBar+1500:+BlueRazz' },
+  { id: 136, cat: 'disposable', brand: 'Elf Bar', name: 'Elf Bar 1500', spec: 'Watermelon', price: 319, image: 'https://placehold.co/400x400/db2777/fff?text=ElfBar+1500:+Watermelon' },
+  { id: 137, cat: 'disposable', brand: 'Elf Bar', name: 'Elf Bar Lux 1500', spec: 'Strawberry Banana', price: 299, image: 'https://placehold.co/400x400/db2777/fff?text=Lux+1500:+Str.Banana' },
+  { id: 138, cat: 'disposable', brand: 'Elf Bar', name: 'Elf Bar BC4000', spec: 'Cranberry Grape', price: 469, image: 'https://placehold.co/400x400/db2777/fff?text=BC4000:+Cran.Grape' },
+  { id: 139, cat: 'disposable', brand: 'Elf Bar', name: 'Elf Bar BC4000', spec: 'Triple Berry Ice', price: 469, image: 'https://placehold.co/400x400/db2777/fff?text=BC4000:+TripleBerry' },
+  { id: 140, cat: 'disposable', brand: 'Elf Bar', name: 'Elf Bar TE5000', spec: 'Juicy Peach', price: 669, image: 'https://placehold.co/400x400/db2777/fff?text=TE5000:+Peach' },
+  { id: 141, cat: 'disposable', brand: 'Elf Bar', name: 'Elf Bar TE5000', spec: 'Apple Peach', price: 669, image: 'https://placehold.co/400x400/db2777/fff?text=TE5000:+ApplePeach' },
+  { id: 142, cat: 'disposable', brand: 'Elf Bar', name: 'Elf Bar TE6000', spec: 'Strawberry Ice', price: 799, image: 'https://placehold.co/400x400/db2777/fff?text=TE6000:+Strawberry' },
+  { id: 143, cat: 'disposable', brand: 'Elf Bar', name: 'Elf Bar PI7000', spec: 'Blackberry Cranberry', price: 889, image: 'https://placehold.co/400x400/db2777/fff?text=PI7000:+Blackberry' },
+  { id: 144, cat: 'disposable', brand: 'Elf Bar', name: 'Elf Bar ELFA Pod Kit', spec: 'Pear', price: 399, image: 'https://placehold.co/400x400/db2777/fff?text=ELFA:+Pear' },
+
+  { id: 145, cat: 'disposable', brand: 'Joyetech', name: 'Joyetech VAAL 1500', spec: 'Tobacco', price: 269, image: 'https://placehold.co/400x400/4f46e5/fff?text=VAAL+1500:+Tobacco' },
+  { id: 146, cat: 'disposable', brand: 'Joyetech', name: 'Joyetech VAAL 1500', spec: 'Aloe Grape', price: 269, image: 'https://placehold.co/400x400/4f46e5/fff?text=VAAL+1500:+AloeGrape' },
+  { id: 147, cat: 'disposable', brand: 'Joyetech', name: 'Joyetech VAAL 2500M', spec: 'Cotton Candy', price: 349, image: 'https://placehold.co/400x400/4f46e5/fff?text=VAAL+2500M:+Cotton' },
+
+  { id: 148, cat: 'disposable', brand: 'Waka', name: 'Waka SoPro PA600', spec: 'Cherry Ice', price: 450, image: 'https://placehold.co/400x400/ea580c/fff?text=Waka+PA600:+Cherry' },
+  { id: 149, cat: 'disposable', brand: 'Waka', name: 'Waka SoPro DM8000i', spec: 'Watermelon Chill', price: 750, image: 'https://placehold.co/400x400/ea580c/fff?text=Waka+DM8000i:+Melon' },
+
+  { id: 150, cat: 'disposable', brand: 'Lost Mary', name: 'Lost Mary BM600', spec: 'Triple Melon', price: 350, image: 'https://placehold.co/400x400/16a34a/fff?text=LostMary+BM600:+Melon' },
+  { id: 151, cat: 'disposable', brand: 'Lost Mary', name: 'Lost Mary BM5000', spec: 'Blueberry Raspberry Lemon', price: 699, image: 'https://placehold.co/400x400/16a34a/fff?text=BM5000:+Blueberry' },
+  { id: 152, cat: 'disposable', brand: 'Lost Mary', name: 'Lost Mary MO5000', spec: 'Grape Ice', price: 699, image: 'https://placehold.co/400x400/16a34a/fff?text=MO5000:+GrapeIce' },
+
+  { id: 153, cat: 'disposable', brand: 'HQD', name: 'HQD Cuvie Plus', spec: 'Ice Mint', price: 380, image: 'https://placehold.co/400x400/0284c7/fff?text=HQD+Plus:+Mint' },
+  { id: 154, cat: 'disposable', brand: 'Airis', name: 'Airis Lux P5000', spec: 'Strawberry Mango', price: 519, image: 'https://placehold.co/400x400/9333ea/fff?text=Airis+P5000:+Mango' },
 ];
 const CATS = [{id:'all',name:'Усі'},{id:'disposable',name:'Одноразки'},{id:'pod',name:'Под-системи'},{id:'liquid',name:'Рідини'},{id:'access',name:'Аксесуари'}];
 const CATLABEL = {disposable:'Одноразка',pod:'Под-система',liquid:'Рідина',access:'Аксесуар'};
