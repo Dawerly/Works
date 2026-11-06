@@ -26,7 +26,10 @@ function renderCart(){
   wrap.querySelectorAll('button').forEach(btn=>{
     btn.onclick = ()=>{
       const id = btn.dataset.id;
-      if(btn.dataset.a==='inc') cart[id] += 1;
+      if(btn.dataset.a==='inc'){
+        if(canAddMore(id) <= 0){ showToast('Більше немає в наявності (' + stockLeft(id) + ' шт.)'); return; }
+        cart[id] += 1;
+      }
       else { cart[id] -= 1; if(cart[id]<=0) delete cart[id]; }
       saveCart(); renderCart();
     };

@@ -13,11 +13,14 @@ function renderCabinet(){
     else {
       list.innerHTML = orders.map(o=>`
         <div class="order-item">
-          <div class="oh"><span>${o.date}</span><span>${money(o.total)}</span></div>
+          <div class="oh"><span>${o.id ? '№' + o.id + ' · ' : ''}${o.date}</span><span>${money(o.total)}</span></div>
           <ul>${o.items.map(it=>`<li>${it.name} × ${it.qty}</li>`).join('')}</ul>
-          ${o.address ? `<div class="order-addr">📍 ${esc(o.address)}${o.wishTime ? ' · 🕒 ' + esc(o.wishTime) : ''}</div><span class="order-status">⏳ Менеджер напише вам у Telegram і повідомить час доставки</span>` : ''}
+          ${o.address ? `<div class="order-addr">📍 ${esc(o.address)}${o.wishTime ? ' · 🕒 ' + esc(o.wishTime) : ''}</div><span class="order-status">${o.status && ORDER_STATUS[o.status] ? ORDER_STATUS[o.status] : '⏳ Менеджер напише вам у Telegram і повідомить час доставки'}</span>`
+            + (o.deliveryTime ? `<div class="order-time">🕒 Час доставки: <b>${esc(o.deliveryTime)}</b></div>` : '')
+            + (o.managerNote ? `<div class="order-addr">💬 ${esc(o.managerNote)}</div>` : '') : ''}
         </div>`).join('');
     }
+    if(typeof refreshOrderStatuses === 'function') refreshOrderStatuses();
   } else {
     anon.style.display='block'; inn.style.display='none';
   }

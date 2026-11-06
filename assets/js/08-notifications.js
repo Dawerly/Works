@@ -7,9 +7,17 @@ function showToast(text){
   clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
 }
 function addToCart(id, qty){
-  cart[id] = (cart[id]||0) + qty; saveCart(); renderCart();
   const p = PRODUCTS.find(x=>x.id==id);
-  if(p) showToast('Додано: ' + p.name + (p.spec ? ' — ' + p.spec : '') + (qty>1 ? ' ×'+qty : ''));
+  const room = canAddMore(id);                       // скільки ще можна додати з урахуванням залишку
+  if(room <= 0){
+    showToast(stockLeft(id) === 0 ? 'Цього товару вже немає в наявності' : 'У кошику вже весь наявний залишок (' + stockLeft(id) + ' шт.)');
+    return false;
+  }
+  const add = Math.min(qty, room);
+  cart[id] = (cart[id]||0) + add; saveCart(); renderCart();
+  if(p) showToast(add < qty ? `Додано лише ${add}: більше немає в наявності`
+    : 'Додано: ' + p.name + (p.spec ? ' — ' + p.spec : '') + (qty>1 ? ' ×'+qty : ''));
+  return true;
 }
 document.getElementById('toastCart').onclick = ()=>{ document.getElementById('toast').classList.remove('show'); openCart(); };
 

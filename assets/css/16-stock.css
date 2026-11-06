@@ -1,0 +1,20 @@
+/* Позначки наявності */
+.stock-badge{display:inline-block;align-self:flex-start;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid transparent}
+.stock-badge.low{color:#ffd37a;background:rgba(255,176,32,.1);border-color:rgba(255,176,32,.4)}
+.stock-badge.out{color:#ff9bab;background:rgba(255,77,109,.1);border-color:rgba(255,77,109,.45)}
+.stock-badge.hidden{display:none}
+.card.soldout .thumb{filter:grayscale(.85) brightness(.7)}
+.card.soldout h3,.card.soldout .price{opacity:.6}
+.card .add:disabled,#pdAdd:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.6)}
+#pdPlus:disabled{opacity:.35;cursor:not-allowed}
+.order-time{margin-top:6px;font-size:.86rem;color:#bfeef5}
+.order-time b{color:#fff}
+
+/* Плитки, де все закінчилось */
+.lv-tile.lv-out{opacity:.62}
+.lv-tile.lv-out:hover{opacity:.9}
+.out-note{display:inline-block;align-self:flex-start;margin-top:2px;font-size:.74rem;font-weight:600;color:#ff9bab;background:rgba(255,77,109,.1);border:1px solid rgba(255,77,109,.45);border-radius:999px;padding:2px 10px}
+.out-part{color:#ff9bab}
+/* Підпис на картці товару, якого немає */
+.card.soldout{position:relative}
+.card.soldout .stock-badge.out{font-size:.78rem;padding:4px 12px}

@@ -57,7 +57,7 @@ coOverlay.addEventListener('mousedown', e=>{ if(e.target===coOverlay) closeCheck
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && coOverlay.classList.contains('open')) closeCheckout(); });
 coForm.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input', ()=>el.classList.remove('bad')));
 
-coForm.addEventListener('submit', e=>{
+coForm.addEventListener('submit', async e=>{
   e.preventDefault();
   const v = id => $(id).value.trim();
   const bad = [];
@@ -83,12 +83,48 @@ coForm.addEventListener('submit', e=>{
   if(!lines.length){ closeCheckout(); return; }
   const pay = (coForm.querySelector('input[name="coPay"]:checked')||{}).value || '';
   let tg = v('coTg'); if(tg && !tg.startsWith('@')) tg = '@' + tg.replace(/^https?:\/\/t\.me\//,'');
-  const addr = `м. Рівне, ${v('coStreet')}, буд. ${v('coHouse')}`
-    + (v('coFlat') ? `, кв./офіс ${v('coFlat')}` : '')
-    + (v('coEntr') ? `, під'їзд ${v('coEntr')}` : '')
-    + (v('coFloor') ? `, поверх/домофон ${v('coFloor')}` : '');
 
-  let text = 'Вітаю! Хочу оформити замовлення з сайту Dymok.rv:\n\n🛒 Товари:\n';
+  /* 1. Реєструємо замовлення на сервері: він перевіряє залишки й списує їх однією операцією. */
+  const submitBtn = coForm.querySelector('.co-submit');
+  submitBtn.disabled = true; submitBtn.textContent = 'Відправляємо…';
+  let srv = null;      // відповідь сервера; null — сервера немає (сайт відкрито як файл)
+  try {
+    const res = await fetch('/api/order', {
+      method:'POST', headers:{'Content-Type':'application/json','X-Requested-With':'dymok'},
+      body: JSON.stringify({
+        name:v('coName'), phone:v('coPhone'), tg, street:v('coStreet'), house:v('coHouse'),
+        flat:v('coFlat'), entr:v('coEntr'), floor:v('coFloor'), wishTime:$('coTime').value, pay, note:v('coNote'),
+        items: lines.map(({p,qty})=>({id:p.id, qty}))
+      })
+    });
+    const data = await res.json().catch(()=>({}));
+    if(res.status === 201) srv = data;
+    else if(res.status === 409){
+      submitBtn.disabled = false; submitBtn.textContent = 'Надіслати замовлення менеджеру';
+      handleShortage(data.items || []);
+      return;
+    } else if(res.status === 404 || res.status === 405 || res.status === 501){
+      srv = null;      // статичний хостинг без бази — працюємо як раніше, лише через Telegram
+    } else {
+      submitBtn.disabled = false; submitBtn.textContent = 'Надіслати замовлення менеджеру';
+      coErr.textContent = data.error || 'Не вдалося оформити замовлення. Спробуйте ще раз.';
+      return;
+    }
+  } catch(err){
+    submitBtn.disabled = false; submitBtn.textContent = 'Надіслати замовлення менеджеру';
+    coErr.textContent = 'Немає звʼязку із сервером. Перевірте інтернет і спробуйте ще раз.';
+    return;
+  }
+  submitBtn.disabled = false; submitBtn.textContent = 'Надіслати замовлення менеджеру';
+
+  /* 2. Текст для Telegram */
+  const addr = srv ? srv.address
+    : `м. Рівне, ${v('coStreet')}, буд. ${v('coHouse')}`
+      + (v('coFlat') ? `, кв./офіс ${v('coFlat')}` : '')
+      + (v('coEntr') ? `, під'їзд ${v('coEntr')}` : '')
+      + (v('coFloor') ? `, поверх/домофон ${v('coFloor')}` : '');
+  let text = 'Вітаю! Хочу оформити замовлення з сайту Dymok.rv'
+    + (srv ? ` (№${srv.id})` : '') + ':\n\n🛒 Товари:\n';
   let total = 0; const snapshot = [];
   lines.forEach(({p,qty})=>{
     const title = p.name + (p.spec ? ' — ' + p.spec : '');
@@ -107,13 +143,40 @@ coForm.addEventListener('submit', e=>{
 
   try { localStorage.setItem('dymok_addr', JSON.stringify({name:v('coName'),phone:v('coPhone'),tg:v('coTg'),street:v('coStreet'),house:v('coHouse'),flat:v('coFlat'),entr:v('coEntr'),floor:v('coFloor')})); } catch(err) {}
   navigator.clipboard?.writeText(text).catch(()=>{});
-  orders.unshift({date:new Date().toLocaleDateString('uk-UA'), items:snapshot, total, address:addr, wishTime:$('coTime').value, pay});
+  orders.unshift({
+    id: srv ? srv.id : null, phoneDigits: digits, status: srv ? 'new' : null,
+    date:new Date().toLocaleDateString('uk-UA'), items:snapshot, total: srv ? srv.total : total,
+    address:addr, wishTime:$('coTime').value, pay
+  });
   saveOrders();
   cart = {}; saveCart(); renderCart();
+  if(srv){ applyStock(srv.stock); }
 
   const link = 'https://t.me/DymokManager?text=' + encodeURIComponent(text);
   $('coTgLink').href = link;
   coModal.classList.add('done');
+  $('coDoneTitle').textContent = srv ? `Замовлення №${srv.id} прийнято!` : 'Майже готово!';
   window.open(link, '_blank');
 });
 
+/* Товару не вистачає: оновлюємо кошик за залишками й показуємо, що змінилось */
+function handleShortage(items){
+  const msgs = [];
+  items.forEach(it=>{
+    STOCK[it.id] = it.available;
+    const p = PRODUCTS.find(x=>x.id==it.id);
+    const name = p ? p.name + (p.spec ? ' — ' + p.spec : '') : 'Товар';
+    if(it.available <= 0){ delete cart[it.id]; msgs.push(`«${name}» щойно закінчився — прибрали з кошика.`); }
+    else { cart[it.id] = Math.min(cart[it.id] || 0, it.available); msgs.push(`«${name}»: залишилось лише ${it.available} шт. — змінили кількість.`); }
+  });
+  saveCart(); renderCart(); renderCatalog();
+  const lines = cartLines();
+  if(!lines.length){ closeCheckout(); showToast('Товарів із кошика вже немає в наявності'); return; }
+  let total = 0;
+  $('coItems').innerHTML = lines.map(({p,qty})=>{
+    total += p.price*qty;
+    return `<div class="co-item"><span>${esc(p.name + (p.spec ? ' — ' + p.spec : ''))} × ${qty}</span><span>${money(p.price*qty)}</span></div>`;
+  }).join('');
+  $('coTotal').textContent = money(total);
+  coErr.textContent = msgs.join(' ') + ' Перевірте замовлення й натисніть «Надіслати» ще раз.';
+}

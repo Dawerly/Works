@@ -14,12 +14,15 @@ function sortList(list){
 }
 function productCard(p){
   const meta = p.cat==='liquid' ? `<div class="meta"><span>${p.vol} мл</span><span>${p.mg} мг</span></div>` : '';
-  return `<div class="card" data-pid="${p.id}" tabindex="0" role="button" aria-label="Відкрити: ${esc2(p.name+' '+p.spec)}">
+  const left = stockLeft(p.id), out = left === 0;
+  const stockTag = out ? '<span class="stock-badge out">Немає в наявності</span>'
+    : left <= LOW_STOCK ? `<span class="stock-badge low">Залишилось ${left} шт.</span>` : '';
+  return `<div class="card${out ? ' soldout' : ''}" data-pid="${p.id}" tabindex="0" role="button" aria-label="Відкрити: ${esc2(p.name+' '+p.spec)}">
     ${thumbHTML(p)}
     <span class="tag">${CATLABEL[p.cat]}</span>
     <div><h3>${esc2(p.name)}</h3><div class="brand">${esc2(p.brand)}</div></div>
-    <div class="spec">${esc2(p.spec)}</div>${meta}
-    <div class="row"><span class="price">${money(p.price)}</span><button class="add" data-id="${p.id}">До кошика</button></div>
+    <div class="spec">${esc2(p.spec)}</div>${meta}${stockTag}
+    <div class="row"><span class="price">${money(p.price)}</span><button class="add" data-id="${p.id}"${out ? ' disabled' : ''}>${out ? 'Немає' : 'До кошика'}</button></div>
   </div>`;
 }
 function productGrid(list, group){
@@ -45,13 +48,22 @@ function levelOptions(list, key){
   if(key==='vol' || key==='mg') opts.sort((a,b)=>a.value-b.value);
   return opts;
 }
-function tileHTML(attrs, big, title, sub, price, img, icon){
+/* Підсумок наявності для плитки: усе закінчилось / частково / все є */
+function tileStock(items){
+  const out = items.filter(i=>stockLeft(i.id) === 0).length;
+  const avail = items.filter(i=>stockLeft(i.id) > 0);
+  return {allOut: items.length > 0 && out === items.length, out, min: avail.length ? Math.min(...avail.map(i=>i.price)) : 0};
+}
+function tileHTML(attrs, big, title, sub, price, img, icon, st){
   const visual = img
     ? `<div class="lv-img"><img src="${esc2(img)}" alt="" loading="lazy" onerror="this.parentNode.style.display='none'"></div>`
     : (icon ? `<div class="lv-ico">${icon}</div>` : '');
-  return `<button type="button" class="lv-tile" ${attrs}>
+  const allOut = st && st.allOut;
+  const note = allOut ? '<span class="out-note">Немає в наявності</span>'
+    : (st && st.out ? `<span>${sub} · <span class="out-part">${st.out} немає</span></span>` : `<span>${sub}</span>`);
+  return `<button type="button" class="lv-tile${allOut ? ' lv-out' : ''}" ${attrs}>
     ${visual}
-    <div class="lv-main">${big ? `<b class="lv-big">${title}</b>` : `<b>${title}</b>`}<span>${sub}</span>${price ? `<em>від ${money(price)}</em>` : ''}</div>
+    <div class="lv-main">${big ? `<b class="lv-big">${title}</b>` : `<b>${title}</b>`}${note}${price && !allOut ? `<em>від ${money(price)}</em>` : ''}</div>
     <i aria-hidden="true">→</i>
   </button>`;
 }
@@ -70,10 +82,10 @@ function renderCrumbs(labels){
 }
 function catTile(c){
   const items = PRODUCTS.filter(p=>p.cat===c.id);
-  const min = Math.min(...items.map(i=>i.price));
-  return `<button type="button" class="lv-tile lv-cat" data-cat="${c.id}">
+  const st = tileStock(items);
+  return `<button type="button" class="lv-tile lv-cat${st.allOut ? ' lv-out' : ''}" data-cat="${c.id}">
     <div class="lv-ico">${c.icon}</div>
-    <div class="lv-main"><b>${c.name}</b><span>${c.desc}</span><em>${posWord(items.length)} · від ${money(min)}</em></div>
+    <div class="lv-main"><b>${c.name}</b><span>${c.desc}</span>${st.allOut ? '<span class="out-note">Немає в наявності</span>' : `<em>${posWord(items.length)} · від ${money(st.min)}</em>`}</div>
     <i aria-hidden="true">→</i></button>`;
 }
 function goTo(newPath, dir){
@@ -127,9 +139,9 @@ function renderCatalog(scroll, dir){
       const big = key==='vol' || key==='mg';
       html = `<div class="lv-title">${LEVEL_TITLE[key]}</div><div class="lv-grid ${big?'lv-big-grid':''}">`
         + opts.map(o=>{
-            const min = Math.min(...o.items.map(i=>i.price));
+            const st = tileStock(o.items);
             const img = (!big && o.items[0].image) ? o.items[0].image : null;
-            return tileHTML(`data-val="${esc2(o.value)}"`, big, esc2(fmtLevel(key,o.value)), posWord(o.items.length), min, img, null);
+            return tileHTML(`data-val="${esc2(o.value)}"`, big, esc2(fmtLevel(key,o.value)), posWord(o.items.length), st.min, img, null, st);
           }).join('')
         + `</div>`;
     } else {
@@ -161,7 +173,8 @@ function renderCatalog(scroll, dir){
     card.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.target.closest('.add')) open(); });
   });
   view.querySelectorAll('.add').forEach(btn=>{
-    btn.onclick = ()=>{ addToCart(+btn.dataset.id, 1);
+    btn.onclick = ()=>{
+      if(!addToCart(+btn.dataset.id, 1)) return;
       btn.textContent = '✓ Додано'; setTimeout(()=>{ btn.textContent = 'До кошика'; }, 900); };
   });
   if(scroll){ const top = document.getElementById('win').getBoundingClientRect().top + window.scrollY - 130; window.scrollTo({top:Math.max(0,top),behavior:'smooth'}); }

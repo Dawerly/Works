@@ -29,9 +29,23 @@ function openProduct(id){
   pdOverlay.classList.add('open'); document.body.style.overflow = 'hidden';
   document.getElementById('pdAdd').focus();
 }
+function pdMax(){ return Math.min(20, Math.max(0, stockLeft(pdProduct.id))); }
 function updatePd(){
-  document.getElementById('pdQty').textContent = pdQty;
-  document.getElementById('pdAdd').textContent = 'До кошика · ' + money(pdProduct.price * pdQty);
+  const max = pdMax(), add = document.getElementById('pdAdd');
+  if(max === 0){
+    document.getElementById('pdQty').textContent = 0;
+    add.disabled = true; add.textContent = 'Немає в наявності';
+  } else {
+    if(pdQty > max) pdQty = max;
+    document.getElementById('pdQty').textContent = pdQty;
+    add.disabled = false; add.textContent = 'До кошика · ' + money(pdProduct.price * pdQty);
+  }
+  document.getElementById('pdPlus').disabled = pdQty >= max;
+  const left = stockLeft(pdProduct.id);
+  let el = document.getElementById('pdStock');
+  if(!el){ el = document.createElement('div'); el.id = 'pdStock'; document.getElementById('pdPrice').after(el); }
+  el.className = 'stock-badge ' + (left === 0 ? 'out' : left <= LOW_STOCK ? 'low' : 'hidden');
+  el.textContent = left === 0 ? 'Немає в наявності' : left <= LOW_STOCK ? 'Залишилось ' + left + ' шт.' : '';
 }
 function closeProduct(){
   pdOverlay.classList.remove('open');
@@ -41,7 +55,7 @@ function closeProduct(){
 document.getElementById('pdClose').onclick = closeProduct;
 pdOverlay.addEventListener('mousedown', e=>{ if(e.target===pdOverlay) closeProduct(); });
 document.getElementById('pdMinus').onclick = ()=>{ if(pdQty>1){ pdQty--; updatePd(); } };
-document.getElementById('pdPlus').onclick = ()=>{ if(pdQty<20){ pdQty++; updatePd(); } };
-document.getElementById('pdAdd').onclick = ()=>{ addToCart(pdProduct.id, pdQty); closeProduct(); };
+document.getElementById('pdPlus').onclick = ()=>{ if(pdQty < pdMax()){ pdQty++; updatePd(); } };
+document.getElementById('pdAdd').onclick = ()=>{ if(addToCart(pdProduct.id, pdQty)) closeProduct(); };
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && pdOverlay.classList.contains('open')) closeProduct(); });
 
