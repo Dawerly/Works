@@ -12,17 +12,22 @@
 {{STYLES}}
 </head>
 <body>
+<a class="skip-link" id="skipLink" href="#main-content">Перейти до основного вмісту</a>
 {{include:components/header.html}}
+<main id="main-content" tabindex="-1">
 {{include:pages/home.html}}
 {{include:pages/catalog.html}}
 {{include:pages/account.html}}
+</main>
 {{include:components/mobile-navigation.html}}
 {{include:components/footer.html}}
+{{include:components/site-tools.html}}
 {{include:components/age-gate.html}}
 {{include:components/cart-drawer.html}}
 {{include:components/product-dialog.html}}
 {{include:components/toast.html}}
 {{include:components/checkout-dialog.html}}
+<noscript><div class="noscript-note">Для перегляду сторінок увімкніть JavaScript у браузері.</div></noscript>
 {{SCRIPTS}}
 </body>
 </html>

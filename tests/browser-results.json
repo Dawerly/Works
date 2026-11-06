@@ -1,0 +1,241 @@
+{
+  "date": "2026-11-06T13:36:32.197Z",
+  "browser": "156.0.8078.80",
+  "network": "External requests replaced by empty responses; no live transactions.",
+  "results": [
+    {
+      "name": "JavaScript syntax: assets/js/01-products.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/02-catalog-settings.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/03-format.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/04-state.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/05-product-visuals.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/06-routing.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/07-catalog.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/08-notifications.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/09-product-dialog.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/10-cart.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/11-checkout.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/12-account.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/13-age-gate.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/14-main.js",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax: assets/js/15-site-usability.js",
+      "status": "PASS"
+    },
+    {
+      "name": "Combined scripts: no duplicate lexical declarations",
+      "status": "PASS"
+    },
+    {
+      "name": "First visit: age dialog and initial focus",
+      "status": "PASS"
+    },
+    {
+      "name": "Open age dialog: background is inert and scrolling locked",
+      "status": "PASS"
+    },
+    {
+      "name": "Age dialog: Tab wraps forward",
+      "status": "PASS"
+    },
+    {
+      "name": "Age dialog: Shift+Tab wraps backward",
+      "status": "PASS"
+    },
+    {
+      "name": "Age dialog: background cannot receive focus",
+      "status": "PASS"
+    },
+    {
+      "name": "Escape does not dismiss required age dialog",
+      "status": "PASS"
+    },
+    {
+      "name": "Confirm age: restore background, scrolling and content focus",
+      "status": "PASS"
+    },
+    {
+      "name": "Reload: saved age confirmation retained",
+      "status": "PASS"
+    },
+    {
+      "name": "Main landmark, navigation labels and unique IDs",
+      "status": "PASS"
+    },
+    {
+      "name": "All static images have alternative text and local logos have sizes",
+      "status": "PASS"
+    },
+    {
+      "name": "Stylesheets loaded and usability overrides applied",
+      "status": "PASS"
+    },
+    {
+      "name": "Desktop navigation: home marked current",
+      "status": "PASS"
+    },
+    {
+      "name": "Desktop navigation: account route and heading focus",
+      "status": "PASS"
+    },
+    {
+      "name": "Skip link preserves current page and focuses main",
+      "status": "PASS"
+    },
+    {
+      "name": "Logo is a keyboard-operable home link",
+      "status": "PASS"
+    },
+    {
+      "name": "Unknown route safely falls back to home",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 320 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 360 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 390 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 480 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 600 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 760 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 768 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 820 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 1024 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 1100 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 1440 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Responsive home and header at 1920 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Mobile touch targets: navigation links at least 44 px",
+      "status": "PASS"
+    },
+    {
+      "name": "Mobile navigation: current item and account route",
+      "status": "PASS"
+    },
+    {
+      "name": "Keyboard focus outline remains visible",
+      "status": "PASS"
+    },
+    {
+      "name": "Privacy disclosure works with keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "Back-to-top: shows on scroll and returns focus to main",
+      "status": "PASS"
+    },
+    {
+      "name": "Header measurement updates after resize",
+      "status": "PASS"
+    },
+    {
+      "name": "Home reflows at 200% text size",
+      "status": "PASS"
+    },
+    {
+      "name": "Unavailable localStorage: age dialog still works",
+      "status": "PASS"
+    },
+    {
+      "name": "Short landscape viewport: age controls remain reachable",
+      "status": "PASS"
+    },
+    {
+      "name": "Reduced motion preference: animations reduced",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript disabled: visible explanation",
+      "status": "PASS"
+    },
+    {
+      "name": "Double-click file:// opening: scripts, styles and age dialog load",
+      "status": "PASS"
+    },
+    {
+      "name": "No uncaught JavaScript errors during the tested scenarios",
+      "status": "PASS"
+    },
+    {
+      "name": "No failed local resource requests",
+      "status": "PASS"
+    }
+  ],
+  "passed": 58,
+  "failed": 0
+}

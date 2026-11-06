@@ -1,12 +1,12 @@
-<div class="age-gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
+<div class="age-gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageTitle" aria-describedby="ageDescription">
   <div class="age-box">
-    <img class="age-logo" src="logo.png" alt="Dymok">
+    <img class="age-logo" src="logo.png" alt="Dymok" width="74" height="74" decoding="async">
     <div class="eyebrow">DYMOK // 18+</div>
     <h2 id="ageTitle">Підтвердження віку</h2>
-    <p style="color:var(--muted)">Сайт містить інформацію про товари, призначені лише для повнолітніх.</p>
+    <p id="ageDescription" style="color:var(--muted)">Сайт містить інформацію про товари, призначені лише для повнолітніх.</p>
     <div style="display:flex;gap:10px;margin-top:22px">
-      <button class="btn btn-primary" id="ageYes" style="flex:1;justify-content:center">Мені є 18</button>
-      <button class="btn btn-ghost" id="ageNo" style="flex:1;justify-content:center">Вийти</button>
+      <button type="button" class="btn btn-primary" id="ageYes" style="flex:1;justify-content:center">Мені є 18</button>
+      <button type="button" class="btn btn-ghost" id="ageNo" style="flex:1;justify-content:center">Вийти</button>
     </div>
   </div>
 </div>
