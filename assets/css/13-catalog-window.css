@@ -1,0 +1,28 @@
+/* Рамка каталогу, кнопка повернення та індикатор кроків. */
+
+/* ===== CATALOG WINDOW ===== */
+.win{border:1px solid rgba(255,24,232,.2);border-radius:24px;padding:20px 22px 26px;
+  background:linear-gradient(160deg,rgba(22,12,31,.78),rgba(8,7,12,.8));backdrop-filter:blur(8px);
+  box-shadow:0 20px 60px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.04);}
+.win-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
+.win-back{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:999px;cursor:pointer;font-weight:600;font-size:.88rem;
+  color:#fff;background:rgba(255,24,232,.1);border:1px solid rgba(255,24,232,.4);transition:box-shadow .15s,transform .15s;}
+.win-back:hover{box-shadow:0 0 20px -2px rgba(255,24,232,.6);transform:translateX(-2px);}
+.win-back:focus-visible{outline:2px solid var(--accent2);outline-offset:3px;}
+.win-steps{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.8rem;}
+.win-steps .dots{display:flex;gap:5px;}
+.win-steps .dots i{width:22px;height:4px;border-radius:4px;background:rgba(255,255,255,.1);}
+.win-steps .dots i.on{background:linear-gradient(90deg,#ff18e8,#8b2cff);box-shadow:0 0 8px rgba(255,24,232,.6);}
+.win-body{animation:none;}
+.win-body.fwd{animation:slideFwd .28s ease;}
+.win-body.back{animation:slideBack .28s ease;}
+@keyframes slideFwd{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes slideBack{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+.lv-cats{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));}
+.lv-cat{min-height:120px;padding:22px;}
+.lv-cat .lv-ico{width:64px;height:64px;font-size:30px;border-radius:18px;}
+.lv-cat .lv-main b{font-size:1.1rem;}
+.lv-big-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));}
+.lv-big-grid .lv-tile{min-height:130px;}
+.card{cursor:pointer;}
+.card:focus-visible{outline:2px solid var(--accent2);outline-offset:3px;}

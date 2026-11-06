@@ -1,0 +1,118 @@
+{
+  "styles": [
+    {
+      "file": "assets/css/01-base.css",
+      "description": "Базові кольори, шрифти, фон, скидання відступів і загальні контейнери."
+    },
+    {
+      "file": "assets/css/02-header.css",
+      "description": "Шапка, логотип, головна навігація та спільні кнопки."
+    },
+    {
+      "file": "assets/css/03-home.css",
+      "description": "Головна сторінка: перший екран, статистика, блок про магазин і плитки."
+    },
+    {
+      "file": "assets/css/04-catalog.css",
+      "description": "Базові стилі панелі пошуку, фільтрів, сітки та карток."
+    },
+    {
+      "file": "assets/css/05-info-blocks.css",
+      "description": "Інформаційні значки та завершальний блок сторінки."
+    },
+    {
+      "file": "assets/css/06-account.css",
+      "description": "Особистий кабінет, поля профілю та історія."
+    },
+    {
+      "file": "assets/css/07-footer.css",
+      "description": "Підвал сайту та вікове повідомлення."
+    },
+    {
+      "file": "assets/css/08-cart.css",
+      "description": "Бічна панель, затемнення і рядки кошика."
+    },
+    {
+      "file": "assets/css/09-responsive.css",
+      "description": "Початкові адаптивні правила та видимий фокус."
+    },
+    {
+      "file": "assets/css/10-theme.css",
+      "description": "Наявна неонова тема, анімації, карта, мобільна навігація й адаптивні перевизначення."
+    },
+    {
+      "file": "assets/css/11-checkout.css",
+      "description": "Наявні стилі форми та вікна оформлення."
+    },
+    {
+      "file": "assets/css/12-catalog-navigation.css",
+      "description": "Шлях навігації, плитки рівнів і групи карток."
+    },
+    {
+      "file": "assets/css/13-catalog-window.css",
+      "description": "Рамка каталогу, кнопка повернення та індикатор кроків."
+    },
+    {
+      "file": "assets/css/14-product-dialog.css",
+      "description": "Вікно деталей, сповіщення та завершальні мобільні правила."
+    }
+  ],
+  "scripts": [
+    {
+      "file": "assets/js/01-products.js",
+      "description": "Вихідний масив даних, перенесений без змін."
+    },
+    {
+      "file": "assets/js/02-catalog-settings.js",
+      "description": "Наявні категорії, назви рівнів, кольори та початкова обробка даних."
+    },
+    {
+      "file": "assets/js/03-format.js",
+      "description": "Спільна функція форматування суми."
+    },
+    {
+      "file": "assets/js/04-state.js",
+      "description": "Стан застосунку та робота з localStorage."
+    },
+    {
+      "file": "assets/js/05-product-visuals.js",
+      "description": "Наявні функції SVG-заглушок та мініатюр."
+    },
+    {
+      "file": "assets/js/06-routing.js",
+      "description": "Перемикання сторінок за адресою та обробники навігації."
+    },
+    {
+      "file": "assets/js/07-catalog.js",
+      "description": "Наявна логіка відображення каталогу та переходів між рівнями."
+    },
+    {
+      "file": "assets/js/08-notifications.js",
+      "description": "Наявні сповіщення та пов’язаний обробник."
+    },
+    {
+      "file": "assets/js/09-product-dialog.js",
+      "description": "Наявні обробники вікна деталей."
+    },
+    {
+      "file": "assets/js/10-cart.js",
+      "description": "Наявні обробники бічної панелі та її відображення."
+    },
+    {
+      "file": "assets/js/11-checkout.js",
+      "description": "Наявні обробники форми, перенесені без змін."
+    },
+    {
+      "file": "assets/js/12-account.js",
+      "description": "Особистий кабінет і збережений профіль."
+    },
+    {
+      "file": "assets/js/13-age-gate.js",
+      "description": "Перевірка віку та керування фокусом у її вікні."
+    },
+    {
+      "file": "assets/js/14-main.js",
+      "description": "Запуск застосунку після підключення всіх попередніх файлів."
+    }
+  ]
+}

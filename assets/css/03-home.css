@@ -1,0 +1,39 @@
+/* Головна сторінка: перший екран, статистика, блок про магазин і плитки. */
+
+.hero{position:relative;overflow:hidden;padding:64px 0 44px;}
+.cloud{position:absolute;border-radius:50%;filter:blur(70px);opacity:.35;z-index:0;}
+.cloud1{width:420px;height:420px;background:var(--accent);top:-180px;left:-140px;}
+.cloud2{width:380px;height:380px;background:var(--accent2);top:-60px;right:-160px;opacity:.3;}
+.hero .wrap{position:relative;z-index:1;}
+.eyebrow{color:var(--accent2);font-weight:600;font-size:.85rem;margin-bottom:12px;filter:brightness(1.5);}
+.hero h1{font-size:clamp(2rem,4.6vw,3.3rem);line-height:1.1;font-weight:800;max-width:16ch;margin:0 0 16px;
+  text-shadow:0 0 18px color-mix(in srgb, var(--accent) 55%, transparent), 2px 0 color-mix(in srgb, var(--accent2) 70%, transparent), -2px 0 color-mix(in srgb, var(--accent) 60%, transparent);}
+.hero p{color:var(--muted);max-width:52ch;font-size:1.05rem;margin:0 0 26px;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:44px;}
+.stats{display:flex;gap:36px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:24px;}
+.stat b{display:block;font-family:'Unbounded',sans-serif;font-size:1.4rem;color:var(--ink);}
+.stat span{color:var(--muted);font-size:.83rem;}
+
+section{padding:52px 0;}
+.section-head{max-width:56ch;margin-bottom:30px;}
+.section-head h2{font-size:clamp(1.5rem,2.8vw,2.1rem);margin:0 0 10px;font-weight:700;}
+.section-head p{color:var(--muted);margin:0;}
+
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start;}
+.about-grid p{color:var(--muted);margin:0 0 14px;}
+.timeline{display:flex;flex-direction:column;gap:16px;border-left:2px solid var(--line);padding-left:20px;}
+.timeline div b{display:block;font-family:'Unbounded',sans-serif;font-size:.95rem;color:var(--accent);}
+.timeline div span{color:var(--muted);font-size:.86rem;}
+
+.cats4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.cat-tile{background:var(--bg-soft);border:1px solid var(--line);border-radius:18px;padding:24px;cursor:pointer;transition:border-color .15s,transform .15s;}
+.cat-tile:hover{border-color:var(--accent);transform:translateY(-3px);}
+.cat-tile .cat-icon{width:44px;height:44px;border-radius:12px;background:var(--bg-soft2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.cat-tile h3{margin:0 0 6px;font-size:1rem;font-weight:600;}
+.cat-tile p{margin:0;color:var(--muted);font-size:.85rem;}
+
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.why-card{background:var(--bg-soft);border:1px solid var(--line);border-radius:16px;padding:22px;}
+.why-card .n{font-family:'Unbounded',sans-serif;color:var(--accent);font-size:1.6rem;margin-bottom:8px;}
+.why-card h3{margin:0 0 6px;font-size:.98rem;}
+.why-card p{margin:0;color:var(--muted);font-size:.86rem;}

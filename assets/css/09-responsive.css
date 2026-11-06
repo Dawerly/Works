@@ -1,0 +1,7 @@
+/* Початкові адаптивні правила та видимий фокус. */
+
+@media (max-width:900px){.about-grid{grid-template-columns:1fr;} .cats4{grid-template-columns:1fr 1fr;} .why-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:600px){header .nav > div:nth-child(2) > a[title]{display:none;}}
+@media (max-width:760px){.nav-links{display:none;} .toolbar{top:calc(env(safe-area-inset-top,0px) + 58px);} .cats4{grid-template-columns:1fr;} .why-grid{grid-template-columns:1fr;}}
+a.btn:focus-visible,.nav-links a:focus-visible,.chip:focus-visible,.cat-tile:focus-visible{outline:2px solid var(--accent2);outline-offset:3px;}
+@media (prefers-reduced-motion: reduce){*{transition:none !important;}}

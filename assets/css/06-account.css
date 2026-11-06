@@ -1,0 +1,12 @@
+/* Особистий кабінет, поля профілю та історія. */
+
+.cab-wrap{max-width:520px;margin:0 auto;}
+.cab-card{background:var(--bg-soft);border:1px solid var(--line);border-radius:20px;padding:30px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px;}
+.field input{width:100%;background:var(--bg-soft2);border:1px solid var(--line);border-radius:10px;padding:11px 14px;color:var(--ink);font-size:.92rem;}
+.field input:focus-visible{outline:2px solid var(--accent2);outline-offset:2px;}
+.avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-weight:700;}
+.order-item{background:var(--bg-soft2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.order-item .oh{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:6px;}
+.order-item ul{margin:0;padding-left:18px;font-size:.88rem;color:var(--ink);}

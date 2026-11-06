@@ -1,0 +1,5 @@
+/* Підвал сайту та вікове повідомлення. */
+
+footer{border-top:1px solid var(--line);padding:32px 0 40px;color:var(--muted);font-size:.85rem;}
+.foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center;}
+.age{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);font-size:.8rem;}

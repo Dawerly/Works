@@ -1,0 +1,34 @@
+/* Базові кольори, шрифти, фон, скидання відступів і загальні контейнери. */
+
+:root{
+  --bg:#08080c;--bg-soft:#121016;--bg-soft2:#1a1620;--ink:#f1eef8;--muted:#9a92ad;
+  --accent:#b026ff;--accent2:#7c3aed;--line:#2a1f3d;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+:root[data-theme="dark"]{--bg:#08080c;--bg-soft:#121016;--bg-soft2:#1a1620;--ink:#f1eef8;--muted:#9a92ad;--line:#2a1f3d;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse 700px 500px at 12% -8%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 60%),
+    radial-gradient(ellipse 600px 480px at 100% 8%, color-mix(in srgb, var(--accent2) 18%, transparent), transparent 60%),
+    radial-gradient(ellipse 500px 400px at 50% 100%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 65%),
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--accent) 5%, transparent) 0px, transparent 1px 64px),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--accent) 5%, transparent) 0px, transparent 1px 64px),
+    var(--bg);
+  background-attachment:fixed;
+  color:var(--ink);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  position:relative;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.5;
+  background:repeating-linear-gradient(180deg, transparent 0 2px, rgba(0,0,0,.35) 2px 3px);
+  mix-blend-mode:overlay;
+}
+@media (prefers-reduced-motion: reduce){ body::before{display:none;} }
+h1,h2,h3,.logo{font-family:'Unbounded',sans-serif;}
+a{color:inherit;} button{font-family:inherit;}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px;}
+.page{display:none;}
+.page.active{display:block;}

@@ -1,0 +1,83 @@
+<div class="co-overlay" id="coOverlay" role="dialog" aria-modal="true" aria-labelledby="coTitle">
+  <div class="co-modal" id="coModal">
+    <button class="co-close" id="coClose" aria-label="Закрити">✕</button>
+
+    <form class="co-main" id="coForm" novalidate>
+      <div class="eyebrow">DYMOK // ЗАМОВЛЕННЯ</div>
+      <h2 class="co-title" id="coTitle">Оформлення замовлення</h2>
+      <p class="co-sub">Вкажіть дані для доставки — менеджер зв'яжеться з вами та узгодить зручний час.</p>
+
+      <div class="co-zone">
+        <span class="ico">📍</span>
+        <div><b>Доставка лише по м. Рівне.</b><br>В інші міста не доставляємо. Вартість доставки уточнить менеджер.</div>
+      </div>
+
+      <div class="co-sect">Контакти</div>
+      <div class="co-grid">
+        <div class="co-f"><label for="coName">Ім'я <i>*</i></label><input id="coName" type="text" autocomplete="name" placeholder="Ваше ім'я"></div>
+        <div class="co-f"><label for="coPhone">Телефон <i>*</i></label><input id="coPhone" type="tel" autocomplete="tel" placeholder="+380..."></div>
+        <div class="co-f full"><label for="coTg">Telegram-нік (за бажанням)</label><input id="coTg" type="text" placeholder="@username"></div>
+      </div>
+
+      <div class="co-sect">Адреса доставки</div>
+      <div class="co-grid">
+        <div class="co-f full"><label>Місто</label><div class="city-lock">🔒 м. Рівне <small>доставка лише тут</small></div></div>
+        <div class="co-f full"><label for="coStreet">Вулиця <i>*</i></label><input id="coStreet" type="text" autocomplete="street-address" placeholder="Напр. вул. Соборна"></div>
+        <div class="co-f"><label for="coHouse">Будинок <i>*</i></label><input id="coHouse" type="text" placeholder="12А"></div>
+        <div class="co-f"><label for="coFlat">Квартира / офіс</label><input id="coFlat" type="text" placeholder="45"></div>
+        <div class="co-f"><label for="coEntr">Під'їзд</label><input id="coEntr" type="text" placeholder="2"></div>
+        <div class="co-f"><label for="coFloor">Поверх / домофон</label><input id="coFloor" type="text" placeholder="5 / код 45К"></div>
+      </div>
+
+      <div class="co-sect">Зручний час і оплата</div>
+      <div class="co-grid">
+        <div class="co-f full"><label for="coTime">Коли зручно отримати?</label>
+          <select id="coTime">
+            <option value="Будь-який час">Будь-який час</option>
+            <option value="Ранок (9:00–12:00)">Ранок (9:00–12:00)</option>
+            <option value="День (12:00–16:00)">День (12:00–16:00)</option>
+            <option value="Вечір (16:00–20:00)">Вечір (16:00–20:00)</option>
+          </select>
+        </div>
+        <div class="co-f full">
+          <label>Оплата</label>
+          <div class="pay-row">
+            <label class="pay-opt"><input type="radio" name="coPay" value="Готівкою при отриманні" checked><span>💵 Готівкою</span></label>
+            <label class="pay-opt"><input type="radio" name="coPay" value="Переказом на картку"><span>💳 Переказом на картку</span></label>
+          </div>
+        </div>
+        <div class="co-f full"><label for="coNote">Коментар до замовлення</label><textarea id="coNote" placeholder="Напр. подзвоніть перед приїздом"></textarea></div>
+      </div>
+
+      <label class="co-check"><input type="checkbox" id="coAge"><span>Мені виповнилось 18 років, а адреса доставки знаходиться в межах м. Рівне.</span></label>
+      <div class="co-err" id="coErr" role="alert"></div>
+      <button type="submit" class="btn btn-primary co-submit">Надіслати замовлення менеджеру</button>
+    </form>
+
+    <aside class="co-side">
+      <h4>Ваше замовлення</h4>
+      <div class="co-items" id="coItems"></div>
+      <div class="co-total"><span>Разом</span><span id="coTotal">0 ₴</span></div>
+      <div class="co-note">Без урахування доставки — її вартість повідомить менеджер.</div>
+      <div class="co-steps">
+        <h4>Що далі?</h4>
+        <ol>
+          <li>Відкриється Telegram з готовим текстом — натисніть «Надіслати».</li>
+          <li>Менеджер перевірить наявність і напише вам.</li>
+          <li>Менеджер повідомить точний час доставки.</li>
+          <li>Кур'єр привезе замовлення за вашою адресою в Рівному.</li>
+        </ol>
+      </div>
+    </aside>
+
+    <div class="co-done" id="coDone">
+      <div class="ok">✓</div>
+      <h3>Майже готово!</h3>
+      <p>Ми підготували повідомлення для менеджера. Якщо Telegram не відкрився — натисніть кнопку нижче й надішліть його.</p>
+      <p><b style="color:#fff">Важливо:</b> замовлення вважається відправленим після натискання «Надіслати» в Telegram. Менеджер відповість там же й повідомить час доставки.</p>
+      <a class="btn btn-primary" id="coTgLink" href="#" target="_blank" rel="noopener">Відкрити Telegram</a>
+      <button class="btn btn-ghost" id="coDoneClose" type="button" style="margin-top:10px">Закрити</button>
+    </div>
+  </div>
+</div>
+
