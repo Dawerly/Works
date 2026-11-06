@@ -206,3 +206,4 @@ const PRODUCTS = [
   { id: 162, cat: 'liquid', brand: 'Pisun', name: 'Sperma', spec: "Сперма з часничком", price: 800, image: 'https://bonbon.od.ua/product/sharik-pisyun-rozovyj/?srsltid=AYCX9vJ4JWBOgSrxqVNRo_V7kabBHCRqMhxfjvjnP-GdKo7O3yfy3JSw' },
 
 ];
+
