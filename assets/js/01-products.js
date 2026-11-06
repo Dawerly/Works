@@ -203,4 +203,6 @@ const PRODUCTS = [
 
   { id: 160, cat: 'disposable', brand: 'HQD', name: 'HQD Cuvie Plus', spec: 'Ice Mint', price: 380, image: 'https://placehold.co/400x400/0284c7/fff?text=HQD+Plus:+Mint' },
   { id: 161, cat: 'disposable', brand: 'Airis', name: 'Airis Lux P5000', spec: 'Strawberry Mango', price: 519, image: 'https://placehold.co/400x400/9333ea/fff?text=Airis+P5000:+Mango' },
+  { id: 162, cat: 'liquid', brand: 'Pisun', name: 'Sperma', spec: "Сперма з часничком", price: 800, image: 'https://bonbon.od.ua/product/sharik-pisyun-rozovyj/?srsltid=AYCX9vJ4JWBOgSrxqVNRo_V7kabBHCRqMhxfjvjnP-GdKo7O3yfy3JSw' },
+
 ];
