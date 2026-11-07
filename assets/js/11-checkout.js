@@ -34,11 +34,11 @@ function openCheckout(){
   coModal.classList.remove('done');
   let total = 0;
   $('coItems').innerHTML = lines.map(({p,qty})=>{
-    total += p.price*qty;
+    total += centsOf(p)*qty;
     const title = p.name + (p.spec ? ' — ' + p.spec : '');
-    return `<div class="co-item"><span>${esc(title)} × ${qty}</span><span>${money(p.price*qty)}</span></div>`;
+    return `<div class="co-item"><span>${esc(title)} × ${qty}</span><span>${money(centsOf(p)*qty/100)}</span></div>`;
   }).join('');
-  $('coTotal').textContent = money(total);
+  $('coTotal').textContent = money(total / 100);
   closeCart();
   coLastFocus = document.activeElement;
   coOverlay.classList.add('open');
@@ -126,13 +126,14 @@ coForm.addEventListener('submit', async e=>{
   let text = 'Вітаю! Хочу оформити замовлення з сайту Dymok.rv'
     + (srv ? ` (№${srv.id})` : '') + ':\n\n🛒 Товари:\n';
   let total = 0; const snapshot = [];
-  lines.forEach(({p,qty})=>{
+  const confirmedLines = srv ? srv.items.map(item=>({p:item, qty:item.qty})) : lines;
+  confirmedLines.forEach(({p,qty})=>{
     const title = p.name + (p.spec ? ' — ' + p.spec : '');
-    text += `— ${title} ×${qty} = ${money(p.price*qty)}\n`;
-    total += p.price*qty;
+    text += `— ${title} ×${qty} = ${money(centsOf(p)*qty/100)}\n`;
+    total += centsOf(p)*qty;
     snapshot.push({name:title, qty, price:p.price});
   });
-  text += `\n💰 Разом: ${money(total)} (без доставки)\n\n`
+  text += `\n💰 Разом: ${money(total / 100)} (без доставки)\n\n`
     + `👤 Ім'я: ${v('coName')}\n📞 Телефон: ${v('coPhone')}\n`
     + (tg ? `✈️ Telegram: ${tg}\n` : '')
     + `📍 Адреса доставки: ${addr}\n`
@@ -145,7 +146,7 @@ coForm.addEventListener('submit', async e=>{
   navigator.clipboard?.writeText(text).catch(()=>{});
   orders.unshift({
     id: srv ? srv.id : null, phoneDigits: digits, status: srv ? 'new' : null,
-    date:new Date().toLocaleDateString('uk-UA'), items:snapshot, total: srv ? srv.total : total,
+    date:new Date().toLocaleDateString('uk-UA'), items:snapshot, total: srv ? srv.total : total / 100,
     address:addr, wishTime:$('coTime').value, pay
   });
   saveOrders();
@@ -174,9 +175,9 @@ function handleShortage(items){
   if(!lines.length){ closeCheckout(); showToast('Товарів із кошика вже немає в наявності'); return; }
   let total = 0;
   $('coItems').innerHTML = lines.map(({p,qty})=>{
-    total += p.price*qty;
-    return `<div class="co-item"><span>${esc(p.name + (p.spec ? ' — ' + p.spec : ''))} × ${qty}</span><span>${money(p.price*qty)}</span></div>`;
+    total += centsOf(p)*qty;
+    return `<div class="co-item"><span>${esc(p.name + (p.spec ? ' — ' + p.spec : ''))} × ${qty}</span><span>${money(centsOf(p)*qty/100)}</span></div>`;
   }).join('');
-  $('coTotal').textContent = money(total);
+  $('coTotal').textContent = money(total / 100);
   coErr.textContent = msgs.join(' ') + ' Перевірте замовлення й натисніть «Надіслати» ще раз.';
 }

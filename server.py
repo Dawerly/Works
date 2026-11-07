@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Dymok: сайт + база даних + адмін-панель. Лише стандартна бібліотека Python 3.9+.
+"""Dymok: сайт + база даних + адмін-панель. Python 3.9+, Flask та Pillow (requirements.txt).
 
 Запуск:   python3 server.py        (у Windows: py server.py)
 Сайт:     http://localhost:8000/
@@ -25,7 +25,6 @@ from urllib.parse import urlparse, parse_qs
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / 'data'
 DB_PATH = Path(os.environ.get('DYMOK_DB', DATA / 'dymok.db'))
-PRODUCTS_JS = ROOT / 'assets' / 'js' / '01-products.js'
 
 HOST = os.environ.get('HOST', '127.0.0.1')
 PORT = int(os.environ.get('PORT', '8000'))
@@ -154,37 +153,17 @@ def prompt_credentials():
     return user, pw
 
 
-# ───────────────────────── товари (з assets/js/01-products.js) ─────────────────────────
-_prod_cache = {'mtime': None, 'items': {}}
-_prod_lock = threading.Lock()
-_STR = r'''(?:'((?:[^'\\]|\\.)*)'|"((?:[^"\\]|\\.)*)")'''
-
-
-def _field(line, key):
-    m = re.search(r'\b' + key + r'\s*:\s*' + _STR, line)
-    if not m:
-        return ''
-    return (m.group(1) if m.group(1) is not None else m.group(2)).replace("\\'", "'").replace('\\"', '"')
-
-
-def products():
-    """Повертає {id: {...}}. Файл перечитується, лише якщо змінився."""
-    with _prod_lock:
-        mtime = PRODUCTS_JS.stat().st_mtime
-        if _prod_cache['mtime'] != mtime:
-            items = {}
-            for line in PRODUCTS_JS.read_text(encoding='utf-8').splitlines():
-                s = line.strip()
-                if s.startswith('//') or not re.match(r'\{\s*id\s*:', s):
-                    continue
-                mid, mpr = re.search(r'\bid\s*:\s*(\d+)', s), re.search(r'\bprice\s*:\s*(\d+)', s)
-                if not (mid and mpr):
-                    continue
-                items[int(mid.group(1))] = {
-                    'id': int(mid.group(1)), 'cat': _field(s, 'cat'), 'brand': _field(s, 'brand'),
-                    'name': _field(s, 'name'), 'spec': _field(s, 'spec'), 'price': int(mpr.group(1))}
-            _prod_cache.update(mtime=mtime, items=items)
-        return _prod_cache['items']
+# ───────────────────────── товари (спільний каталог SQLite) ─────────────────────────
+def products(con=None):
+    """Read the live catalogue; the caller can share its order transaction."""
+    from catalog_store import products as catalog_products
+    own = con is None
+    con = con or db()
+    try:
+        return catalog_products(con)
+    finally:
+        if own:
+            con.close()
 
 
 def stock_map(con):
@@ -281,13 +260,12 @@ def create_order(body, ip):
             raise ApiError(400, 'Некоректний кошик.')
         pid, qty = to_int(it.get('id'), 1, 10**9, 'товар'), to_int(it.get('qty'), 1, 99, 'кількість')
         need[pid] = need.get(pid, 0) + qty
-    prods = products()
-    if any(pid not in prods for pid in need):
-        raise ApiError(400, 'Один із товарів більше не продається. Оновіть сторінку.')
-
     con = db()
     try:
         con.execute('BEGIN IMMEDIATE')           # блокує інші замовлення, поки рахуємо залишки
+        prods = products(con)
+        if any(pid not in prods for pid in need):
+            raise ApiError(400, 'Один із товарів більше не продається. Оновіть сторінку.')
         stock = stock_map(con)
         short = [{'id': pid, 'available': stock[pid]} for pid, q in need.items()
                  if stock.get(pid) is not None and stock[pid] < q]
@@ -299,16 +277,17 @@ def create_order(body, ip):
             if stock.get(pid) is not None:
                 con.execute('UPDATE stock SET qty = qty - ?, updated = ? WHERE product_id = ?', (q, now, pid))
         items = [{'id': pid, 'name': prods[pid]['name'], 'spec': prods[pid]['spec'],
-                  'price': prods[pid]['price'], 'qty': q} for pid, q in need.items()]
-        total = sum(i['price'] * i['qty'] for i in items)
+                  'price': prods[pid]['price'], 'price_cents': prods[pid]['price_cents'], 'qty': q} for pid, q in need.items()]
+        total_cents = sum(i['price_cents'] * i['qty'] for i in items)
+        total = total_cents / 100
         cur = con.execute(
-            'INSERT INTO orders(created,name,phone,phone_digits,tg,address,wish_time,pay,note,items_json,total)'
-            ' VALUES(?,?,?,?,?,?,?,?,?,?,?)',
-            (now, name, phone, digits, tg, address, wish, pay, note, json.dumps(items, ensure_ascii=False), total))
+            'INSERT INTO orders(created,name,phone,phone_digits,tg,address,wish_time,pay,note,items_json,total,total_cents)'
+            ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',
+            (now, name, phone, digits, tg, address, wish, pay, note, json.dumps(items, ensure_ascii=False), total, total_cents))
         oid = cur.lastrowid
         con.execute('COMMIT')
         left = stock_map(con)
-        return {'id': oid, 'total': total, 'address': address, 'items': items,
+        return {'id': oid, 'total': total, 'total_cents': total_cents, 'address': address, 'items': items,
                 'stock': {str(pid): left.get(pid) for pid in need}}
     except ApiError:
         raise
@@ -487,7 +466,7 @@ class Handler(BaseHTTPRequestHandler):
         return self.client_address[0]
 
     def is_https(self):
-        return self.headers.get('X-Forwarded-Proto', '').lower() == 'https'
+        return TRUST_PROXY and self.headers.get('X-Forwarded-Proto', '').lower() == 'https'
 
     def send_security_headers(self):
         self.send_header('X-Content-Type-Options', 'nosniff')
@@ -546,7 +525,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def cookie(self, value, max_age):
         c = f'dymok_admin={value}; Path=/; HttpOnly; SameSite=Strict; Max-Age={max_age}'
-        return ('Set-Cookie', c + ('; Secure' if self.is_https() else ''))
+        return ('Set-Cookie', c + ('; Secure' if self.is_https() or os.environ.get('COOKIE_SECURE') == '1' else ''))
 
     def login(self, body):
         ip = self.client_ip()
@@ -689,6 +668,8 @@ class Handler(BaseHTTPRequestHandler):
         if not allowed or ROOT not in file.parents or not file.is_file() or any(p.startswith('.') for p in parts):
             raise ApiError(404, 'Не знайдено.')
         data = file.read_bytes()
+        if rel == 'index.html':
+            data = data.replace(b'assets/js/01-products.js', b'/api/catalog.js')
         self.send_response(200)
         self.send_header('Content-Type', MIME.get(file.suffix.lower(), 'application/octet-stream'))
         self.send_header('Content-Length', str(len(data)))
@@ -713,17 +694,20 @@ def main():
     init_db()
     apply_config()
     ensure_admin()
+    from catalog import create_app
+    from werkzeug.serving import run_simple
+    application = create_app()
     products()
     ThreadingHTTPServer.request_queue_size = 128
     ThreadingHTTPServer.daemon_threads = True
-    srv = ThreadingHTTPServer((HOST, PORT), Handler)
     print(f'Dymok працює: http://{"localhost" if HOST in ("127.0.0.1", "0.0.0.0") else HOST}:{PORT}/   '
           f'Адмінка: /admin/   (Ctrl+C — зупинити)')
     try:
-        srv.serve_forever()
+        run_simple(HOST, PORT, application, threaded=True)
     except KeyboardInterrupt:
         print('\nЗупинено.')
 
 
 if __name__ == '__main__':
+    sys.modules.setdefault('server', sys.modules[__name__])
     main()

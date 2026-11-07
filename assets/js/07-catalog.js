@@ -13,16 +13,16 @@ function sortList(list){
   return list;
 }
 function productCard(p){
-  const meta = p.cat==='liquid' ? `<div class="meta"><span>${p.vol} мл</span><span>${p.mg} мг</span></div>` : '';
+  const meta = p.cat==='liquid' ? `<div class="meta"><span>${esc2(p.vol)} мл</span><span>${esc2(p.mg)} мг</span></div>` : '';
   const left = stockLeft(p.id), out = left === 0;
   const stockTag = out ? '<span class="stock-badge out">Немає в наявності</span>'
     : left <= LOW_STOCK ? `<span class="stock-badge low">Залишилось ${left} шт.</span>` : '';
   return `<div class="card${out ? ' soldout' : ''}" data-pid="${p.id}" tabindex="0" role="button" aria-label="Відкрити: ${esc2(p.name+' '+p.spec)}">
     ${thumbHTML(p)}
-    <span class="tag">${CATLABEL[p.cat]}</span>
+    <span class="tag">${esc2(CATLABEL[p.cat] || p.category_name || p.cat)}</span>
     <div><h3>${esc2(p.name)}</h3><div class="brand">${esc2(p.brand)}</div></div>
     <div class="spec">${esc2(p.spec)}</div>${meta}${stockTag}
-    <div class="row"><span class="price">${money(p.price)}</span><button class="add" data-id="${p.id}"${out ? ' disabled' : ''}>${out ? 'Немає' : 'До кошика'}</button></div>
+    <div class="row"><span class="price">${priceHTML(p)}</span><button class="add" data-id="${p.id}"${out ? ' disabled' : ''}>${out ? 'Немає' : 'До кошика'}</button></div>
   </div>`;
 }
 function productGrid(list, group){
@@ -85,7 +85,7 @@ function catTile(c){
   const st = tileStock(items);
   return `<button type="button" class="lv-tile lv-cat${st.allOut ? ' lv-out' : ''}" data-cat="${c.id}">
     <div class="lv-ico">${c.icon}</div>
-    <div class="lv-main"><b>${c.name}</b><span>${c.desc}</span>${st.allOut ? '<span class="out-note">Немає в наявності</span>' : `<em>${posWord(items.length)} · від ${money(st.min)}</em>`}</div>
+    <div class="lv-main"><b>${esc2(c.name)}</b><span>${esc2(c.desc)}</span>${st.allOut ? '<span class="out-note">Немає в наявності</span>' : `<em>${posWord(items.length)} · від ${money(st.min)}</em>`}</div>
     <i aria-hidden="true">→</i></button>`;
 }
 function goTo(newPath, dir){

@@ -12,7 +12,7 @@ function svgIcon(p){
 }
 function thumbHTML(p){
   const visual = p.image
-    ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" style="max-width:78%;max-height:86%;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 0 16px ${p.color}66)"><span style="display:none;position:relative;z-index:2;color:var(--muted);font-size:12px;text-align:center;padding:18px">Фото товару недоступне</span>`
+    ? `<img src="${esc2(p.image)}" alt="${esc2(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" style="max-width:78%;max-height:86%;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 0 16px ${p.color}66)"><span style="display:none;position:relative;z-index:2;color:var(--muted);font-size:12px;text-align:center;padding:18px">Фото товару недоступне</span>`
     : svgIcon(p);
   return `<div class="thumb" style="background:radial-gradient(ellipse at 50% 72%, ${p.color}28, transparent 48%), linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,24,232,.025))">${visual}</div>`;
 }

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Керування каталогом</title>
+  <link rel="stylesheet" href="/admin/catalog/admin.css">
+  <script src="/admin/catalog/admin.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div><span class="eyebrow">ADMIN / КАТАЛОГ</span><h1>Dymok · Каталог</h1></div>
+    <nav><a href="/admin/">Склад і замовлення</a> · <a href="/">Вітрина</a></nav>
+    <button id="logout" class="secondary" type="button" hidden>Вийти</button>
+  </header>
+  <main>
+    <p id="status" role="status" aria-live="polite"></p>
+    <section id="login-panel" class="card login-card" hidden>
+      <h2>Вхід адміністратора</h2>
+      <form id="login-form">
+        <fieldset>
+          <label>Логін<input name="username" autocomplete="username" required maxlength="120"></label>
+          <label>Пароль<input name="password" type="password" autocomplete="current-password" required maxlength="1024"></label>
+          <button type="submit">Увійти</button>
+        </fieldset>
+      </form>
+    </section>
+
+    <div id="workspace" hidden>
+      <div class="editor-grid">
+        <section class="card">
+          <div class="section-heading"><h2 id="product-title">Новий товар</h2><button id="new-product" class="secondary" type="button">Очистити</button></div>
+          <form id="product-form" enctype="multipart/form-data">
+            <fieldset>
+              <input name="id" type="hidden">
+              <label>Назва товару<input name="name" required maxlength="200"></label>
+              <div class="two-columns"><label>Бренд<input name="brand" maxlength="120"></label><label>Варіант / смак / колір<input name="spec" maxlength="200"></label></div>
+              <label>Категорія<select name="category_id" id="product-category" required></select></label>
+              <label>Опис<textarea name="description" rows="3" maxlength="10000"></textarea></label>
+              <div class="two-columns">
+                <label>Ціна, грн<input name="price" id="price" type="number" min="0" max="999999999.99" step="0.01" required inputmode="decimal"></label>
+                <label>Знижка, %<input name="discount_percentage" id="discount" type="number" min="0" max="100" step="0.01" value="0" required inputmode="decimal"></label>
+              </div>
+              <p class="price-preview">Після знижки: <output id="final-price">—</output></p>
+              <div class="attributes-block"><h3>Характеристики</h3><div id="dynamic-fields" class="two-columns"></div></div>
+              <label>Фото (JPEG, PNG, WebP; до 5 МіБ)<input name="image" id="image-input" type="file" accept="image/jpeg,image/png,image/webp"></label>
+              <img id="image-preview" class="preview" alt="Зображення товару" hidden>
+              <label class="checkbox"><input name="remove_image" id="remove-image" type="checkbox"> Видалити збережене фото</label>
+              <button id="save-product" type="submit">Зберегти товар</button>
+            </fieldset>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="section-heading"><h2 id="category-title">Нова категорія</h2><button id="new-category" class="secondary" type="button">Очистити</button></div>
+          <form id="category-form">
+            <fieldset>
+              <input name="id" type="hidden">
+              <label>Назва категорії<input name="name" required maxlength="120"></label>
+              <div class="section-heading"><h3>Поля характеристик</h3><button id="add-field" class="secondary" type="button">+ Поле</button></div>
+              <p class="hint">Ключ — сталий ідентифікатор латиницею, наприклад battery_capacity. Назву поля можна змінювати.</p>
+              <div id="schema-fields"></div>
+              <button type="submit">Зберегти категорію</button>
+            </fieldset>
+          </form>
+          <div class="table-wrap"><table><caption>Категорії</caption><thead><tr><th>Назва / поля</th><th>Товари</th><th>Дії</th></tr></thead><tbody id="categories-body"></tbody></table></div>
+        </section>
+      </div>
+
+      <section class="card catalog">
+        <div class="section-heading"><h2>Товари</h2><span id="product-count" class="hint"></span></div>
+        <form id="search-form" class="filters">
+          <label>Пошук за назвою<input id="search" type="search" maxlength="200" placeholder="Назва товару"></label>
+          <label>Категорія<select id="filter-category"><option value="">Усі категорії</option></select></label>
+          <button type="submit" class="secondary">Знайти</button>
+        </form>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Фото</th><th>Товар</th><th>Категорія</th><th>Характеристики</th><th>Ціна</th><th>Знижка</th><th>Після знижки</th><th>Дії</th></tr></thead>
+          <tbody id="products-body"></tbody>
+        </table></div>
+        <div class="pagination"><button id="previous" type="button" class="secondary">← Назад</button><span id="page-info"></span><button id="next" type="button" class="secondary">Далі →</button></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

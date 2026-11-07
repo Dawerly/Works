@@ -9,6 +9,7 @@ function applyStock(map){
 function clampCart(){
   let changed = false;
   Object.keys(cart).forEach(id=>{
+    if(!PRODUCTS.some(p=>String(p.id)===String(id))){ delete cart[id]; changed = true; return; }
     const left = stockLeft(id);
     if(cart[id] > left){ changed = true; if(left <= 0) delete cart[id]; else cart[id] = left; }
   });

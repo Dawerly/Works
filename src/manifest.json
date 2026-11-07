@@ -63,6 +63,10 @@
     {
       "file": "assets/css/16-stock.css",
       "description": "Позначки наявності та статус замовлення."
+    },
+    {
+      "file": "assets/css/17-catalog-editor.css",
+      "description": "Знижки, опис і довільні характеристики товарів."
     }
   ],
   "scripts": [
@@ -129,6 +133,10 @@
     {
       "file": "assets/js/16-stock.js",
       "description": "Залишки товарів і статуси замовлень із сервера (бази даних)."
+    },
+    {
+      "file": "assets/js/17-live-catalog.js",
+      "description": "Оновлення каталогу з бази даних."
     }
   ]
 }

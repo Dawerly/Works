@@ -1,5 +1,5 @@
 /* Наявні категорії, назви рівнів, кольори та початкова обробка даних. */
-const CATS = [
+const CATS = typeof LIVE_CATEGORIES !== 'undefined' ? LIVE_CATEGORIES : [
   {id:'liquid',name:'Рідини',desc:'Обери об\'єм і міцність, далі бренд та смак',icon:'💧'},
   {id:'pod',name:'Под-системи',desc:'Обери бренд, модель і колір',icon:'🔋'},
   {id:'disposable',name:'Одноразки',desc:'Обери бренд і смак',icon:'💨'},
@@ -30,3 +30,5 @@ PRODUCTS.forEach(p=>{
     if(p.mg==null)  p.mg  = m ? +m[1] : (b.mg  ?? LIQUID_DEFAULT.mg);
   }
 });
+
+CATS.forEach(c=>{ CATLABEL[c.id] = c.name; });

@@ -15,8 +15,11 @@ function openProduct(id){
   document.getElementById('pdName').textContent = p.name;
   document.getElementById('pdBrand').textContent = p.brand;
   document.getElementById('pdSpec').textContent = p.spec;
-  document.getElementById('pdMeta').innerHTML = p.cat==='liquid' ? `<span>${p.vol} мл</span><span>${p.mg} мг</span>` : '';
-  document.getElementById('pdPrice').textContent = money(p.price);
+  document.getElementById('pdMeta').innerHTML = p.cat==='liquid' ? `<span>${esc2(p.vol)} мл</span><span>${esc2(p.mg)} мг</span>` : '';
+  document.getElementById('pdPrice').innerHTML = priceHTML(p);
+  document.getElementById('pdDescription').textContent = p.description || '';
+  const schema = p.attribute_schema || [];
+  document.getElementById('pdAttributes').innerHTML = Object.entries(p.attributes || {}).filter(([,v])=>v).map(([k,v])=>`<div><dt>${esc2(schema.find(f=>f.key===k)?.label || k)}</dt><dd>${esc2(v)}</dd></div>`).join('');
   // інші смаки / кольори тієї ж лінійки
   const sib = PRODUCTS.filter(x=>x.cat===p.cat && x.brand===p.brand && x.name===p.name && x.vol===p.vol && x.mg===p.mg);
   const vars = document.getElementById('pdVars');
@@ -38,7 +41,7 @@ function updatePd(){
   } else {
     if(pdQty > max) pdQty = max;
     document.getElementById('pdQty').textContent = pdQty;
-    add.disabled = false; add.textContent = 'До кошика · ' + money(pdProduct.price * pdQty);
+    add.disabled = false; add.textContent = 'До кошика · ' + money(centsOf(pdProduct) * pdQty / 100);
   }
   document.getElementById('pdPlus').disabled = pdQty >= max;
   const left = stockLeft(pdProduct.id);

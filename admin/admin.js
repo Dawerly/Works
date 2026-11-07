@@ -72,7 +72,10 @@ async function start(){
 }
 function stopPolling(){ clearInterval(pollTimer); pollTimer = null; }
 
-async function loadProducts(){ state.products = (await api('products')).products; }
+async function loadProducts(){ state.products = (await api('products')).products;
+  Object.keys(CAT_LABEL).forEach(k=>delete CAT_LABEL[k]);
+  state.products.forEach(p=>{ CAT_LABEL[p.cat] = p.category_name || p.cat; });
+}
 async function loadOrders(){
   const q = state.orderFilter ? '?status=' + state.orderFilter : '';
   state.orders = (await api('orders' + q)).orders;
@@ -102,6 +105,7 @@ function render(){
     label, id==='orders' ? h('span', {class:'badge', hidden:!newCount()}, newCount()) : null);
   app.replaceChildren(h('div', {class:'wrap'},
     h('div', {class:'top'}, h('h1', null, 'Dymok · Адмін-панель'),
+      h('a', {href:'/admin/catalog/', class:'btn ghost sm'}, 'Каталог і знижки'),
       h('a', {href:'/', class:'btn ghost sm', target:'_blank', rel:'noopener', style:'text-decoration:none'}, 'Відкрити сайт'),
       h('button', {class:'btn ghost sm', onclick: async ()=>{ try{ await api('logout', {}); }catch(e){} showLogin(); }}, 'Вийти')),
     h('div', {class:'tabs', role:'tablist'}, mk('stock','Склад'), mk('orders','Замовлення'), mk('security','Безпека')),

@@ -10,12 +10,12 @@ function renderCart(){
   items.forEach(id=>{
     const p = PRODUCTS.find(x=>x.id==id);
     if(!p) return;
-    subtotal += p.price * cart[id];
+    subtotal += centsOf(p) * cart[id];
     const row = document.createElement('div');
     row.className = 'citem';
     row.innerHTML = `
       <div class="ci-thumb" style="background:radial-gradient(ellipse at 30% 20%, ${p.color}30, var(--bg-soft2) 70%)">${svgIcon(p)}</div>
-      <div class="ci-info"><b>${p.name}</b><span>${money(p.price)} · ${p.brand}</span></div>
+      <div class="ci-info"><b>${esc2(p.name)}</b><span>${money(p.price)} · ${esc2(p.brand)}</span></div>
       <div class="qty">
         <button data-a="dec" data-id="${id}" aria-label="Менше">−</button>
         <span>${cart[id]}</span>
@@ -34,7 +34,7 @@ function renderCart(){
       saveCart(); renderCart();
     };
   });
-  document.getElementById('subtotal').textContent = money(subtotal);
+  document.getElementById('subtotal').textContent = money(subtotal / 100);
 }
 document.getElementById('search').addEventListener('input', e=>{ query = e.target.value.trim().toLowerCase(); renderCatalog(); });
 document.getElementById('sort').addEventListener('change', e=>{ sortMode = e.target.value; renderCatalog(); });
