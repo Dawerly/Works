@@ -3,7 +3,7 @@ const CATS = typeof LIVE_CATEGORIES !== 'undefined' ? LIVE_CATEGORIES : [
   {id:'liquid',name:'Рідини',desc:'Обери об\'єм і міцність, далі бренд та смак',icon:'💧'},
   {id:'pod',name:'Под-системи',desc:'Обери бренд, модель і колір',icon:'🔋'},
   {id:'disposable',name:'Одноразки',desc:'Обери бренд і смак',icon:'💨'},
-  {id:'access',name:'Комплектуючі',desc:'Картриджі, бустери, кальянні суміші та інше',icon:'🧩'}
+  {id:'access',name:'Комплектуючі',desc:'Картриджі, бустери, кальянні суміші та інше',icon:'⚙️'}
 ];
 const CATLABEL = {disposable:'Одноразка',pod:'Под-система',liquid:'Рідина',access:'Аксесуар'};
 

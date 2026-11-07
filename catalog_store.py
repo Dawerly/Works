@@ -108,7 +108,7 @@ def products(con):
 
 
 def public_catalog(con):
-    icons = {'liquid': '💧', 'pod': '🔋', 'disposable': '💨', 'access': '🧩'}
+    icons = {'liquid': '💧', 'pod': '🔋', 'disposable': '💨', 'access': '⚙️'}
     categories = [{'id': r['slug'] or 'category-' + str(r['id']), 'name': r['name'],
                    'desc': 'Переглянути товари', 'icon': icons.get(r['slug'], '🧩')} for r in con.execute('SELECT * FROM categories ORDER BY id')]
     return {'categories': categories, 'products': list(products(con).values())}

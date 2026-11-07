@@ -190,6 +190,7 @@ section{position:relative;z-index:3}
   background-size:40px 40px,40px 40px,auto,auto;
   display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
 }
+.store-map img{display:block;width:100%;height:auto;}
 .store-pin{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:rgba(255,24,232,.1);border:1px solid #ff18e8;box-shadow:0 0 35px rgba(255,24,232,.45);font-size:25px}
 .store-map span{position:absolute;bottom:18px;color:#8d8195;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
 .age-gate{
