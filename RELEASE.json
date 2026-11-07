@@ -1,0 +1,13 @@
+{
+  "release": "category-icons-v3-2026-11-07",
+  "original_catalog_preserved": {
+    "products": 142,
+    "categories": 8,
+    "orders": 0,
+    "stock": 6
+  },
+  "automated_tests": 67,
+  "browser_scenarios": 4,
+  "telegram_bot": false,
+  "source_archive_sha256": "105dda9bf085a489f7d9c94fbab5be44f149f9d9d7dd69a42e4f0dff54adf48f"
+}

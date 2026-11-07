@@ -1,183 +1,51 @@
-/* Наявні обробники форми, перенесені без змін. */
-/* ---------- checkout modal (доставка лише по Рівному) ---------- */
-const coOverlay = document.getElementById('coOverlay');
-const coModal = document.getElementById('coModal');
-const coForm = document.getElementById('coForm');
-const coErr = document.getElementById('coErr');
-const $ = id => document.getElementById(id);
-const esc = s => String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let coLastFocus = null;
-
-function cartLines(){
-  return Object.keys(cart).filter(id=>cart[id]>0).map(id=>{
-    const p = PRODUCTS.find(x=>x.id==id);
-    return p ? {p, qty:cart[id]} : null;
-  }).filter(Boolean);
+/* Checkout is successful only after a durable server-side order is created. */
+const coOverlay=document.getElementById('coOverlay'),coModal=document.getElementById('coModal'),coForm=document.getElementById('coForm'),coErr=document.getElementById('coErr');
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let coLastFocus=null,coDelivery=null,coSubmitting=false,coOpening=0;
+function cartLines(){return Object.keys(cart).filter(id=>cart[id]>0).map(id=>{const p=PRODUCTS.find(x=>x.id==id);return p?{p,qty:cart[id]}:null;}).filter(Boolean);}
+function checkoutTotals(){
+  const lines=cartLines(),subtotal=lines.reduce((n,{p,qty})=>n+centsOf(p)*qty,0);
+  $('coItems').innerHTML=lines.map(({p,qty})=>`<div class="co-item"><span>${esc(p.name+(p.spec?' — '+p.spec:''))} × ${qty}</span><span>${money(centsOf(p)*qty/100)}</span></div>`).join('');
+  const zone=coDelivery?.zones.find(z=>String(z.id)===$('coZone').value);
+  const fee=zone?(zone.free_from_cents!=null&&subtotal>=zone.free_from_cents?0:zone.fee_cents):0;
+  $('coSubtotal').textContent=money(subtotal/100);$('coFee').textContent=zone?money(fee/100):'Оберіть район';$('coTotal').textContent=money((subtotal+fee)/100);
+  $('coDeliveryNote').textContent=zone?'Мінімальна покупка: '+money(zone.minimum_cents/100)+(zone.free_from_cents!=null?'. Безкоштовна доставка від '+money(zone.free_from_cents/100):'')+'. Адміністратор перевірить відповідність адреси району.':'Не вдалося завантажити райони доставки.';
+  coForm.querySelector('.co-submit').disabled=!coDelivery?.accepting||!zone||subtotal<(zone?.minimum_cents||0)||!lines.length||coSubmitting;
 }
-function openCheckout(){
-  const lines = cartLines();
-  if(!lines.length){ alert('Кошик порожній — додайте товари перед оформленням.'); return; }
-  let saved = {};
-  try { saved = JSON.parse(localStorage.getItem('dymok_addr') || '{}'); } catch(e) {}
-  $('coName').value  = saved.name  || (profile && profile.name)  || '';
-  $('coPhone').value = saved.phone || (profile && profile.phone) || '';
-  $('coTg').value    = saved.tg || '';
-  $('coStreet').value= saved.street || '';
-  $('coHouse').value = saved.house || '';
-  $('coFlat').value  = saved.flat || '';
-  $('coEntr').value  = saved.entr || '';
-  $('coFloor').value = saved.floor || '';
-  $('coNote').value = '';
-  $('coAge').checked = false;
-  coErr.textContent = '';
-  coForm.querySelectorAll('.bad').forEach(e=>e.classList.remove('bad'));
-  coModal.classList.remove('done');
-  let total = 0;
-  $('coItems').innerHTML = lines.map(({p,qty})=>{
-    total += centsOf(p)*qty;
-    const title = p.name + (p.spec ? ' — ' + p.spec : '');
-    return `<div class="co-item"><span>${esc(title)} × ${qty}</span><span>${money(centsOf(p)*qty/100)}</span></div>`;
-  }).join('');
-  $('coTotal').textContent = money(total / 100);
-  closeCart();
-  coLastFocus = document.activeElement;
-  coOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  setTimeout(()=>$('coName').focus(), 50);
+async function openCheckout(){
+  if(!cartLines().length){showToast('Кошик порожній');return;}
+  try{await refreshCustomerSession(false);}catch(e){showToast('Не вдалося перевірити вхід. Спробуйте ще раз.');return;}
+  if(!profile){customerCheckoutPending=true;closeCart();location.hash='cabinet';renderCabinet();return;}
+  const opening=++coOpening;const saved={...profile.address,name:profile.name,phone:profile.phone,tg:profile.tg};
+  for(const[k,id]of Object.entries({name:'coName',phone:'coPhone',tg:'coTg',street:'coStreet',house:'coHouse',flat:'coFlat',entr:'coEntr',floor:'coFloor'}))$(id).value=saved[k]||(profile&&profile[k])||'';
+  $('coNote').value='';$('coAge').checked=false;coErr.textContent='';coDelivery=null;$('coZone').replaceChildren(new Option('Завантаження районів…',''));coForm.querySelectorAll('.bad').forEach(e=>e.classList.remove('bad'));coModal.classList.remove('done');
+  coLastFocus=document.activeElement;closeCart();coOverlay.classList.add('open');document.body.style.overflow='hidden';checkoutTotals();setTimeout(()=>$('coName').focus(),50);
+  try{const r=await fetch('/api/delivery/options',{cache:'no-store'});if(!r.ok)throw new Error();const d=await r.json();if(opening!==coOpening)return;coDelivery=d;$('coZone').replaceChildren(...d.zones.map(z=>new Option(z.name,String(z.id))));if(saved.zone_id&&d.zones.some(z=>String(z.id)===String(saved.zone_id)))$('coZone').value=String(saved.zone_id);checkoutTotals();if(!d.accepting)coErr.textContent='Приймання замовлень зараз закрите. Графік: '+(d.settings.hours_enabled?d.settings.opens+'–'+d.settings.closes+' (Київ). Перевірте також робочі дні.':'тимчасова пауза.');}
+  catch(e){coErr.textContent='Не вдалося завантажити умови доставки. Перевірте зв’язок і відкрийте оформлення знову.';}
 }
-function closeCheckout(){
-  coOverlay.classList.remove('open');
-  document.body.style.overflow = '';
-  if(coLastFocus && coLastFocus.focus) coLastFocus.focus();
-}
-$('checkoutBtn').onclick = openCheckout;
-$('coClose').onclick = closeCheckout;
-$('coDoneClose').onclick = closeCheckout;
-coOverlay.addEventListener('mousedown', e=>{ if(e.target===coOverlay) closeCheckout(); });
-document.addEventListener('keydown', e=>{ if(e.key==='Escape' && coOverlay.classList.contains('open')) closeCheckout(); });
-coForm.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input', ()=>el.classList.remove('bad')));
-
-coForm.addEventListener('submit', async e=>{
-  e.preventDefault();
-  const v = id => $(id).value.trim();
-  const bad = [];
-  if(!v('coName')) bad.push('coName');
-  const digits = v('coPhone').replace(/\D/g,'');
-  if(digits.length < 10) bad.push('coPhone');
-  if(!v('coStreet')) bad.push('coStreet');
-  if(!v('coHouse')) bad.push('coHouse');
-  coForm.querySelectorAll('.bad').forEach(x=>x.classList.remove('bad'));
-  if(bad.length){
-    bad.forEach(id=>$(id).classList.add('bad'));
-    coErr.textContent = 'Заповніть обов\'язкові поля (імʼя, телефон, вулиця, будинок).';
-    $(bad[0]).focus();
-    return;
-  }
-  if(!$('coAge').checked){
-    coErr.textContent = 'Підтвердіть вік 18+ та що доставка потрібна в межах м. Рівне.';
-    return;
-  }
-  coErr.textContent = '';
-
-  const lines = cartLines();
-  if(!lines.length){ closeCheckout(); return; }
-  const pay = (coForm.querySelector('input[name="coPay"]:checked')||{}).value || '';
-  let tg = v('coTg'); if(tg && !tg.startsWith('@')) tg = '@' + tg.replace(/^https?:\/\/t\.me\//,'');
-
-  /* 1. Реєструємо замовлення на сервері: він перевіряє залишки й списує їх однією операцією. */
-  const submitBtn = coForm.querySelector('.co-submit');
-  submitBtn.disabled = true; submitBtn.textContent = 'Відправляємо…';
-  let srv = null;      // відповідь сервера; null — сервера немає (сайт відкрито як файл)
-  try {
-    const res = await fetch('/api/order', {
-      method:'POST', headers:{'Content-Type':'application/json','X-Requested-With':'dymok'},
-      body: JSON.stringify({
-        name:v('coName'), phone:v('coPhone'), tg, street:v('coStreet'), house:v('coHouse'),
-        flat:v('coFlat'), entr:v('coEntr'), floor:v('coFloor'), wishTime:$('coTime').value, pay, note:v('coNote'),
-        items: lines.map(({p,qty})=>({id:p.id, qty}))
-      })
-    });
-    const data = await res.json().catch(()=>({}));
-    if(res.status === 201) srv = data;
-    else if(res.status === 409){
-      submitBtn.disabled = false; submitBtn.textContent = 'Надіслати замовлення менеджеру';
-      handleShortage(data.items || []);
-      return;
-    } else if(res.status === 404 || res.status === 405 || res.status === 501){
-      srv = null;      // статичний хостинг без бази — працюємо як раніше, лише через Telegram
-    } else {
-      submitBtn.disabled = false; submitBtn.textContent = 'Надіслати замовлення менеджеру';
-      coErr.textContent = data.error || 'Не вдалося оформити замовлення. Спробуйте ще раз.';
-      return;
-    }
-  } catch(err){
-    submitBtn.disabled = false; submitBtn.textContent = 'Надіслати замовлення менеджеру';
-    coErr.textContent = 'Немає звʼязку із сервером. Перевірте інтернет і спробуйте ще раз.';
-    return;
-  }
-  submitBtn.disabled = false; submitBtn.textContent = 'Надіслати замовлення менеджеру';
-
-  /* 2. Текст для Telegram */
-  const addr = srv ? srv.address
-    : `м. Рівне, ${v('coStreet')}, буд. ${v('coHouse')}`
-      + (v('coFlat') ? `, кв./офіс ${v('coFlat')}` : '')
-      + (v('coEntr') ? `, під'їзд ${v('coEntr')}` : '')
-      + (v('coFloor') ? `, поверх/домофон ${v('coFloor')}` : '');
-  let text = 'Вітаю! Хочу оформити замовлення з сайту Dymok.rv'
-    + (srv ? ` (№${srv.id})` : '') + ':\n\n🛒 Товари:\n';
-  let total = 0; const snapshot = [];
-  const confirmedLines = srv ? srv.items.map(item=>({p:item, qty:item.qty})) : lines;
-  confirmedLines.forEach(({p,qty})=>{
-    const title = p.name + (p.spec ? ' — ' + p.spec : '');
-    text += `— ${title} ×${qty} = ${money(centsOf(p)*qty/100)}\n`;
-    total += centsOf(p)*qty;
-    snapshot.push({name:title, qty, price:p.price});
-  });
-  text += `\n💰 Разом: ${money(total / 100)} (без доставки)\n\n`
-    + `👤 Ім'я: ${v('coName')}\n📞 Телефон: ${v('coPhone')}\n`
-    + (tg ? `✈️ Telegram: ${tg}\n` : '')
-    + `📍 Адреса доставки: ${addr}\n`
-    + `🕒 Зручний час: ${$('coTime').value}\n`
-    + `💳 Оплата: ${pay}\n`
-    + (v('coNote') ? `💬 Коментар: ${v('coNote')}\n` : '')
-    + `\nПрошу підтвердити наявність і повідомити точний час доставки.`;
-
-  try { localStorage.setItem('dymok_addr', JSON.stringify({name:v('coName'),phone:v('coPhone'),tg:v('coTg'),street:v('coStreet'),house:v('coHouse'),flat:v('coFlat'),entr:v('coEntr'),floor:v('coFloor')})); } catch(err) {}
-  navigator.clipboard?.writeText(text).catch(()=>{});
-  orders.unshift({
-    id: srv ? srv.id : null, phoneDigits: digits, status: srv ? 'new' : null,
-    date:new Date().toLocaleDateString('uk-UA'), items:snapshot, total: srv ? srv.total : total / 100,
-    address:addr, wishTime:$('coTime').value, pay
-  });
-  saveOrders();
-  cart = {}; saveCart(); renderCart();
-  if(srv){ applyStock(srv.stock); }
-
-  const link = 'https://t.me/DymokManager?text=' + encodeURIComponent(text);
-  $('coTgLink').href = link;
-  coModal.classList.add('done');
-  $('coDoneTitle').textContent = srv ? `Замовлення №${srv.id} прийнято!` : 'Майже готово!';
-  window.open(link, '_blank');
+function closeCheckout(){if(coSubmitting)return;coOpening++;coOverlay.classList.remove('open');document.body.style.overflow='';coLastFocus?.focus();}
+$('checkoutBtn').onclick=openCheckout;$('coClose').onclick=closeCheckout;$('coDoneClose').onclick=closeCheckout;$('coZone').onchange=checkoutTotals;
+coOverlay.addEventListener('mousedown',e=>{if(e.target===coOverlay)closeCheckout();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&coOverlay.classList.contains('open'))closeCheckout();});
+coForm.querySelectorAll('input,select,textarea').forEach(el=>el.addEventListener('input',()=>el.classList.remove('bad')));
+function checkoutKey(payload){let pending=null;const serialized=JSON.stringify(payload);try{pending=JSON.parse(sessionStorage.getItem('dymok_pending_order')||'null');}catch(e){}if(pending?.payload===serialized)return pending.key;const key=crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);try{sessionStorage.setItem('dymok_pending_order',JSON.stringify({payload:serialized,key}));}catch(e){}return key;}
+coForm.addEventListener('submit',async e=>{
+  e.preventDefault();if(coSubmitting)return;const v=id=>$(id).value.trim(),digits=v('coPhone').replace(/\D/g,''),bad=[];
+  if(!v('coName'))bad.push('coName');if(!/^\+?[\d\s()\-]{10,30}$/.test(v('coPhone'))||digits.length<10||digits.length>15)bad.push('coPhone');
+  const tg=v('coTg').replace(/^@/,'');if(!/^[A-Za-z0-9][A-Za-z0-9_]{1,30}[A-Za-z0-9]$/.test(tg))bad.push('coTg');if(!v('coStreet'))bad.push('coStreet');if(!v('coHouse'))bad.push('coHouse');
+  coForm.querySelectorAll('.bad').forEach(x=>x.classList.remove('bad'));if(bad.length){bad.forEach(id=>$(id).classList.add('bad'));coErr.textContent='Заповніть ім’я, телефон (10–15 цифр), Telegram-нік (3–32 символи), вулицю та будинок.';$(bad[0]).focus();return;}
+  if(!$('coAge').checked){coErr.textContent='Підтвердіть вік 18+ і адресу в межах Рівного.';return;}if(!coDelivery?.accepting||!$('coZone').value){coErr.textContent='Оформлення зараз недоступне. Перевірте умови доставки.';return;}
+  const lines=cartLines();if(!lines.length){coErr.textContent='Кошик порожній. Додайте товари перед оформленням.';return;}
+  const pay=coForm.querySelector('input[name=coPay]:checked').value;
+  const payload={name:v('coName'),phone:v('coPhone'),tg:'@'+tg,street:v('coStreet'),house:v('coHouse'),flat:v('coFlat'),entr:v('coEntr'),floor:v('coFloor'),wishTime:$('coTime').value,pay,note:v('coNote'),zone_id:Number($('coZone').value),age_confirmed:true,items:lines.map(({p,qty})=>({id:p.id,qty}))};
+  payload.request_id=checkoutKey(payload);const submit=coForm.querySelector('.co-submit');coSubmitting=true;submit.disabled=true;submit.textContent='Оформлюємо…';coErr.textContent='';
+  try{
+    const res=await fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json','X-Requested-With':'dymok','X-CSRF-Token':(await D.request('/api/customer/session')).csrf_token},body:JSON.stringify(payload)});const srv=await res.json().catch(()=>({}));
+    if(res.status!==201||!srv.id||!srv.tracking_token){if(res.status===401){coErr.textContent='Сеанс завершився. Увійдіть до акаунта знову. Кошик збережено.';}else if(res.status===409&&srv.items)handleShortage(srv.items);else coErr.textContent=srv.error||'Не вдалося зберегти замовлення. Спробуйте ще раз.';return;}
+    try{sessionStorage.removeItem('dymok_pending_order');}catch(e){}
+    cart={};saveCart();renderCart();applyStock(srv.stock);
+    $('coTrackLink').href='/order/#id='+srv.id;$('coDoneTitle').textContent='Замовлення №'+srv.id+' прийнято!';$('coDoneTotal').textContent='До оплати: '+money(srv.total)+', з них доставка '+money(srv.delivery_fee_cents/100)+'.';coModal.classList.add('done');refreshCustomerSession().catch(()=>{});
+  }catch(err){coErr.textContent='Немає відповіді сервера. Кошик збережено. Повторіть спробу — однаковий запит не створить друге замовлення.';}
+  finally{coSubmitting=false;submit.textContent='Оформити замовлення';checkoutTotals();}
 });
-
-/* Товару не вистачає: оновлюємо кошик за залишками й показуємо, що змінилось */
-function handleShortage(items){
-  const msgs = [];
-  items.forEach(it=>{
-    STOCK[it.id] = it.available;
-    const p = PRODUCTS.find(x=>x.id==it.id);
-    const name = p ? p.name + (p.spec ? ' — ' + p.spec : '') : 'Товар';
-    if(it.available <= 0){ delete cart[it.id]; msgs.push(`«${name}» щойно закінчився — прибрали з кошика.`); }
-    else { cart[it.id] = Math.min(cart[it.id] || 0, it.available); msgs.push(`«${name}»: залишилось лише ${it.available} шт. — змінили кількість.`); }
-  });
-  saveCart(); renderCart(); renderCatalog();
-  const lines = cartLines();
-  if(!lines.length){ closeCheckout(); showToast('Товарів із кошика вже немає в наявності'); return; }
-  let total = 0;
-  $('coItems').innerHTML = lines.map(({p,qty})=>{
-    total += centsOf(p)*qty;
-    return `<div class="co-item"><span>${esc(p.name + (p.spec ? ' — ' + p.spec : ''))} × ${qty}</span><span>${money(centsOf(p)*qty/100)}</span></div>`;
-  }).join('');
-  $('coTotal').textContent = money(total / 100);
-  coErr.textContent = msgs.join(' ') + ' Перевірте замовлення й натисніть «Надіслати» ще раз.';
-}
+function handleShortage(items){const messages=[];for(const it of items){STOCK[it.id]=it.available;const p=PRODUCTS.find(x=>x.id==it.id);if(it.available<=0)delete cart[it.id];else cart[it.id]=Math.min(cart[it.id]||0,it.available);messages.push((p?.name||'Товар')+': доступно '+it.available+' шт.');}saveCart();renderCart();renderCatalog();checkoutTotals();coErr.textContent=messages.join(' ')+' Перевірте кошик і повторіть оформлення.';}

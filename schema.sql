@@ -3,6 +3,7 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS categories (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL UNIQUE COLLATE NOCASE CHECK(length(trim(name)) BETWEEN 1 AND 120),
+    icon TEXT NOT NULL DEFAULT '🧩',
     attribute_schema TEXT NOT NULL DEFAULT '[]'
         CHECK(json_valid(attribute_schema) AND json_type(attribute_schema) = 'array'),
     created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))

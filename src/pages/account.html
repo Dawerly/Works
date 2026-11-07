@@ -1,40 +1,7 @@
-<!-- ================= CABINET ================= -->
 <div class="page" id="page-cabinet">
-  <section style="padding-top:40px;">
-    <div class="wrap cab-wrap">
-      <div id="cabAnon">
-        <div class="section-head" style="text-align:center;margin:0 auto 24px;">
-          <h2>Особистий кабінет</h2>
-          <p>Збережіть контакти, щоб не вводити їх щоразу при замовленні.</p>
-        </div>
-        <div class="cab-card">
-          <div class="field"><label for="cName">Ім'я</label><input id="cName" type="text" placeholder="Ваше ім'я"></div>
-          <div class="field"><label for="cPhone">Телефон</label><input id="cPhone" type="tel" placeholder="+380..."></div>
-          <div class="field"><label for="cCity">Місто / відділення Нової Пошти</label><input id="cCity" type="text" placeholder="Напр. Рівне, відділення №5"></div>
-          <button class="btn btn-primary" id="saveProfile" style="width:100%;justify-content:center;">Зберегти й увійти</button>
-          <p style="color:var(--muted);font-size:.78rem;margin:14px 0 0;">Дані профілю зберігаються в цьому браузері. Кнопка «Вийти» видаляє їх та історію замовлень з цього пристрою.</p>
-        </div>
-      </div>
-      <div id="cabIn" style="display:none;">
-        <div class="cab-card" style="margin-bottom:20px;">
-          <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
-            <div class="avatar" id="cabAvatar">D</div>
-            <div>
-              <div style="font-weight:700;font-family:'Unbounded',sans-serif;" id="cabName">—</div>
-              <div style="color:var(--muted);font-size:.85rem;" id="cabPhone">—</div>
-            </div>
-          </div>
-          <div style="color:var(--muted);font-size:.85rem;margin-bottom:16px;" id="cabCity"></div>
-          <div style="display:flex;gap:10px;">
-            <button class="btn btn-ghost" id="editProfile" style="flex:1;justify-content:center;">Редагувати</button>
-            <button class="btn btn-ghost" id="logoutProfile" style="flex:1;justify-content:center;">Вийти</button>
-          </div>
-        </div>
-        <div class="section-head" style="margin-bottom:14px;"><h2 style="font-size:1.2rem;">Історія замовлень</h2></div>
-        <div id="ordersList"></div>
-      </div>
+  <section class="account-section">
+    <div class="wrap account-wrap">
+      <div id="customerRoot" aria-live="polite"><div class="account-loading">Перевіряємо вхід до акаунта…</div></div>
     </div>
   </section>
 </div>
-
-

@@ -2,7 +2,7 @@
 'use strict';
 
 const app = document.getElementById('app');
-const STATUS_LABEL = {new:'Нове', confirmed:'Підтверджене', delivering:'Доставляється', done:'Доставлено', cancelled:'Скасоване'};
+const STATUS_LABEL = {new:'Нове', confirmed:'Підтверджене', ready:'Готове до доставки', assigned:'Прийняте кур’єром', problem:'Проблема з доставкою', delivering:'Доставляється', done:'Доставлено', cancelled:'Скасоване'};
 const CAT_LABEL = {liquid:'Рідини', pod:'Под-системи', disposable:'Одноразки', access:'Комплектуючі'};
 const LOW = 5;
 const money = n => Number(n).toLocaleString('uk-UA') + ' ₴';
@@ -32,6 +32,7 @@ async function api(path, body){
   const opt = body === undefined
     ? {credentials:'same-origin'}
     : {method:'POST', credentials:'same-origin', headers:{'Content-Type':'application/json','X-Requested-With':'dymok'}, body:JSON.stringify(body)};
+  if(body !== undefined){ const sessionResponse = await fetch('/api/delivery/session', {credentials:'same-origin',cache:'no-store'}); const security = await sessionResponse.json(); opt.headers['X-CSRF-Token'] = security.csrf_token; }
   let res;
   try { res = await fetch('/api/admin/' + path, opt); }
   catch(e){ throw new Error('Немає звʼязку із сервером.'); }
@@ -106,6 +107,7 @@ function render(){
   app.replaceChildren(h('div', {class:'wrap'},
     h('div', {class:'top'}, h('h1', null, 'Dymok · Адмін-панель'),
       h('a', {href:'/admin/catalog/', class:'btn ghost sm'}, 'Каталог і знижки'),
+      h('a', {href:'/admin/delivery/', class:'btn ghost sm'}, 'Доставка та кур’єри'),
       h('a', {href:'/', class:'btn ghost sm', target:'_blank', rel:'noopener', style:'text-decoration:none'}, 'Відкрити сайт'),
       h('button', {class:'btn ghost sm', onclick: async ()=>{ try{ await api('logout', {}); }catch(e){} showLogin(); }}, 'Вийти')),
     h('div', {class:'tabs', role:'tablist'}, mk('stock','Склад'), mk('orders','Замовлення'), mk('security','Безпека')),
@@ -204,9 +206,10 @@ function orderCard(o){
   const note = h('textarea', {rows:2, maxLength:500, placeholder:'Повідомлення клієнту (за бажанням)'}, o.manager_note||'');
   note.value = o.manager_note || '';
   const save = h('button', {class:'btn sm', onclick: async ()=>{
+    if(sel.value==='done' && o.status!=='done' && o.pay==='Готівкою при отриманні' && !confirm('Підтверджуєте отримання кур’єром готівки '+money(o.total)+'?')) return;
     if(sel.value==='cancelled' && o.status!=='cancelled' && !confirm('Скасувати замовлення №'+o.id+'? Товари повернуться на склад.')) return;
     try {
-      const r = await api('order', {id:o.id, status:sel.value, delivery_time:when.value, manager_note:note.value});
+      const r = await api('order', {id:o.id, version:o.version, status:sel.value, ...(sel.value==='done' && o.pay==='Готівкою при отриманні' ? {cash_received_cents:o.total_cents} : {}), delivery_time:when.value, manager_note:note.value});
       Object.assign(o, r.order);
       for(const [id,q] of Object.entries(r.stock)){ const p = state.products.find(x=>x.id===+id); if(p) p.qty = q; }
       const finished = (o.status === 'done' || o.status === 'cancelled');
@@ -232,20 +235,24 @@ function orderCard(o){
         tg && /^[A-Za-z0-9_]{3,64}$/.test(tg) ? h('div', null, h('b', null, 'Telegram: '), h('a', {href:'https://t.me/'+tg, target:'_blank', rel:'noopener noreferrer'}, '@'+tg)) : (o.tg ? h('div', null, h('b', null, 'Telegram: '), o.tg) : null),
         h('div', null, h('b', null, 'Адреса: '), o.address),
         o.wish_time ? h('div', null, h('b', null, 'Бажаний час: '), o.wish_time) : null,
+        h('div', null, h('b', null, 'Кур’єр: '), o.courier_name || 'Не призначений'),
+        o.courier_note ? h('div', {class:'err'}, 'Проблема: '+o.courier_note) : null,
+        h('div', null, h('b', null, 'Доставка: '), money((o.delivery_fee_cents||0)/100)),
         h('div', null, h('b', null, 'Оплата: '), o.pay || '—'),
         o.note ? h('div', null, h('b', null, 'Коментар: '), o.note) : null),
       h('ul', null, o.items.map(i=>h('li', null, `${i.name}${i.spec ? ' — ' + i.spec : ''} × ${i.qty} = ${money(i.price*i.qty)}`))),
-      h('div', {class:'total'}, 'Разом: ' + money(o.total) + ' (без доставки)')),
+      h('div', {class:'total'}, 'Разом: ' + money(o.total) + ' (з доставкою)')),
     h('div', {class:'manage', oninput:e=>e.currentTarget.setAttribute('data-dirty','1'), onchange:e=>e.currentTarget.setAttribute('data-dirty','1')},
+      h('a', {href:'/admin/delivery/', class:'btn ghost sm'}, 'Призначення та керування доставкою'),
       h('label', {class:'f'}, 'Статус', sel),
       h('label', {class:'f'}, 'Час доставки для клієнта', when),
       h('label', {class:'f'}, 'Повідомлення', note),
       h('div', {class:'row'}, save, copy,
         (o.status === 'done' || o.status === 'cancelled') ? h('button', {class:'btn danger sm', onclick: async ()=>{
-          if(!confirm('Видалити замовлення №' + o.id + ' назавжди? Це не можна скасувати.')) return;
-          try { await api('order-delete', {id:o.id}); state.orders = state.orders.filter(x=>x.id !== o.id); toast('Замовлення видалено'); renderTab(); }
+          if(!confirm('Приховати замовлення №' + o.id + ' в архів? Історія та облік грошей збережуться.')) return;
+          try { await api('order-delete', {id:o.id}); state.orders = state.orders.filter(x=>x.id !== o.id); toast('Замовлення архівовано'); renderTab(); }
           catch(e){ toast(e.message, true); }
-        }}, 'Видалити назавжди') : null)));
+        }}, 'Приховати в архів') : null)));
 }
 
 /* ───────── безпека ───────── */

@@ -1,55 +1,53 @@
-/* Особистий кабінет і збережений профіль. */
-/* ---------- cabinet ---------- */
-function renderCabinet(){
-  const anon = document.getElementById('cabAnon'), inn = document.getElementById('cabIn');
-  if(profile && !editingProfile){
-    anon.style.display='none'; inn.style.display='block';
-    document.getElementById('cabAvatar').textContent = (profile.name||'D')[0].toUpperCase();
-    document.getElementById('cabName').textContent = profile.name;
-    document.getElementById('cabPhone').textContent = profile.phone;
-    document.getElementById('cabCity').textContent = profile.city ? ('📍 ' + profile.city) : '';
-    const list = document.getElementById('ordersList');
-    if(!orders.length){ list.innerHTML = '<div class="empty">Замовлень поки немає — оформіть перше в каталозі.</div>'; }
-    else {
-      list.innerHTML = orders.map(o=>`
-        <div class="order-item">
-          <div class="oh"><span>${o.id ? '№' + o.id + ' · ' : ''}${o.date}</span><span>${money(o.total)}</span></div>
-          <ul>${o.items.map(it=>`<li>${it.name} × ${it.qty}</li>`).join('')}</ul>
-          ${o.address ? `<div class="order-addr">📍 ${esc(o.address)}${o.wishTime ? ' · 🕒 ' + esc(o.wishTime) : ''}</div><span class="order-status">${o.status && ORDER_STATUS[o.status] ? ORDER_STATUS[o.status] : '⏳ Менеджер напише вам у Telegram і повідомить час доставки'}</span>`
-            + (o.deliveryTime ? `<div class="order-time">🕒 Час доставки: <b>${esc(o.deliveryTime)}</b></div>` : '')
-            + (o.managerNote ? `<div class="order-addr">💬 ${esc(o.managerNote)}</div>` : '') : ''}
-        </div>`).join('');
-    }
-    if(typeof refreshOrderStatuses === 'function') refreshOrderStatuses();
-  } else {
-    anon.style.display='block'; inn.style.display='none';
-  }
+/* Accounts are authenticated by an HttpOnly server session. Local data is never proof of login. */
+let customerSessionTicket=0,customerOrderTicket=0;
+let customerLoaded=false,customerLoading=false,customerNext=null,customerCounts={total:0,active:0,delivered:0};
+let customerMode='login',customerEdit='',customerCheckoutPending=false;
+const customerRoot=document.getElementById('customerRoot');
+const ce=(...args)=>D.el(...args);
+const customerButton=(label,fn,style='btn btn-ghost')=>D.button(label,fn,style);
+function customerField(label,attrs){const control=ce('input',attrs);return {control,node:ce('label',null,label,control)};}
+function clearCustomer(){customerSessionTicket++;customerOrderTicket++;customerLoading=false;profile=null;orders=[];customerNext=null;customerCounts={total:0,active:0,delivered:0};customerEdit='';}
+async function refreshCustomerSession(loadOrders=true){
+  const ticket=++customerSessionTicket;await D.session();const s=await D.request('/api/customer/session');if(ticket!==customerSessionTicket)return profile;profile=s.customer;customerLoaded=true;
+  if(!profile){clearCustomer();renderCabinet();return null;}
+  if(loadOrders)await loadCustomerOrders();else renderCabinet();return profile;
 }
-document.getElementById('saveProfile').onclick = ()=>{
-  const name = document.getElementById('cName').value.trim();
-  const phone = document.getElementById('cPhone').value.trim();
-  const city = document.getElementById('cCity').value.trim();
-  if(!name || !phone){ alert('Вкажіть імʼя та телефон.'); return; }
-  profile = {name, phone, city}; editingProfile = false; saveProfile(); renderCabinet();
-};
-document.getElementById('editProfile').onclick = ()=>{
-  document.getElementById('cName').value = profile.name;
-  document.getElementById('cPhone').value = profile.phone;
-  document.getElementById('cCity').value = profile.city;
-  editingProfile = true; renderCabinet();
-};
-document.getElementById('logoutProfile').onclick = ()=>{
-  profile = null;
-  orders = [];
-  editingProfile = false;
-  try {
-    localStorage.removeItem('dymok_profile');
-    localStorage.removeItem('dymok_orders');
-  } catch(e) {}
-  document.getElementById('cName').value = '';
-  document.getElementById('cPhone').value = '';
-  document.getElementById('cCity').value = '';
-  renderCabinet();
-};
-
-
+async function loadCustomerOrders(append=false){
+  if(!profile)return;const ticket=++customerOrderTicket,cid=profile.id;customerLoading=true;
+  try{const data=await D.request('/api/customer/orders'+(append&&customerNext?'?before='+customerNext:''));if(ticket!==customerOrderTicket||profile?.id!==cid)return;orders=append?[...orders,...data.orders]:data.orders;customerCounts=data.counts;customerNext=data.next_before;if(!customerEdit)renderCabinet();}
+  catch(e){if(ticket!==customerOrderTicket||profile?.id!==cid)return;if(e.status===401){clearCustomer();renderCabinet();}else D.toast(e.message);}
+  finally{if(ticket===customerOrderTicket)customerLoading=false;}
+}
+function renderCabinet(){
+  if(!customerLoaded){customerRoot.replaceChildren(ce('div',{class:'account-loading'},'Перевіряємо вхід до акаунта…'));return;}
+  if(!profile)return renderCustomerAuth();
+  if(customerEdit)return renderCustomerSettings();
+  const contact=profile.tg?ce('span',null,profile.tg):null;
+  const header=ce('div',{class:'account-card'},ce('div',{class:'account-row spread'},ce('div',{class:'account-profile'},ce('div',{class:'account-avatar'},profile.name.charAt(0).toUpperCase()),ce('div',null,ce('div',{class:'account-eyebrow'},'Ваш простір Dymok'),ce('h2',{class:'account-title'},profile.name),ce('p',{class:'account-muted'},'Логін: '+profile.username))),ce('div',{class:'account-row'},customerButton('Налаштування',()=>{customerEdit='profile';renderCabinet();}),customerButton('Вийти',async()=>{await D.request('/api/customer/logout',{});clearCustomer();try{sessionStorage.removeItem('dymok_pending_order');}catch(e){}renderCabinet();D.toast('Ви вийшли з акаунта');}))),ce('div',{class:'account-row account-muted'},profile.phone?ce('span',null,profile.phone):null,contact),ce('div',{class:'account-row account-actions'},ce('a',{class:'btn btn-primary',href:'/order/'},'Відстежити замовлення'),ce('a',{class:'btn btn-ghost',href:'#catalog','data-nav':'catalog'},'До каталогу')));
+  const stats=ce('div',{class:'account-stats'},...[['Усього',customerCounts.total],['Активні',customerCounts.active],['Доставлені',customerCounts.delivered]].map(([label,n])=>ce('div',{class:'account-stat'},ce('b',null,n),ce('span',null,label))));
+  const active=orders.filter(o=>!['done','cancelled'].includes(o.status)),past=orders.filter(o=>['done','cancelled'].includes(o.status));
+  const list=ce('div',null,ce('div',{class:'account-row spread'},ce('h2',{class:'account-group-title'},'Мої замовлення'),customerButton('Оновити',()=>loadCustomerOrders())));
+  if(active.length)list.append(ce('h3',{class:'account-muted'},'У процесі'),ce('div',{class:'account-orders'},active.map(customerOrderCard)));
+  if(past.length)list.append(ce('h3',{class:'account-muted'},'Історія покупок'),ce('div',{class:'account-orders'},past.map(customerOrderCard)));
+  if(!orders.length)list.append(ce('div',{class:'account-empty'},'Поки немає замовлень. Знайдіть щось своє в каталозі.'));
+  if(customerNext)list.append(customerButton('Показати ще',()=>loadCustomerOrders(true)));
+  customerRoot.replaceChildren(header,stats,list);
+  if(legacyReceipts.length)customerRoot.append(ce('div',{class:'account-notice account-legacy'},ce('p',null,'У цьому браузері знайдено замовлення з попередньої версії сайту. Їх можна додати до акаунта за збереженими особистими посиланнями.'),customerButton('Додати попередні замовлення',async()=>{const r=await D.request('/api/customer/orders/import',{receipts:legacyReceipts.slice(0,50).map(o=>({id:Number(o.id),token:o.trackingToken}))});legacyReceipts=legacyReceipts.filter(o=>!r.imported_ids.includes(Number(o.id)));try{localStorage.setItem('dymok_orders',JSON.stringify(legacyReceipts));}catch(e){}await loadCustomerOrders();D.toast('Додано замовлень: '+r.imported_ids.length);})));}
+function customerOrderCard(o){
+  const box=ce('article',{class:'account-card account-order','data-order-id':o.id},ce('div',{class:'account-row spread'},ce('h3',null,'Замовлення №'+o.id),ce('span',{class:'account-badge '+o.status},D.labels[o.status]||o.status)),ce('p',{class:'account-muted'},D.date(o.created)),ce('ul',null,(o.items||[]).map(i=>ce('li',null,i.name+(i.spec?' · '+i.spec:'')+' × '+i.qty))),ce('p',{class:'account-total'},D.cash(o.total_cents)),o.delivery_time?ce('p',{class:'account-muted'},'Час доставки: '+o.delivery_time):null);
+  if(o.courier?.tg)box.append(ce('div',{class:'account-courier-contact'},'Ваш кур’єр: '+o.courier.name,ce('a',{href:'https://t.me/'+o.courier.tg.slice(1),target:'_blank',rel:'noopener noreferrer'},o.courier.tg)));
+  box.append(ce('div',{class:'account-row'},ce('a',{class:'btn btn-ghost',href:'/order/#id='+o.id},'Відстежити'),o.status==='done'?customerButton('Видалити з історії',async()=>{if(!confirm('Прибрати доставлене замовлення №'+o.id+' з вашої історії?'))return;await D.request('/api/customer/orders/'+o.id+'/hide',{});await loadCustomerOrders();D.toast('Замовлення прибрано з історії');},'btn btn-ghost danger-text'):null));return box;
+}
+function renderCustomerAuth(){
+  const signup=customerMode==='register';const name=customerField('Ім’я',{name:'name',required:true,maxLength:80,autocomplete:'given-name'}),user=customerField('Логін',{name:'username',required:true,pattern:'[A-Za-z0-9_.-]{3,32}',minLength:3,maxLength:32,autocomplete:'username',autocapitalize:'off',spellcheck:false}),pass=customerField('Пароль',{name:'password',type:'password',required:true,minLength:signup?10:1,maxLength:256,autocomplete:signup?'new-password':'current-password'}),again=customerField('Повторіть пароль',{name:'password-confirm',type:'password',required:true,minLength:10,maxLength:256,autocomplete:'new-password'}),error=ce('div',{class:'account-error',role:'alert'}),submit=ce('button',{type:'submit',class:'btn btn-primary'},signup?'Зареєструватися':'Увійти');
+  const form=ce('form',{class:'account-form',onsubmit:async e=>{e.preventDefault();error.textContent='';if(signup&&pass.control.value!==again.control.value){error.textContent='Паролі не збігаються.';return;}submit.disabled=true;try{await D.session();await D.request('/api/customer/'+(signup?'register':'login'),{username:user.control.value.trim(),password:pass.control.value,...(signup?{name:name.control.value.trim()}:{})});pass.control.value='';again.control.value='';customerEdit='';await refreshCustomerSession();let redirect='';try{redirect=sessionStorage.getItem('dymok_return_to_order')||'';sessionStorage.removeItem('dymok_return_to_order');}catch(e){}if(redirect.startsWith('/order/')&&!redirect.startsWith('//')){location.assign(redirect);return;}if(customerCheckoutPending){customerCheckoutPending=false;await openCheckout();}}catch(x){error.textContent=x.message;if(x.status===401)pass.control.value='';}finally{submit.disabled=false;}}},...(signup?[name.node]:[]),user.node,pass.node,...(signup?[again.node]:[]),ce('p',{class:'account-muted'},signup?'Логін: 3–32 символи латиницею. Пароль — від 10 символів.':'Використайте логін і пароль, які вказали при реєстрації.'),error,submit);
+  customerRoot.replaceChildren(ce('div',{class:'account-card account-auth'},ce('div',{class:'account-eyebrow'},'Dymok / Особистий кабінет'),ce('h2',{class:'account-title'},signup?'Створіть свій акаунт':'З поверненням'),ce('p',{class:'account-subtitle'},'Ваші покупки, стан доставки та зв’язок із кур’єром — в одному місці.'),customerCheckoutPending?ce('p',{class:'account-notice'},'Увійдіть або зареєструйтеся, щоб продовжити оформлення. Кошик збережено.'):null,ce('div',{class:'account-tabs',role:'tablist','aria-label':'Вхід або реєстрація'},...[[false,'Увійти'],[true,'Зареєструватися']].map(([mode,label])=>ce('button',{type:'button',role:'tab','aria-selected':String(signup===mode),onclick:()=>{customerMode=mode?'register':'login';renderCabinet();}},label))),form));
+}
+function renderCustomerSettings(){
+  const password=customerEdit==='password',error=ce('div',{class:'account-error',role:'alert'}),name=customerField('Ім’я',{required:true,maxLength:80,value:profile.name,autocomplete:'given-name'}),current=customerField('Поточний пароль',{type:'password',required:true,autocomplete:'current-password'}),next=customerField('Новий пароль',{type:'password',required:true,minLength:10,maxLength:256,autocomplete:'new-password'}),again=customerField('Повторіть новий пароль',{type:'password',required:true,minLength:10,maxLength:256,autocomplete:'new-password'}),save=ce('button',{type:'submit',class:'btn btn-primary'},'Зберегти');
+  const form=ce('form',{class:'account-form',onsubmit:async e=>{e.preventDefault();error.textContent='';if(password&&next.control.value!==again.control.value){error.textContent='Паролі не збігаються.';return;}save.disabled=true;try{await D.request('/api/customer/'+(password?'password':'profile'),password?{current:current.control.value,new:next.control.value}:{name:name.control.value.trim()});customerEdit='';await refreshCustomerSession();D.toast('Зміни збережено');}catch(x){error.textContent=x.message;}finally{save.disabled=false;}}},...(password?[current.node,next.node,again.node]:[name.node,ce('p',{class:'account-muted'},'Телефон, Telegram і адресу доставки ви вказуєте під час оформлення.')]),error,save);
+  customerRoot.replaceChildren(ce('div',{class:'account-card account-auth'},ce('h2',{class:'account-title'},password?'Зміна пароля':'Налаштування акаунта'),form,ce('div',{class:'account-row account-actions'},!password?customerButton('Змінити пароль',()=>{customerEdit='password';renderCabinet();}):null,customerButton('Назад',()=>{customerEdit='';renderCabinet();}))));
+}
+refreshCustomerSession().catch(e=>{customerLoaded=true;clearCustomer();renderCabinet();D.toast('Не вдалося перевірити вхід. Перевірте зв’язок і повторіть спробу.');});
+window.addEventListener('pageshow',e=>{if(e.persisted)refreshCustomerSession().catch(()=>{});});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!customerEdit&&!coOverlay.classList.contains('open'))refreshCustomerSession().catch(()=>{});});

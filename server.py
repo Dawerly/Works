@@ -37,7 +37,7 @@ MAX_BODY = 64 * 1024
 MAX_QTY = 100_000
 STATUSES = ('new', 'confirmed', 'delivering', 'done', 'cancelled')
 # доступні для публічної статики лише ці місця
-PUBLIC_FILES = {'index.html', 'logo.png'}
+PUBLIC_FILES = {'index.html', 'logo.png', 'SHop.png'}
 PUBLIC_DIRS = {'assets', 'images', 'admin'}
 MIME = {
     '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',

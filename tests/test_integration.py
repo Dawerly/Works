@@ -26,6 +26,7 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(self.client.post('/api/admin/login', json={'username':'admin', 'password':'test-password'},
                                          headers={'X-Requested-With':'dymok'}).status_code, 200)
         self.token = self.client.get('/api/session').json['csrf_token']
+        self.assertEqual(self.client.post('/api/customer/register',json={'username':'buyer','name':'Тест','password':'buyer-test-password'},headers={'X-CSRF-Token':self.token,'X-Requested-With':'dymok'}).status_code,200)
 
     def request(self, method, path, **kwargs):
         return self.client.open(path, method=method, headers={'X-CSRF-Token':self.token, 'X-Requested-With':'dymok'}, **kwargs)
@@ -41,9 +42,13 @@ class IntegrationTests(unittest.TestCase):
         return result.json
 
     def order(self, client=None, qty=1, pid=1):
-        return (client or self.client).post('/api/order', json={'name':'Тест', 'phone':'+380991234567',
+        actual=client or self.client
+        token=actual.get('/api/customer/session').json['csrf_token']
+        if not actual.get('/api/customer/session').json['customer']:
+            actual.post('/api/customer/login',json={'username':'buyer','password':'buyer-test-password'},headers={'X-CSRF-Token':token,'X-Requested-With':'dymok'})
+        return actual.post('/api/order', json={'name':'Тест', 'phone':'+380991234567', 'tg':'@test_customer', 'age_confirmed':True,
                     'street':'Тестова', 'house':'1', 'items':[{'id':pid, 'qty':qty, 'price':0.01}]},
-                    headers={'X-Requested-With':'dymok'})
+                    headers={'X-Requested-With':'dymok','X-CSRF-Token':token})
 
     def test_shared_login_both_directions_and_logout(self):
         self.assertTrue(self.client.get('/api/session').json['authenticated'])

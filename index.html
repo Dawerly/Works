@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="assets/css/15-site-usability.css">
 <link rel="stylesheet" href="assets/css/16-stock.css">
 <link rel="stylesheet" href="assets/css/17-catalog-editor.css">
+<link rel="stylesheet" href="assets/css/18-customer-accounts.css">
 </head>
 <body>
 <a class="skip-link" id="skipLink" href="#main-content">Перейти до основного вмісту</a>
@@ -36,12 +37,13 @@
   <div class="nav">
     <a class="logo" href="#home" data-nav="home" aria-label="Dymok.rv — головна">
   <img class="logo-mark" src="logo.png" alt="" width="38" height="38" decoding="async">
-  <span class="logo-text">DYMOK<span>.</span>RV<small>VAPE STORE</small></span>
+  <span class="logo-text">DYMOK<span>.</span>RV<small>NEON VAPE STORE</small></span>
 </a>
     <nav class="nav-links" id="navLinks" aria-label="Головна навігація">
       <a href="#home" data-nav="home">Головна</a>
       <a href="#catalog" data-nav="catalog">Каталог</a>
       <a href="#cabinet" data-nav="cabinet">Кабінет</a>
+      <a href="/order/" data-nav="tracking">Відстеження</a>
     </nav>
     <div class="header-actions">
       <a class="btn btn-ghost header-optional" href="https://www.instagram.com/dymok.rv2?igsh=MXFjcHl4NXUxbDdiYQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram" style="padding:9px 12px;">
@@ -63,8 +65,8 @@
     <div class="cloud cloud1" aria-hidden="true"></div><div class="cloud cloud2" aria-hidden="true"></div>
     <div class="wrap">
       <div class="eyebrow">Вейп-шоп у Рівному</div>
-      <h1>Пара, яку хочеться курити</h1>
-      <p>Dymok — магазин з привітною та приємною атмосферою, актуальними товарами та швидким звʼязком у Telegram. Переглядай каталог, дізнавайся про нові надходження та заходь у наш фізичний магазин у Рівному.</p>
+      <h1>Пара, яку хочеться повторити</h1>
+      <p>Dymok — магазин з атмосферою кіберпанку, актуальними товарами та швидким звʼязком у Telegram. Переглядай каталог, дізнавайся про нові надходження та заходь у наш фізичний магазин у Рівному.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#catalog" data-nav="catalog">Перейти в каталог</a>
         <a class="btn btn-ghost" href="https://t.me/+fkB5bffwaFc5NjBi" target="_blank" rel="noopener noreferrer">Наш Telegram</a>
@@ -72,7 +74,7 @@
       <div class="stats">
         <div class="stat"><b>646+</b><span>підписників каналу</span></div>
         <div class="stat"><b id="statCount">22</b><span>позиції в каталозі</span></div>
-        <div class="stat"><b>Найшвидка</b><span>доставка по місту Рівне</span></div>
+        <div class="stat"><b>1–2 дні</b><span>доставка Новою Поштою</span></div>
         <div class="stat"><b>18+</b><span>продаж лише повнолітнім</span></div>
       </div>
     </div>
@@ -85,7 +87,10 @@
         <span class="chip" style="cursor:default;">Vaporesso</span>
         <span class="chip" style="cursor:default;">Voopoo</span>
         <span class="chip" style="cursor:default;">OXVA</span>
+        <span class="chip" style="cursor:default;">Smok</span>
+        <span class="chip" style="cursor:default;">Uwell</span>
         <span class="chip" style="cursor:default;">Chaser</span>
+        <span class="chip" style="cursor:default;">Rimava</span>
       </div>
     </div>
   </section>
@@ -96,15 +101,15 @@
         <div class="section-head" style="margin-bottom:20px;">
           <h2>Про Dymok.rv</h2>
         </div>
-        <p>Ми почали як невеликий телеграм-канал для свого району — і виросли у повноцінний магазин. Головний принцип не змінився: тільки оригінальна продукція, чесна ціна і швидка відповідь у переписці.</p>
+        <p>Ми почали як невеликий телеграм-канал для свого району — і виросли у повноцінний онлайн-магазин, з доставкою по Рівному. Головний принцип не змінився: тільки оригінальна продукція, чесна ціна і швидка відповідь у переписці.</p>
         <p>Асортимент підбираємо самі — тестуємо нові одноразки й рідини, перш ніж додати їх у каталог, щоб не пропонувати вам випадкові позиції. Якщо пристрій чи смак не сподобався покупцям — прибираємо з продажу.</p>
-        <p>Замовлення обробляємо вручну через Telegram, тож завжди можна уточнити деталі, підібрати заміну чи спитати пораду з вибором.</p>
+        <p>Оформлюйте замовлення на сайті. Адміністратор перевірить його, а кур’єр доставить покупку за вашою адресою в Рівному.</p>
       </div>
       <div class="timeline">
         <div><b>Заявка</b><span>Обираєте товари на сайті й додаєте в кошик</span></div>
-        <div><b>Підтвердження</b><span>Пишете нам у Telegram, ми звіряємо наявність і суму</span></div>
-        <div><b>Відправка</b><span>Пакуємо конфіденційно й відправляємо до вас</span></div>
-        <div><b>Отримання</b><span>Забираєте замовлення у нашого кур`єра</span></div>
+        <div><b>Підтвердження</b><span>Оформлюєте на сайті, адміністратор підтверджує замовлення</span></div>
+        <div><b>Відправка</b><span>Пакуємо конфіденційно й відправляємо Новою Поштою</span></div>
+        <div><b>Отримання</b><span>Забираєте посилку у зручному відділенні за 1–2 дні</span></div>
       </div>
     </div>
   </section>
@@ -178,8 +183,8 @@
           <a class="btn btn-ghost" href="https://t.me/+fkB5bffwaFc5NjBi" target="_blank" rel="noopener noreferrer" style="margin-top:12px;width:100%;justify-content:center;">Відкрити канал</a>
         </div>
         <div class="why-card">
-          <div class="n">🧑‍💻</div><h3>Менеджер @DymokManager</h3><p>Пише туди кнопка «Оформити» — з готовим текстом замовлення.</p>
-          <a class="btn btn-ghost" href="https://t.me/DymokManager" target="_blank" rel="noopener noreferrer" style="margin-top:12px;width:100%;justify-content:center;">Написати менеджеру</a>
+          <div class="n">🧑‍💻</div><h3>Оформлення на сайті</h3><p>Оформлюйте покупку та відстежуйте її стан у браузері.</p>
+          <a class="btn btn-ghost" href="#catalog" data-nav="catalog" style="margin-top:12px;width:100%;justify-content:center;">Перейти до каталогу</a>
         </div>
         <div class="why-card">
           <div class="n">🤖</div><h3>Каталог-бот</h3><p>Актуальна наявність товару прямо в Telegram, без сайту.</p>
@@ -188,10 +193,6 @@
         <div class="why-card">
           <div class="n">📸</div><h3>Instagram</h3><p>Фото та відео нових надходжень і розпаковок.</p>
           <a class="btn btn-ghost" href="https://www.instagram.com/dymok.rv2?igsh=MXFjcHl4NXUxbDdiYQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" style="margin-top:12px;width:100%;justify-content:center;">Підписатись</a>
-        </div>
-        <div class="why-card">
-          <div class="n">🛠️</div><h3>Telegram з Б/У системами</h3><p>Телеграм канал де ви можете як купити, так і продати свою под систему</p>
-          <a class="btn btn-ghost" href="https://t.me/+CMQbjU0-qio5Mjky" target="_blank" rel="noopener noreferrer" style="margin-top:12px;width:100%;justify-content:center;">Приєднатись</a>
         </div>
       </div>
     </div>
@@ -209,11 +210,10 @@
           <div class="store-address">м. Рівне<br>вул. Романа Шухевича, 2</div>
           <p class="store-meta">Заходь у фізичний магазин, щоб подивитися асортимент наживо та отримати консультацію.</p>
           <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&query=Рівне%20вулиця%20Романа%20Шухевича%202" target="_blank" rel="noopener noreferrer" style="margin-top:12px;">Відкрити на карті</a>
-<div class="store-map" style="
-  background:
-    linear-gradient(rgba(25,231,255,.15) 1px, transparent 1px) 0 0 / 40px 40px, linear-gradient(90deg, rgba(255,24,232,.15) 1px, transparent 1px) 0 0 / 40px 40px,url('SHop.png') center / contain no-repeat #09080d;">
-  <div class="store-pin">⌖</div>
-</div>
+        </div>
+        <div class="store-map">
+          <img src="images/store-location.png" alt="Розташування магазину DYMOK у Рівному, вул. Романа Шухевича, 2" width="1128" height="704" loading="lazy" decoding="async">
+        </div>
       </div>
     </div>
   </section>
@@ -221,7 +221,7 @@
   <section>
     <div class="wrap">
       <div class="cta">
-        <h2>Готові обрати?</h2>
+        <h2>Готові обрати свою пару?</h2>
         <p>Весь каталог доступний прямо тут — оформлення займає хвилину.</p>
         <a class="btn btn-primary" href="#catalog" data-nav="catalog">Перейти в каталог</a>
       </div>
@@ -237,7 +237,7 @@
     <div class="wrap">
       <div class="section-head">
         <h2>Каталог</h2>
-        <p>Каталог оформлений у єдиному стилі Dymok. Актуальну наявність і нові надходження перевіряйте в Telegram.</p>
+        <p>Каталог оформлений у єдиному стилі Dymok. Актуальна наявність оновлюється на сайті.</p>
       </div>
       <div class="toolbar">
         <input class="search" id="search" type="text" placeholder="Пошук за назвою чи брендом...">
@@ -248,7 +248,7 @@
           <option value="name">За назвою</option>
         </select>
       </div>
-      <div class="catalog-note">⚡ Актуальна наявність може змінюватися. Перед оформленням перевіряйте товар у Telegram.</div>
+      <div class="catalog-note">⚡ Актуальна наявність може змінюватися. Під час оформлення сервер перевірить доступну кількість.</div>
       <div class="win" id="win">
         <div class="win-head">
           <button type="button" class="win-back" id="winBack" aria-label="Назад на один крок">← Назад</button>
@@ -273,46 +273,13 @@
 
 
 <!-- Файл: src/pages/account.html -->
-<!-- ================= CABINET ================= -->
 <div class="page" id="page-cabinet">
-  <section style="padding-top:40px;">
-    <div class="wrap cab-wrap">
-      <div id="cabAnon">
-        <div class="section-head" style="text-align:center;margin:0 auto 24px;">
-          <h2>Особистий кабінет</h2>
-          <p>Збережіть контакти, щоб не вводити їх щоразу при замовленні.</p>
-        </div>
-        <div class="cab-card">
-          <div class="field"><label for="cName">Ім'я</label><input id="cName" type="text" placeholder="Ваше ім'я"></div>
-          <div class="field"><label for="cPhone">Телефон</label><input id="cPhone" type="tel" placeholder="+380..."></div>
-          <div class="field"><label for="cCity">Місто / відділення Нової Пошти</label><input id="cCity" type="text" placeholder="Напр. Рівне, відділення №5"></div>
-          <button class="btn btn-primary" id="saveProfile" style="width:100%;justify-content:center;">Зберегти й увійти</button>
-          <p style="color:var(--muted);font-size:.78rem;margin:14px 0 0;">Дані профілю зберігаються в цьому браузері. Кнопка «Вийти» видаляє їх та історію замовлень з цього пристрою.</p>
-        </div>
-      </div>
-      <div id="cabIn" style="display:none;">
-        <div class="cab-card" style="margin-bottom:20px;">
-          <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
-            <div class="avatar" id="cabAvatar">D</div>
-            <div>
-              <div style="font-weight:700;font-family:'Unbounded',sans-serif;" id="cabName">—</div>
-              <div style="color:var(--muted);font-size:.85rem;" id="cabPhone">—</div>
-            </div>
-          </div>
-          <div style="color:var(--muted);font-size:.85rem;margin-bottom:16px;" id="cabCity"></div>
-          <div style="display:flex;gap:10px;">
-            <button class="btn btn-ghost" id="editProfile" style="flex:1;justify-content:center;">Редагувати</button>
-            <button class="btn btn-ghost" id="logoutProfile" style="flex:1;justify-content:center;">Вийти</button>
-          </div>
-        </div>
-        <div class="section-head" style="margin-bottom:14px;"><h2 style="font-size:1.2rem;">Історія замовлень</h2></div>
-        <div id="ordersList"></div>
-      </div>
+  <section class="account-section">
+    <div class="wrap account-wrap">
+      <div id="customerRoot" aria-live="polite"><div class="account-loading">Перевіряємо вхід до акаунта…</div></div>
     </div>
   </section>
 </div>
-
-
 
 </main>
 <!-- Файл: src/components/mobile-navigation.html -->
@@ -320,7 +287,7 @@
   <a href="#home" data-nav="home">⌂<br>Головна</a>
   <a href="#catalog" data-nav="catalog">◈<br>Каталог</a>
   <a href="#cabinet" data-nav="cabinet">◎<br>Кабінет</a>
-  <a href="https://t.me/dymokshop1" target="_blank" rel="noopener noreferrer">✈<br>Telegram</a>
+  <a href="/order/" data-nav="tracking" aria-label="Відстеження">⌁<br>Відстеження</a>
 </nav>
 
 
@@ -334,7 +301,7 @@
 </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <a class="btn btn-ghost" href="https://t.me/+fkB5bffwaFc5NjBi" target="_blank" rel="noopener noreferrer" style="padding:8px 14px;font-size:.82rem;">Telegram-канал</a>
-        <a class="btn btn-ghost" href="https://t.me/DymokManager" target="_blank" rel="noopener noreferrer" style="padding:8px 14px;font-size:.82rem;">Менеджер</a>
+        <a class="btn btn-ghost" href="/courier/" style="padding:8px 14px;font-size:.82rem;">Кабінет кур’єра</a>
         <a class="btn btn-ghost" href="https://t.me/DYM0KCHASERrv_Bot" target="_blank" rel="noopener noreferrer" style="padding:8px 14px;font-size:.82rem;">Каталог-бот</a>
         <a class="btn btn-ghost" href="https://www.instagram.com/dymok.rv2?igsh=MXFjcHl4NXUxbDdiYQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" style="padding:8px 14px;font-size:.82rem;">Instagram</a>
       </div>
@@ -343,8 +310,8 @@
     <div class="age">Товари призначені виключно для осіб віком від 18 років. Оформлюючи замовлення, ви підтверджуєте свій вік.</div>
     <details class="privacy-info">
       <summary>Дані в цьому браузері</summary>
-      <p>Сайт зберігає підтвердження віку, профіль і частину введених даних у локальному сховищі цього браузера. Збережений профіль не має парольного захисту. На спільному пристрої інші користувачі браузера можуть отримати доступ до цих даних.</p>
-      <p>Очистити збережені дані можна в налаштуваннях браузера для цього сайту. Зовнішні шрифти й зображення завантажуються зі сторонніх сервісів. Посилання Telegram, Instagram і Google Maps ведуть на зовнішні сайти.</p>
+      <p>Кошик і підтвердження віку зберігаються в цьому браузері. Акаунт та історія покупок доступні після входу за логіном і паролем. На спільному пристрої завершуйте роботу кнопкою «Вийти».</p>
+      <p>Доставлені покупки можна прибрати з особистої історії в кабінеті. Дані браузера очищуються в його налаштуваннях. Зовнішні шрифти й зображення завантажуються зі сторонніх сервісів. Посилання Telegram, Instagram і Google Maps ведуть на зовнішні сайти.</p>
     </details>
   </div>
 </footer>
@@ -401,7 +368,7 @@
         <div class="pd-qty"><button type="button" id="pdMinus" aria-label="Менше">−</button><span id="pdQty">1</span><button type="button" id="pdPlus" aria-label="Більше">+</button></div>
         <button type="button" class="btn btn-primary" id="pdAdd">До кошика</button>
       </div>
-      <p class="co-note">Актуальну наявність уточнюйте в Telegram.</p>
+      <p class="co-note">Наявність перевіряється під час оформлення замовлення.</p>
     </div>
   </div>
 </div>
@@ -418,23 +385,24 @@
     <form class="co-main" id="coForm" novalidate>
       <div class="eyebrow">DYMOK // ЗАМОВЛЕННЯ</div>
       <h2 class="co-title" id="coTitle">Оформлення замовлення</h2>
-      <p class="co-sub">Вкажіть дані для доставки — менеджер зв'яжеться з вами та узгодить зручний час.</p>
+      <p class="co-sub">Заповніть контакти та адресу. Замовлення збережеться на сайті, а його стан можна відстежувати за посиланням.</p>
 
       <div class="co-zone">
         <span class="ico">📍</span>
-        <div><b>Доставка лише по м. Рівне.</b><br>В інші міста не доставляємо. Вартість доставки уточнить менеджер.</div>
+        <div><b>Доставка лише по м. Рівне.</b><br>Оберіть район — вартість доставки буде включена в підсумок.</div>
       </div>
 
       <div class="co-sect">Контакти</div>
       <div class="co-grid">
-        <div class="co-f"><label for="coName">Ім'я <i>*</i></label><input id="coName" type="text" autocomplete="name" placeholder="Ваше ім'я"></div>
-        <div class="co-f"><label for="coPhone">Телефон <i>*</i></label><input id="coPhone" type="tel" autocomplete="tel" placeholder="+380..."></div>
-        <div class="co-f full"><label for="coTg">Telegram-нік (за бажанням)</label><input id="coTg" type="text" placeholder="@username"></div>
+        <div class="co-f"><label for="coName">Ім'я <i>*</i></label><input id="coName" readonly type="text" autocomplete="name" placeholder="Ваше ім'я"></div>
+        <div class="co-f"><label for="coPhone">Телефон <i>*</i></label><input id="coPhone" required maxlength="30" type="tel" autocomplete="tel" placeholder="+380..."></div>
+        <div class="co-f full"><label for="coTg">Telegram-нік <i>*</i></label><input id="coTg" required maxlength="33" autocomplete="off" autocapitalize="off" spellcheck="false" type="text" placeholder="@username"></div>
       </div>
 
       <div class="co-sect">Адреса доставки</div>
       <div class="co-grid">
         <div class="co-f full"><label>Місто</label><div class="city-lock">🔒 м. Рівне <small>доставка лише тут</small></div></div>
+        <div class="co-f full"><label for="coZone">Район доставки <i>*</i></label><select id="coZone" required></select></div>
         <div class="co-f full"><label for="coStreet">Вулиця <i>*</i></label><input id="coStreet" type="text" autocomplete="street-address" placeholder="Напр. вул. Соборна"></div>
         <div class="co-f"><label for="coHouse">Будинок <i>*</i></label><input id="coHouse" type="text" placeholder="12А"></div>
         <div class="co-f"><label for="coFlat">Квартира / офіс</label><input id="coFlat" type="text" placeholder="45"></div>
@@ -464,20 +432,22 @@
 
       <label class="co-check"><input type="checkbox" id="coAge"><span>Мені виповнилось 18 років, а адреса доставки знаходиться в межах м. Рівне.</span></label>
       <div class="co-err" id="coErr" role="alert"></div>
-      <button type="submit" class="btn btn-primary co-submit">Надіслати замовлення менеджеру</button>
+      <button type="submit" class="btn btn-primary co-submit">Оформити замовлення</button>
     </form>
 
     <aside class="co-side">
       <h4>Ваше замовлення</h4>
       <div class="co-items" id="coItems"></div>
+      <div class="co-item"><span>Товари</span><span id="coSubtotal">0 ₴</span></div>
+      <div class="co-item"><span>Доставка</span><span id="coFee">—</span></div>
       <div class="co-total"><span>Разом</span><span id="coTotal">0 ₴</span></div>
-      <div class="co-note">Без урахування доставки — її вартість повідомить менеджер.</div>
+      <div class="co-note" id="coDeliveryNote"></div>
       <div class="co-steps">
         <h4>Що далі?</h4>
         <ol>
-          <li>Відкриється Telegram з готовим текстом — натисніть «Надіслати».</li>
-          <li>Менеджер перевірить наявність і напише вам.</li>
-          <li>Менеджер повідомить точний час доставки.</li>
+          <li>Замовлення збережеться на сайті.</li>
+          <li>Адміністратор перевірить замовлення та підтвердить його.</li>
+          <li>Перевіряйте стан і час доставки на сторінці замовлення.</li>
           <li>Кур'єр привезе замовлення за вашою адресою в Рівному.</li>
         </ol>
       </div>
@@ -485,10 +455,11 @@
 
     <div class="co-done" id="coDone">
       <div class="ok">✓</div>
-      <h3 id="coDoneTitle">Майже готово!</h3>
-      <p>Ми підготували повідомлення для менеджера. Якщо Telegram не відкрився — натисніть кнопку нижче й надішліть його.</p>
-      <p><b style="color:#fff">Важливо:</b> замовлення вважається відправленим після натискання «Надіслати» в Telegram. Менеджер відповість там же й повідомить час доставки.</p>
-      <a class="btn btn-primary" id="coTgLink" href="#" target="_blank" rel="noopener">Відкрити Telegram</a>
+      <h3 id="coDoneTitle">Замовлення прийнято!</h3>
+      <p>Замовлення збережене на сайті. Адміністратор перевірить його та повідомить час доставки.</p>
+      <p id="coDoneTotal"></p>
+      <p>Збережіть особисте посилання для відстеження. Надсилати замовлення в Telegram не потрібно.</p>
+      <a class="btn btn-primary" id="coTrackLink" href="#">Відстежити замовлення</a>
       <button class="btn btn-ghost" id="coDoneClose" type="button" style="margin-top:10px">Закрити</button>
     </div>
   </div>
@@ -506,6 +477,7 @@
 <script src="assets/js/08-notifications.js" defer></script>
 <script src="assets/js/09-product-dialog.js" defer></script>
 <script src="assets/js/10-cart.js" defer></script>
+<script src="assets/js/delivery-ui.js" defer></script>
 <script src="assets/js/11-checkout.js" defer></script>
 <script src="assets/js/12-account.js" defer></script>
 <script src="assets/js/13-age-gate.js" defer></script>

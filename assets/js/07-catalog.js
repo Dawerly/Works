@@ -57,7 +57,7 @@ function tileStock(items){
 function tileHTML(attrs, big, title, sub, price, img, icon, st){
   const visual = img
     ? `<div class="lv-img"><img src="${esc2(img)}" alt="" loading="lazy" onerror="this.parentNode.style.display='none'"></div>`
-    : (icon ? `<div class="lv-ico">${icon}</div>` : '');
+    : (icon ? `<div class="lv-ico">${esc2(icon)}</div>` : '');
   const allOut = st && st.allOut;
   const note = allOut ? '<span class="out-note">Немає в наявності</span>'
     : (st && st.out ? `<span>${sub} · <span class="out-part">${st.out} немає</span></span>` : `<span>${sub}</span>`);
@@ -84,7 +84,7 @@ function catTile(c){
   const items = PRODUCTS.filter(p=>p.cat===c.id);
   const st = tileStock(items);
   return `<button type="button" class="lv-tile lv-cat${st.allOut ? ' lv-out' : ''}" data-cat="${c.id}">
-    <div class="lv-ico">${c.icon}</div>
+    <div class="lv-ico">${esc2(c.icon || '🧩')}</div>
     <div class="lv-main"><b>${esc2(c.name)}</b><span>${esc2(c.desc)}</span>${st.allOut ? '<span class="out-note">Немає в наявності</span>' : `<em>${posWord(items.length)} · від ${money(st.min)}</em>`}</div>
     <i aria-hidden="true">→</i></button>`;
 }

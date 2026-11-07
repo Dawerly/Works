@@ -106,7 +106,7 @@ function renderCategories() {
   const rows = state.categories.map((category) => {
     const row = el('tr');
     const name = el('td');
-    name.append(el('strong', category.name), el('p', category.attribute_schema.map((field) => field.label).join(' · ') || 'Без додаткових полів', 'hint'));
+    name.append(el('span', category.icon || '🧩', 'category-list-icon'), el('strong', category.name), el('p', category.attribute_schema.map((field) => field.label).join(' · ') || 'Без додаткових полів', 'hint'));
     const actions = el('td');
     const group = el('div', undefined, 'actions');
     group.append(actionButton('Редагувати', () => editCategory(category)), actionButton('Видалити', async () => {
@@ -262,12 +262,15 @@ function resetCategory() {
   categoryForm.elements.id.value = '';
   $('#schema-fields').replaceChildren();
   $('#category-title').textContent = 'Нова категорія';
+  updateCategoryIconPreview();
 }
 
 function editCategory(category) {
   resetCategory();
   categoryForm.elements.id.value = category.id;
   categoryForm.elements.name.value = category.name;
+  categoryForm.elements.icon.value = category.icon || '🧩';
+  updateCategoryIconPreview();
   category.attribute_schema.forEach(addSchemaField);
   $('#category-title').textContent = `Редагування категорії #${category.id}`;
   categoryForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -324,7 +327,7 @@ categoryForm.addEventListener('submit', guard(async (event) => {
     label: row.querySelector('[data-part="label"]').value.trim(),
     required: row.querySelector('[data-part="required"]').checked,
   }));
-  const body = { name: categoryForm.elements.name.value, attribute_schema };
+  const body = { name: categoryForm.elements.name.value, icon: categoryForm.elements.icon.value.trim(), attribute_schema };
   await withBusy(categoryForm, async () => {
     await api(id ? `/api/categories/${id}` : '/api/categories', { method: id ? 'PUT' : 'POST', body });
     resetCategory();
@@ -375,3 +378,16 @@ guard(async () => {
   if (data.authenticated) await refresh();
   updatePreview();
 })();
+
+function updateCategoryIconPreview(){
+  const value=categoryForm.elements.icon.value.trim() || '🧩';
+  $('#category-icon-preview').textContent=value;
+  $('#category-emoji-options').querySelectorAll('button').forEach(button=>button.setAttribute('aria-pressed',String(button.textContent===value)));
+}
+for(const emoji of ['🧩','💧','🔋','💨','⚙️','🛒','🍓','🍏','🧴','🧊','✨','🎁']){
+  const button=el('button',emoji,'emoji-choice');button.type='button';button.setAttribute('aria-label','Обрати '+emoji);
+  button.addEventListener('click',()=>{categoryForm.elements.icon.value=emoji;updateCategoryIconPreview();});
+  $('#category-emoji-options').append(button);
+}
+$('#category-icon').addEventListener('input',updateCategoryIconPreview);
+updateCategoryIconPreview();

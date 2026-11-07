@@ -60,3 +60,10 @@ td { overflow-wrap: anywhere; max-width: 300px; }
 @media(max-width: 580px) { main { padding: 0 12px 24px; } .topbar { padding: 22px 16px; } .card { padding: 18px; } .two-columns, .schema-row, .filters { grid-template-columns: 1fr; } .section-heading { align-items: start; } }
 
 .topbar nav{display:flex;align-items:center;flex-wrap:wrap;gap:8px}.topbar nav a{color:#d2f4e9;text-underline-offset:4px}.topbar nav a:focus-visible{outline:2px solid white;outline-offset:4px}@media(max-width:700px){.topbar{flex-wrap:wrap;gap:16px}}
+
+.category-icon-editor{display:grid;grid-template-columns:minmax(0,1fr) 64px;gap:14px;align-items:end}
+.category-icon-preview{width:64px;height:64px;display:grid;place-items:center;border:1px solid #c9b1e3;border-radius:17px;background:#f5edfc;font-size:32px;overflow:hidden;line-height:1}
+.category-emoji-options{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 18px}
+.category-emoji-options .emoji-choice{font-size:23px;padding:6px;min-width:42px;min-height:42px;line-height:1;background:#f4f6f7;border:1px solid #d6dfe1;border-radius:10px}
+.category-emoji-options .emoji-choice[aria-pressed=true]{background:#ece0fc;border-color:#9262c0;box-shadow:0 0 0 1px #9262c0}
+.category-list-icon{display:inline-block;margin-right:7px;font-size:22px;vertical-align:middle}

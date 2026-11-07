@@ -7,6 +7,7 @@ import re
 import secrets
 import sqlite3
 import warnings
+import unicodedata
 from datetime import timedelta
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
@@ -109,6 +110,21 @@ def validate_attributes(attributes, schema):
     return result
 
 
+def category_icon(value):
+    value = text(value, 'Емодзі категорії', 32, required=False) or '🧩'
+    # Preserve complete Unicode emoji sequences: modifiers, variation selectors and ZWJ.
+    # ASCII keycap bases are allowed only with the combining keycap mark.
+    keycap = '\u20e3' in value
+    forbidden = set('<>&"\'`/\\')
+    if not any(unicodedata.category(char).startswith('S') or char == '\u20e3' for char in value):
+        raise APIError('Вставте емодзі або виберіть його серед запропонованих.')
+    for char in value:
+        allowed = unicodedata.category(char)[0] in {'S', 'M'} or char == '\u200d' or (keycap and char in '0123456789#*')
+        if not allowed or char in forbidden:
+            raise APIError('Для значка використайте емодзі без тексту чи HTML.')
+    return value
+
+
 def category_or_404(category_id):
     row = get_db().execute('SELECT * FROM categories WHERE id = ?', (category_id,)).fetchone()
     if row is None:
@@ -127,6 +143,7 @@ def product_or_404(product_id):
 def category_dict(row):
     result = dict(row)
     result['attribute_schema'] = json.loads(result['attribute_schema'])
+    result['icon'] = result['icon'] or catalog_store.CATEGORY_ICONS.get(result.get('slug'), '🧩')
     return result
 
 
@@ -216,6 +233,12 @@ def create_app(config=None):
     server.DB_PATH = Path(app.config['DATABASE'])
     server.init_db()
     catalog_store.initialize(app.config['DATABASE'], seed=app.config.get('SEED_CATALOG', True))
+    import delivery
+    delivery.initialize(app.config['DATABASE'])
+    import customers
+    customers.initialize(app.config['DATABASE'])
+    app.register_blueprint(delivery.bp)
+    app.register_blueprint(customers.bp)
     Path(app.config['DATABASE']).parent.mkdir(parents=True, exist_ok=True)
     Path(app.config['UPLOAD_FOLDER']).mkdir(parents=True, exist_ok=True)
 
@@ -260,8 +283,15 @@ def create_app(config=None):
                 "default-src 'self'; script-src 'self'; style-src 'self'; "
                 "img-src 'self' https: blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
             )
-        if request.path.startswith(('/api/', '/admin')):
+        if request.path.startswith(('/api/', '/admin', '/courier', '/order/')):
             response.headers['Cache-Control'] = 'no-store'
+        response.headers['X-Frame-Options'] = 'DENY'
+        if request.path.startswith(('/courier', '/order/', '/admin/delivery')):
+            response.headers['Referrer-Policy'] = 'no-referrer'
+            response.headers['Content-Security-Policy'] = (
+                "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; "
+                "object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
+            )
         return response
 
     @app.errorhandler(APIError)
@@ -361,16 +391,18 @@ def create_app(config=None):
             db.execute('BEGIN IMMEDIATE')
             if category_id is None:
                 category_id = catalog_store.allocate_id(db, 'category')
-                db.execute('INSERT INTO categories(id, name, attribute_schema) VALUES (?, ?, ?)', (category_id, name, dumps(schema)))
+                icon = category_icon(data.get('icon', '🧩'))
+                db.execute('INSERT INTO categories(id, name, attribute_schema, icon) VALUES (?, ?, ?, ?)', (category_id, name, dumps(schema), icon))
                 status = 201
             else:
-                category_or_404(category_id)
+                category = category_or_404(category_id)
+                icon = category_icon(data['icon']) if 'icon' in data else category['icon']
                 for product in db.execute('SELECT id, attributes FROM products WHERE category_id = ?', (category_id,)):
                     try:
                         validate_attributes(json.loads(product['attributes']), schema)
                     except APIError:
                         raise APIError(f'Нова схема несумісна з товаром #{product["id"]}. Спершу оновіть товари або зробіть нові поля необов’язковими.', 409)
-                db.execute('UPDATE categories SET name = ?, attribute_schema = ? WHERE id = ?', (name, dumps(schema), category_id))
+                db.execute('UPDATE categories SET name = ?, attribute_schema = ?, icon = ? WHERE id = ?', (name, dumps(schema), icon, category_id))
                 status = 200
         return jsonify(category_dict(category_or_404(category_id))), status
 

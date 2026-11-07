@@ -38,27 +38,10 @@ refreshStock();
 setInterval(()=>{ if(!document.hidden) refreshStock(); }, 60000);
 document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) refreshStock(); });
 
-/* Статуси замовлень (час доставки від менеджера) */
-let statusRefreshedAt = 0, statusBusy = false;
+/* Customer history and statuses are loaded from the authenticated server account. */
+let statusRefreshedAt=0;
 async function refreshOrderStatuses(force){
-  if(statusBusy || (!force && Date.now() - statusRefreshedAt < 20000)) return;
-  const active = orders.filter(o=>o.id && o.phoneDigits && o.status !== 'done' && o.status !== 'cancelled');
-  if(!active.length) return;
-  statusBusy = true; statusRefreshedAt = Date.now();
-  let changed = false;
-  await Promise.all(active.map(async o=>{
-    try {
-      const res = await fetch('/api/order-status?id=' + o.id + '&phone=' + encodeURIComponent(o.phoneDigits), {cache:'no-store'});
-      if(!res.ok) return;
-      const d = await res.json();
-      if(d.status !== o.status || (d.delivery_time||'') !== (o.deliveryTime||'') || (d.manager_note||'') !== (o.managerNote||'')){
-        o.status = d.status; o.deliveryTime = d.delivery_time; o.managerNote = d.manager_note; changed = true;
-      }
-    } catch(e){}
-  }));
-  statusBusy = false;
-  if(changed){ saveOrders(); renderCabinet(); }
+  if(!profile||customerEdit||(!force&&Date.now()-statusRefreshedAt<20000))return;
+  statusRefreshedAt=Date.now();await loadCustomerOrders();
 }
-
-/* Якщо сторінку відкрито одразу на «Кабінеті», цей файл завантажується вже після першого показу кабінету */
-if(location.hash.indexOf('#cabinet') === 0) refreshOrderStatuses();
+setInterval(()=>{if(!document.hidden&&location.hash==='#cabinet')refreshOrderStatuses();},30000);

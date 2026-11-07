@@ -67,6 +67,10 @@
     {
       "file": "assets/css/17-catalog-editor.css",
       "description": "Знижки, опис і довільні характеристики товарів."
+    },
+    {
+      "file": "assets/css/18-customer-accounts.css",
+      "description": "Реєстрація, вхід, серверний кабінет і приватна історія покупця."
     }
   ],
   "scripts": [
@@ -84,7 +88,7 @@
     },
     {
       "file": "assets/js/04-state.js",
-      "description": "Стан застосунку та робота з localStorage."
+      "description": "Кошик у браузері, тимчасовий стан серверного акаунта та старі особисті посилання."
     },
     {
       "file": "assets/js/05-product-visuals.js",
@@ -111,12 +115,16 @@
       "description": "Наявні обробники бічної панелі та її відображення."
     },
     {
+      "file": "assets/js/delivery-ui.js",
+      "description": "Спільні безпечні елементи інтерфейсу та запити із CSRF."
+    },
+    {
       "file": "assets/js/11-checkout.js",
-      "description": "Наявні обробники форми, перенесені без змін."
+      "description": "Оформлення після входу, перевірки контактів і доставки, захист від повторного запиту."
     },
     {
       "file": "assets/js/12-account.js",
-      "description": "Особистий кабінет і збережений профіль."
+      "description": "Реєстрація, вхід, приватна серверна історія та налаштування покупця."
     },
     {
       "file": "assets/js/13-age-gate.js",

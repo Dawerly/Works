@@ -10,7 +10,7 @@
 <body>
   <header class="topbar">
     <div><span class="eyebrow">ADMIN / КАТАЛОГ</span><h1>Dymok · Каталог</h1></div>
-    <nav><a href="/admin/">Склад і замовлення</a> · <a href="/">Вітрина</a></nav>
+    <nav><a href="/admin/">Склад і замовлення</a> <a href="/admin/delivery/">Доставка та кур’єри</a> · <a href="/">Вітрина</a></nav>
     <button id="logout" class="secondary" type="button" hidden>Вийти</button>
   </header>
   <main>
@@ -57,6 +57,12 @@
             <fieldset>
               <input name="id" type="hidden">
               <label>Назва категорії<input name="name" required maxlength="120"></label>
+              <div class="category-icon-editor">
+                <label for="category-icon">Емодзі категорії<input id="category-icon" name="icon" type="text" value="🧩" maxlength="64" autocomplete="off" spellcheck="false" aria-describedby="category-icon-hint"></label>
+                <div class="category-icon-preview" id="category-icon-preview" aria-hidden="true">🧩</div>
+              </div>
+              <p class="hint" id="category-icon-hint">Вставте емодзі або виберіть нижче. Він з’явиться на плитці категорії в каталозі.</p>
+              <div class="category-emoji-options" id="category-emoji-options" role="group" aria-label="Швидкий вибір емодзі"></div>
               <div class="section-heading"><h3>Поля характеристик</h3><button id="add-field" class="secondary" type="button">+ Поле</button></div>
               <p class="hint">Ключ — сталий ідентифікатор латиницею, наприклад battery_capacity. Назву поля можна змінювати.</p>
               <div id="schema-fields"></div>

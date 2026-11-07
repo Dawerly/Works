@@ -5,6 +5,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+CATEGORY_ICONS = {'liquid': '💧', 'pod': '🔋', 'disposable': '💨', 'access': '⚙️'}
 CATEGORIES = [('liquid', 'Рідини'), ('pod', 'Под-системи'),
               ('disposable', 'Одноразки'), ('access', 'Комплектуючі')]
 
@@ -24,9 +25,17 @@ def initialize(database, seed=True):
                     con.backup(dest)
                 finally:
                     dest.close()
+        if con.execute("SELECT 1 FROM sqlite_master WHERE name='categories'").fetchone() and 'icon' not in {r[1] for r in con.execute('PRAGMA table_info(categories)')}:
+            backup = database.with_name(database.stem + '-before-category-icons.sqlite3')
+            if not backup.exists():
+                dest = sqlite3.connect(backup)
+                try:
+                    con.backup(dest)
+                finally:
+                    dest.close()
         con.executescript((ROOT / 'schema.sql').read_text(encoding='utf-8'))
         con.execute('BEGIN IMMEDIATE')
-        additions = {'categories': [('slug', 'TEXT')], 'products': [
+        additions = {'categories': [('slug', 'TEXT'), ('icon', "TEXT NOT NULL DEFAULT ''")], 'products': [
             ('brand', "TEXT NOT NULL DEFAULT ''"), ('spec', "TEXT NOT NULL DEFAULT ''"),
             ('external_image', 'TEXT'), ('vol', 'TEXT'), ('mg', 'TEXT')]}
         for table, columns in additions.items():
@@ -34,6 +43,9 @@ def initialize(database, seed=True):
             for name, definition in columns:
                 if name not in present:
                     con.execute('ALTER TABLE ' + table + ' ADD COLUMN ' + name + ' ' + definition)
+                    if table == 'categories' and name == 'icon':
+                        for row in con.execute('SELECT id,slug FROM categories').fetchall():
+                            con.execute('UPDATE categories SET icon=? WHERE id=?', (CATEGORY_ICONS.get(row[1], '🧩'), row[0]))
         if con.execute("SELECT 1 FROM sqlite_master WHERE name='orders'").fetchone():
             if 'total_cents' not in {r[1] for r in con.execute('PRAGMA table_info(orders)')}:
                 con.execute('ALTER TABLE orders ADD COLUMN total_cents INTEGER NOT NULL DEFAULT 0')
@@ -47,8 +59,8 @@ def initialize(database, seed=True):
                 fields = ([{'key': 'volume', 'label': 'Об’єм, мл', 'required': False},
                            {'key': 'strength', 'label': 'Міцність, мг', 'required': False}]
                           if slug == 'liquid' else [])
-                ids[slug] = con.execute('INSERT INTO categories(name,attribute_schema,slug) VALUES(?,?,?)',
-                                       (name, json.dumps(fields, ensure_ascii=False), slug)).lastrowid
+                ids[slug] = con.execute('INSERT INTO categories(name,attribute_schema,slug,icon) VALUES(?,?,?,?)',
+                                       (name, json.dumps(fields, ensure_ascii=False), slug, CATEGORY_ICONS[slug])).lastrowid
             for p in json.loads((ROOT / 'catalog-seed.json').read_text(encoding='utf-8')):
                 attrs = ({'volume': str(p['vol']), 'strength': str(p['mg'])} if p['cat'] == 'liquid' else {})
                 con.execute('''INSERT INTO products
@@ -108,7 +120,6 @@ def products(con):
 
 
 def public_catalog(con):
-    icons = {'liquid': '💧', 'pod': '🔋', 'disposable': '💨', 'access': '⚙️'}
     categories = [{'id': r['slug'] or 'category-' + str(r['id']), 'name': r['name'],
-                   'desc': 'Переглянути товари', 'icon': icons.get(r['slug'], '🧩')} for r in con.execute('SELECT * FROM categories ORDER BY id')]
+                   'desc': 'Переглянути товари', 'icon': r['icon'] or CATEGORY_ICONS.get(r['slug'], '🧩')} for r in con.execute('SELECT * FROM categories ORDER BY id')]
     return {'categories': categories, 'products': list(products(con).values())}
